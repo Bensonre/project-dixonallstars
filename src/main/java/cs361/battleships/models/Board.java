@@ -5,11 +5,13 @@ import java.util.List;
 
 public class Board {
 
+	private List<Ship> ships;// holds the locations on the board the is present at
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
 		// TODO Implement
+		this.ships= new ArrayList<Ship>();
 	}
 
 	/*
@@ -25,7 +27,7 @@ public class Board {
 					return false;
 				}
 				ship.setOccupiedSquares(x, y, isVertical);
-//				this.ships.append(ship);
+				this.ships.add(ship);
 				return true;
 			}
 		}
@@ -37,7 +39,7 @@ public class Board {
 					return false;
 				}
 				ship.setOccupiedSquares(x, y, isVertical);
-//				this.ships.append(ship);
+				this.ships.add(ship);
 				return true;
 			}
 		}
@@ -52,12 +54,11 @@ public class Board {
 	}
 
 	public List<Ship> getShips() {
-		//TODO implement
-		return null;
+		return this.ships;
 	}
 
 	public void setShips(List<Ship> ships) {
-		//TODO implement
+		this.ships=ships;
 	}
 
 	public List<Result> getAttacks() {

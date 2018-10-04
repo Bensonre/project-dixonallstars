@@ -18,6 +18,7 @@ public class ShipTest {
         assertTrue("BATTLESHIP"==battleship.getKind());
         assertTrue(4 ==battleship.getLength());
     }
+    @Test
     public void testSetOccupiedSquares(){
         Ship mine = new Ship("MINESWEEPER");
         mine.setOccupiedSquares(1,'A',false);

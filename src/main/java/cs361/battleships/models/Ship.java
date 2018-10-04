@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Ship {
 
-	@JsonProperty private List<Square> occupiedSquares;
-	private String kind;
-	private int length;
+	@JsonProperty private List<Square> occupiedSquares;// holds the locations on the board the is present at
+	private String kind; // holds the kind of ship that is present
+	private int length;// holds the number of spaces the ship takes up
 	
 	public Ship(String kind) {
 	    this.occupiedSquares= new ArrayList<Square>();

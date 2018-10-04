@@ -16,8 +16,31 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		// TODO Implement
-		return false;
+		int shipLength =ship.getLength();
+		if (isVertical) {
+			if (x + (shipLength) > 11 || x < 1)
+				return false;
+			else {
+				if (y >= 75 || y < 65) {
+					return false;
+				}
+				ship.setOccupiedSquares(x, y, isVertical);
+//				this.ships.append(ship);
+				return true;
+			}
+		}
+		else {
+			if (y + (shipLength) > 75 || y < 65) {
+				return false;
+			} else {
+				if (x >= 10 || x < 1) {
+					return false;
+				}
+				ship.setOccupiedSquares(x, y, isVertical);
+//				this.ships.append(ship);
+				return true;
+			}
+		}
 	}
 
 	/*

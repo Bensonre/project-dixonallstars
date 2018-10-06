@@ -1,16 +1,20 @@
 package cs361.battleships.models;
 
+import controllers.AttackGameAction;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
 	private List<Ship> ships;// holds the locations on the board the is present at
+	private List<Result> attacks;
+
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		// TODO Implement
+		this.attacks = new ArrayList<Result>();
 		this.ships= new ArrayList<Ship>();
 	}
 
@@ -72,7 +76,29 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		//TODO Implement
+		Result res = new Result();
+
+		if (y > 'J' || y < 'A' || x > 10 || x < 0){ // Invalid if attack is off the board.
+			res.setResult(AtackStatus.INVALID);
+			return res;
+		}
+
+		if (previouslyAttacked(x,y)){ // Invalid if the attack has already been attempted.
+			res.setResult(AtackStatus.INVALID);
+			return res;
+		}
+
+		if (!shipOnSpot(x,y)){ // If not a ship on the spot, record a miss.
+			res.setResult(AtackStatus.MISS);
+			res.setLocation(new Square(x,y));
+
+			List<Result> attacks = getAttacks();
+			attacks.add(res);
+			setAttacks(attacks);
+
+			return res;
+		}
+
 		return null;
 	}
 
@@ -85,11 +111,40 @@ public class Board {
 	}
 
 	public List<Result> getAttacks() {
-		//TODO implement
-		return null;
+		return attacks;
 	}
 
 	public void setAttacks(List<Result> attacks) {
-		//TODO implement
+		this.attacks = attacks;
 	}
+
+	public boolean previouslyAttacked(int x, char y){
+		List<Result> attacks = getAttacks();
+		for (int i = 0; i < attacks.size(); i++) { // For all previous attacks
+			Square loc = attacks.get(i).getLocation(); // Get location
+			if (loc != null){
+				if (loc.getRow() == x && loc.getColumn() == y){ // If that is the location we are trying to attack return true.
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean shipOnSpot(int x, char y){
+		List<Ship> ships = getShips();
+		for (int i = 0; i < ships.size(); i++){ // For all ships
+			List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
+			for (int j = 0; j < occupiedSquares.size(); j++){ // For each square
+				Square loc = occupiedSquares.get(i);
+				if (loc != null) {
+					if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 }

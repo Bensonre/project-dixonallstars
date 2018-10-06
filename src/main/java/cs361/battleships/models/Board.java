@@ -21,17 +21,18 @@ public class Board {
 		int shipLength =ship.getLength(); // store length in var for easier access
 		if (isVertical) { // test cases if the ship is vertical
 			if (x + (shipLength) > 11 || x < 1)
-				return false; // ship cant go over the edge of board
+				return false; // ensures ship cant go over the edge of board
 			else {
-				if (y >= 75 || y < 65) {
+				if (y >= 'K' || y < 'A') {
 					return false; // ships can't go over edge of board 74 == J
 				}
 				for (int i =0; i<this.ships.size();i++){// this loop ensure a ships isn't placed over a different one
-				    for (int j=0;j<this.ships.get(i).getLength();j++){
-				        for(int k=0;k<shipLength;k++){
-				            if (x+k==this.ships.get(i).getOccupiedSquares().get(j).getRow()){
-								if (y==this.ships.get(i).getOccupiedSquares().get(j).getColumn()){
-									return false;
+					//i represent the ship being acessed in ships list, the loop itterates through the number of ships
+				    for (int j=0;j<this.ships.get(i).getLength();j++){//j represents the the square being checked in ship i's square list
+				        for(int k=0;k<shipLength;k++){// k represents the squares that the newly placed ships will take
+				            if (x+k==this.ships.get(i).getOccupiedSquares().get(j).getRow()){// tests to see if the ship is in the same row as the ith ship
+								if (y==this.ships.get(i).getOccupiedSquares().get(j).getColumn()){// tests to see if the ship is in the same col as the ith ship
+									return false;// if both the above cases are true the ship is in the same square as the ith ship and can't be placed.
 								}
                             }
                         }
@@ -43,10 +44,10 @@ public class Board {
 			}
 		}
 		else {// the following works the same as the above code but if the ship is horizontal
-			if (y + (shipLength) > 75 || y < 65) {
+			if (y + (shipLength) > 'K' || y < 'A') {
 				return false;
 			} else {
-				if (x >= 10 || x < 1) {
+				if (x > 10 || x < 1) {
 					return false;
 				}
 				for (int i =0; i<this.ships.size();i++){

@@ -75,6 +75,8 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
+
+	// Returns the result object of the attack AND adds it to the boards attacks.
 	public Result attack(int x, char y) {
 		Result res = new Result();
 
@@ -99,7 +101,31 @@ public class Board {
 			return res;
 		}
 
-		return null;
+		Ship attackedShip = hitShip(x,y);  // Get the ship that is being hit
+
+		res.setResult(AtackStatus.HIT); // Make a hit result
+		res.setLocation(new Square(x,y));
+		res.setShip(attackedShip);
+
+		List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
+		attacks.add(res);
+		setAttacks(attacks);
+
+		if (sunkShip(attackedShip)){  // If the ship has been sunk
+			attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
+			res.setResult(AtackStatus.SUNK);
+			attacks.add(res);
+			setAttacks(attacks);
+		}
+
+		// Now here we can check if all ships have been sunk.
+		// If they have, we will want to remove res again as it is SUNK.
+		// We will then change its attack status to surrender and add that to the attacks array of the board.
+
+		// This can be implemented just like how sunk is implemented above.
+
+		return res;
+
 	}
 
 	public List<Ship> getShips() {
@@ -118,6 +144,7 @@ public class Board {
 		this.attacks = attacks;
 	}
 
+	// True if a coordinate has been attacked before.
 	public boolean previouslyAttacked(int x, char y){
 		List<Result> attacks = getAttacks();
 		for (int i = 0; i < attacks.size(); i++) { // For all previous attacks
@@ -131,12 +158,12 @@ public class Board {
 		return false;
 	}
 
+	// True if there is a ship on that coordinate
 	public boolean shipOnSpot(int x, char y){
-		List<Ship> ships = getShips();
 		for (int i = 0; i < ships.size(); i++){ // For all ships
 			List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
 			for (int j = 0; j < occupiedSquares.size(); j++){ // For each square
-				Square loc = occupiedSquares.get(i);
+				Square loc = occupiedSquares.get(j);
 				if (loc != null) {
 					if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
 						return true;
@@ -145,6 +172,48 @@ public class Board {
 			}
 		}
 		return false;
+	}
+
+	// Returns the ship being hit at that coordinate
+	public Ship hitShip(int x, char y){
+		for (int i = 0; i < ships.size(); i++){ // For all ships
+			List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
+			for (int j = 0; j < occupiedSquares.size(); j++){ // For each square
+				Square loc = occupiedSquares.get(j);
+				if (loc != null) {
+					if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return the ship.
+						return ships.get(i);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	// True if the ship is sunk
+	public boolean sunkShip(Ship ship){
+		List<Square> occupiedSquares = ship.getOccupiedSquares(); //
+		for (int i = 0; i < occupiedSquares.size(); i++){  // For all of the ships squares
+			boolean attacked = false;
+			Square loc = occupiedSquares.get(i);
+			int row = loc.getRow();
+			char col = loc.getColumn();
+
+			for (int j = 0; j < attacks.size(); j++){  // For all of the attacked squares
+				Square attacked_loc = attacks.get(j).getLocation();
+				if (attacked_loc != null) {
+					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()){  // If that location is the same as the ship
+						if (attacks.get(j).getResult() == AtackStatus.HIT || attacks.get(j).getResult() == AtackStatus.SUNK){
+							attacked = true;  // Mark the ship as attacked
+						}
+					}
+				}
+			}
+			if (!attacked){  // Return false if this spot on ship has not been attacked.
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

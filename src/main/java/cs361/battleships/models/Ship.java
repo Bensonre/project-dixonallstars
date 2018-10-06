@@ -12,22 +12,22 @@ public class Ship {
 	private int length;// holds the number of spaces the ship takes up
 	
 	public Ship(String kind) {
-	    this.occupiedSquares= new ArrayList<Square>();
-		this.kind=kind;
-		if (kind == "DESTROYER"){
+	    this.occupiedSquares= new ArrayList<Square>();// constructs list
+		this.kind=kind;// sets kind equal to that passed in
+		if (kind == "DESTROYER"){// ensures destroyer has 3 square
 			this.occupiedSquares.add(new Square(0, 'A'));
 			this.occupiedSquares.add(new Square(0, 'A'));
 			this.occupiedSquares.add(new Square(0, 'A'));
-			this.length=3;
+			this.length=3;// sets length to 3
 		}
-		else if (kind == "BATTLESHIP"){
+		else if (kind == "BATTLESHIP"){// makes sure battle ship has 4 squares
             this.occupiedSquares.add(new Square(0, 'A'));
             this.occupiedSquares.add(new Square(0, 'A'));
             this.occupiedSquares.add(new Square(0, 'A'));
             this.occupiedSquares.add(new Square(0, 'A'));
 			this.length=4;
 		}
-		else{
+		else{// if kind wasn't specified make MINESWEEPER or If kind was MINESWEEPER, has 2 squares
 			this.occupiedSquares.add(new Square(0, 'A'));
 			this.occupiedSquares.add(new Square(0, 'A'));
 			this.length=2;
@@ -39,15 +39,15 @@ public class Ship {
 	}
 
 	public void setOccupiedSquares(int row, char column, boolean vertical){
-	    String col= "ABCDEFGHIJ";
-		int c=0;
-		if (vertical){
+	    String col= "ABCDEFGHIJ";// makes a string of characters to get cols
+		int c=0;// used for index of cols
+		if (vertical){// iterates rows up for length of ship if ship is vertical
 			for (int i=0; i<this.length; i++){
 				this.occupiedSquares.set(i,new Square (row+i,column));
 			}
 		}
-		else {
-			for (int i=0; i<col.length(); i++){
+		else {// iterates up col for length of ship if ship is horizontal
+			for (int i=0; i<col.length(); i++){//selects the right index to use for col
 				if (col.charAt(i)== column){
 					c=i;
 					break;

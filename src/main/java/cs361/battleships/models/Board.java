@@ -26,6 +26,17 @@ public class Board {
 				if (y >= 75 || y < 65) {
 					return false;
 				}
+				for (int i =0; i<this.ships.size();i++){
+				    for (int j=0;j<this.ships.get(i).getLength();j++){
+				        for(int k=0;k<shipLength;k++){
+				            if (x+k==this.ships.get(i).getOccupiedSquares().get(j).getRow()){
+								if (y==this.ships.get(i).getOccupiedSquares().get(j).getColumn()){
+									return false;
+								}
+                            }
+                        }
+                    }
+                }
 				ship.setOccupiedSquares(x, y, isVertical);
 				this.ships.add(ship);
 				return true;
@@ -37,6 +48,17 @@ public class Board {
 			} else {
 				if (x >= 10 || x < 1) {
 					return false;
+				}
+				for (int i =0; i<this.ships.size();i++){
+					for (int j=0;j<this.ships.get(i).getLength();j++){
+						for(int k=0;k<shipLength;k++){
+							if (y+k==this.ships.get(i).getOccupiedSquares().get(j).getColumn()){
+								if (x==this.ships.get(i).getOccupiedSquares().get(j).getRow()){
+									return false;
+								}
+							}
+						}
+					}
 				}
 				ship.setOccupiedSquares(x, y, isVertical);
 				this.ships.add(ship);

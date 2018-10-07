@@ -80,7 +80,7 @@ public class Board {
 	public Result attack(int x, char y) {
 		Result res = new Result();
 
-		if (y > 'J' || y < 'A' || x > 10 || x < 0){ // Invalid if attack is off the board.
+		if (y > 'J' || y < 'A' || x > 10 || x <= 0){ // Invalid if attack is off the board.
 			res.setResult(AtackStatus.INVALID);
 			return res;
 		}

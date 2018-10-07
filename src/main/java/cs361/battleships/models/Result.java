@@ -2,9 +2,9 @@ package cs361.battleships.models;
 
 public class Result {
 
-	private AtackStatus result;
-	private Ship ship;
-	private Square location;
+	private AtackStatus result;  // The result of the attack
+	private Ship ship;  // The ship that was hit by the attack
+	private Square location; // The location that was attacked.
 
 	public AtackStatus getResult() {
 		return this.result;

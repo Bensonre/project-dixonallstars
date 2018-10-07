@@ -99,11 +99,11 @@ public class BoardTest {
         List<Result> attacks = new ArrayList<Result>();
         Result adder = new Result();
         adder.setResult(AtackStatus.MISS);
-        adder.setLocation(new Square(0,'A'));
+        adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
 
-        Result res = board.attack(0, 'A');
+        Result res = board.attack(1, 'A');
 
         Result expected = new Result();
         expected.setResult(AtackStatus.INVALID);
@@ -121,7 +121,7 @@ public class BoardTest {
         List<Result> attacks = new ArrayList<Result>();
         Result adder = new Result();
         adder.setResult(AtackStatus.MISS);
-        adder.setLocation(new Square(0,'A'));
+        adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
 
@@ -149,7 +149,7 @@ public class BoardTest {
         List<Result> attacks = new ArrayList<Result>();  // Add a miss on to the board
         Result adder = new Result();
         adder.setResult(AtackStatus.MISS);
-        adder.setLocation(new Square(0,'A'));
+        adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
 
@@ -183,7 +183,7 @@ public class BoardTest {
         List<Result> attacks = new ArrayList<Result>();  // Add a miss to the board.
         Result adder = new Result();
         adder.setResult(AtackStatus.MISS);
-        adder.setLocation(new Square(0,'A'));
+        adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
 

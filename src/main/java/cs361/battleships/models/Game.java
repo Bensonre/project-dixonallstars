@@ -11,8 +11,10 @@ import static cs361.battleships.models.AtackStatus.*;
 
 public class Game {
 
-    @JsonProperty private Board playersBoard = new Board();
-    @JsonProperty private Board opponentsBoard = new Board();
+    @JsonProperty
+    private Board playersBoard = new Board();
+    @JsonProperty
+    private Board opponentsBoard = new Board();
 
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -36,7 +38,7 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean attack(int x, char  y) {
+    public boolean attack(int x, char y) {
         Result playerAttack = opponentsBoard.attack(x, y);
         if (playerAttack.getResult() == INVALID) {
             return false;
@@ -47,7 +49,7 @@ public class Game {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() == INVALID);
+        } while (opponentAttackResult.getResult() == INVALID);
 
         return true;
     }
@@ -70,4 +72,5 @@ public class Game {
     private boolean randVertical() {
         // TODO implement
         return false;
+    }
 }

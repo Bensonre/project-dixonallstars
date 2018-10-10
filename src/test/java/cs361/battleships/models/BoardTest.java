@@ -210,5 +210,35 @@ public class BoardTest {
         res = board.attack(7, 'F');
         assertSame(expected.getResult(), res.getResult());
     }
+    @Test
+    public void testShipAlreadyPlaced(){
+        Board board = new Board();
+        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        board.placeShip(ship,7, 'E', false);
+        Ship ship2 = new Ship("MINESWEEPER"); // create ship2
+        assertFalse(board.placeShip(ship2,8, 'C', true));//since ship of same type already placed
+                                                                        // on board should return false
 
+
+    }
+    @Test
+    public void testPlaceShipOfEveryType(){
+        Board board = new Board();
+        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        board.placeShip(ship,7, 'E', false);
+        Ship ship2 = new Ship("DESTROYER"); // create ship2
+        Ship ship3 = new Ship("BATTLESHIP"); // create ship2
+        assertTrue(board.placeShip(ship2,5, 'C', true));//should ne able to place a ship of a new type;
+        assertTrue(board.placeShip(ship3,3,'B',true));//should be able to place a ship of a new kind;
+    }
+    @Test
+    public void testPlaceShipOfNewTypeAfterFailingPlacement(){
+        Board board = new Board();
+        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        board.placeShip(ship,7, 'E', false);
+        Ship ship2 = new Ship("MINESWEEPER"); // create ship2
+        Ship ship3 = new Ship("DESTROYER"); // create ship2
+        assertFalse(board.placeShip(ship2,5, 'C', true));//shouldn't be able to place a ship of same kind
+        assertTrue(board.placeShip(ship3,5,'C',true));//should be able to place a ship of a new kind;
+    }
 }

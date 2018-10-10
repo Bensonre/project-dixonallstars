@@ -17,11 +17,21 @@ public class Board {
 		this.attacks = new ArrayList<Result>();
 		this.ships= new ArrayList<Ship>();
 	}
+	//returns weather or not a ship of this type has been placed on the board
+	public boolean alreadyPlaced(Ship ship) {
+		for(int i=0;i<this.ships.size();i++){
+			if (this.ships.get(i).getKind().equals(ship.getKind()))
+				return true;
+		}
+		return false;
+	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+		if(alreadyPlaced(ship))
+			return false;
 		int shipLength =ship.getLength(); // store length in var for easier access
 		if (isVertical) { // test cases if the ship is vertical
 			if (x + (shipLength) > 11 || x < 1)

@@ -210,5 +210,13 @@ public class BoardTest {
         res = board.attack(7, 'F');
         assertSame(expected.getResult(), res.getResult());
     }
-
+    @Test
+    public void testShipAlreadyPlaced(){
+        Board board = new Board();
+        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        board.placeShip(ship,7, 'E', false);
+        Ship ship2 = new Ship("MINESWEEPER"); // create ship2
+        assertFalse(board.placeShip(ship2,8, 'C', true));//since ship of same type already placed
+                                                                        // on board should return false
+    }
 }

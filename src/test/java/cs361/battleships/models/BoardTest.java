@@ -241,4 +241,37 @@ public class BoardTest {
         assertFalse(board.placeShip(ship2,5, 'C', true));//shouldn't be able to place a ship of same kind
         assertTrue(board.placeShip(ship3,5,'C',true));//should be able to place a ship of a new kind;
     }
+
+    @Test
+    public void testSurrenderOnLastSunkShip(){
+        Board board = new Board();
+
+        Result expected = new Result();
+        expected.setResult(AtackStatus.SURRENDER);
+
+        Ship shipM = new Ship("MINESWEEPER"); // Put ship on board
+        board.placeShip(shipM,1, 'A', false);
+        Ship shipD = new Ship("DESTROYER"); // Put ship on board
+        board.placeShip(shipD,2, 'A', false);
+        Ship shipB = new Ship("BATTLESHIP"); // Put ship on board
+        board.placeShip(shipB,3, 'A', false);
+
+        List<Ship> shiplist = board.getShips(); // Make sure ship is on board
+
+        board.attack(1,'A');
+        board.attack(1,'B');
+
+        board.attack(2,'A');
+        board.attack(2,'B');
+        board.attack(2,'C');
+
+        board.attack(3,'A');
+        board.attack(3,'B');
+        board.attack(3,'C');
+        Result res = board.attack(3,'D');
+
+        assertSame(expected.getResult(), res.getResult());
+
+    }
 }
+

@@ -64,6 +64,7 @@ public class Board {
 				if (x > 10 || x < 1) {
 					return false;
 				}
+
 				for (int i = 0; i < this.ships.size(); i++) {
 					for (int j = 0; j < this.ships.get(i).getLength(); j++) {
 						for (int k = 0; k < shipLength; k++) {

@@ -40,7 +40,7 @@ public class Board {
 				if (y >= 'K' || y < 'A') {
 					return false; // ships can't go over edge of board 74 == J
 				}
-				for (int i =0; i<this.ships.size();i++){// this loop ensure a ships isn't placed over a different one
+				for (int i=0; i<this.ships.size();i++){// this loop ensure a ships isn't placed over a different one
 					//i represent the ship being acessed in ships list, the loop itterates through the number of ships
 				    for (int j=0;j<this.ships.get(i).getLength();j++){//j represents the the square being checked in ship i's square list
 				        for(int k=0;k<shipLength;k++){// k represents the squares that the newly placed ships will take
@@ -64,7 +64,7 @@ public class Board {
 				if (x > 10 || x < 1) {
 					return false;
 				}
-				for (int i =0; i<this.ships.size();i++){
+				for (int i=0; i<this.ships.size();i++){
 					for (int j=0;j<this.ships.get(i).getLength();j++){
 						for(int k=0;k<shipLength;k++){
 							if (y+k==this.ships.get(i).getOccupiedSquares().get(j).getColumn()){

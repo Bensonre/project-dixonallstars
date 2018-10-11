@@ -55,6 +55,7 @@ public class Game {
 
     public String randKind() {
         // generate int between 2 and 4 inclusive
+        // nextInt() is exclusive of the upper bound
         int rand = ThreadLocalRandom.current().nextInt(2, 5);
 
         if (rand == 2) {
@@ -68,10 +69,7 @@ public class Game {
         }
     }
 
-    // I'd like to speed up execution time by taking into account
-    // the length of the ship placed.
     public int randRow() {
-        // nextInt() is exclusive of the upper bound
         // generate int between 1 and 10 inclusive
         int rand = ThreadLocalRandom.current().nextInt(1, 11);
         return rand;

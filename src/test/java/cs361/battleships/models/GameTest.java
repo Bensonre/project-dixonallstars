@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
+    // check 10 re-rolls of the String to be of one of the three acceptable cases
     @Test
     public void goodRandKind(){
         Game game = new Game();
@@ -36,6 +37,7 @@ public class GameTest {
     // couldn't think of anything better...assert null was denied as redundant and
     // doing a check to see if we get 1 true out of 10 (99.9% chance) still seems
     // like a dumb test because the .1% exists.
+    // literally just checks to see if the bool is true or false
     @Test
     public void goodRandOrientation (){
         Game game = new Game();

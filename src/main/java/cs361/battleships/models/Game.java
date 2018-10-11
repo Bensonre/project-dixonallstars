@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static cs361.battleships.models.AtackStatus.*;
 
@@ -52,23 +53,47 @@ public class Game {
         return true;
     }
 
-    private char randCol() {
-        // TODO implement
-        return 'A';
+    public String randKind() {
+        // generate int between 2 and 4 inclusive
+        int rand = ThreadLocalRandom.current().nextInt(2, 5);
+
+        if (rand == 2) {
+            return "MINESWEEPER";
+        }
+        else if (rand == 3) {
+            return "DESTROYER";
+        }
+        else {
+            return "BATTLESHIP";
+        }
     }
 
-    private String randKind() {
-        // TODO implement
-        return "MINESWEEPER";
+    // I'd like to speed up execution time by taking into account
+    // the length of the ship placed.
+    public int randRow() {
+        // nextInt() is exclusive of the upper bound
+        // generate int between 1 and 10 inclusive
+        int rand = ThreadLocalRandom.current().nextInt(1, 11);
+        return rand;
     }
 
-    private int randRow() {
-        // TODO implement
-        return 1;
+    public char randCol() {
+        // generate int between 65 and 74 inclusive, corresponding with
+        // the ascii table
+        int rand = ThreadLocalRandom.current().nextInt(65, 75);
+        return (char)rand;
     }
 
-    private boolean randVertical() {
-        // TODO implement
-        return false;
+    public boolean randVertical() {
+        // generate int between 0 and 1 inclusive
+        int rand = ThreadLocalRandom.current().nextInt(0, 2);
+
+        if (rand == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
+
 }

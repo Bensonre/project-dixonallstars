@@ -34,14 +34,17 @@ function markHits(board, elementId, surrenderText) {
 function redrawGrid() {
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
+    Array.from(document.getElementById("player_copy").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+    makeGrid(document.getElementById("player_copy"), true);
     if (game === undefined) {
         return;
     }
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+        document.getElementById("player_copy").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
@@ -75,6 +78,8 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+                document.getElementById("placement_mode").classList.add("inactive");
+                document.getElementById("attack_mode").classList.remove("inactive");
             }
         });
     } else {
@@ -98,14 +103,8 @@ function sendXhr(method, url, data, handler) {
     req.setRequestHeader("Content-Type", "application/json");
     req.send(JSON.stringify(data));
 }
-
-function place(size) {
-    return function() {
-        let row = this.parentNode.rowIndex;
-        let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
-        let table = document.getElementById("player");
-        for (let i=0; i<size; i++) {
+function finishPlacement(size,table){
+ for (let i=0; i<size; i++) {
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
@@ -123,10 +122,22 @@ function place(size) {
             }
             cell.classList.toggle("placed");
         }
+  }
+function place(size) {
+    return function() {
+        let row = this.parentNode.rowIndex;
+        let col = this.cellIndex;
+        vertical = document.getElementById("is_vertical").checked;
+        let table = document.getElementById("player");
+        let table2 = document.getElementById("player_copy");
+        finishPlacement(size,table);
+        finishPlacement(size,table2);
+
     }
 }
 
 function initGame() {
+    makeGrid(document.getElementById("player_copy"), true);
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {

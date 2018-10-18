@@ -1,25 +1,90 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
+<@layout.myLayout "Home page">
+<html class="fontawesome-i2svg-active fontawesome-i2svg-complete"><head>
+    <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" defer=""></script>
 
 
-<h1>The Battleship game</h1>
 
-<table id="opponent" class="battleGrid">
-</table>
-
-<table id="player" class="battleGrid">
-</table>
-
-<ul>
-    <li><button id="place_minesweeper">Place Minesweeper</button></li>
-    <li><button id="place_destroyer">Place Destroyer</button></li>
-    <li><button id="place_battleship">Place Battleship</button></li>
-    <li><input type="checkbox" id="is_vertical">Vertical</input></li>
-</ul>
-
+<!--<h1>The Battleship game</h1>-->
+<div id="page">
+<div id="main_container">
+        <div id="attack_mode" class="inactive">
+            <div class="upper_box">
+                <table id="opponent" class="battleGrid">
+                </table>
+            </div>
+            <div class="lower_box">
+                <div class="lower_left">
+                <p> Attack Enemy ships by clicking on spaces above!</p>
+                <ul class="key">
+                    <li>Hit<div class="hit legend">     </div></li>
+                    <li>Miss<div class="miss legend">     </div></li>
+                    <li>Sunk<div class="sink legend">     </div></li>
+                    <li>Target<div class="placed legend">     </div></li>
+                </ul>
+            </div>
+                <div class="lower_right board_container">
+                    <p class="lower_right_title smaller_margins">Player Board</p>
+                    <table id="player" class="battleGrid small_box">
+                </table>
+                 </div>
+            </div>
+       </div>
+        <div id="placement_mode" class="active">
+            <div class="upper_box">
+             <table id="player_copy" class="battleGrid">
+             </table>
+            </div>
+            <div class="lower_box">
+              <div class="instructions lower_left">
+                <p class="tut">Select ship type on right</p>
+                <p class="tut">Place ship on board above</p>
+                <p class="tut">Rotate ship with arrow keys</p>
+                <div>
+                  <div class="arrow-holder">
+                    <i class="fas fa-caret-left arrow"></i>
+                  </div>
+                  <div class="arrow-holder">
+                    <i class="fas fa-caret-right arrow"></i>
+                  </div>
+                </div>
+              </div>
+                <div class="lower_right ship_select">
+                    <p class="lower_right_title">Place Ships</p>
+                    <div class="small_box">
+                        <ul class="ships">
+                            <li><button id="place_minesweeper">
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
+                            </button></li>
+                            <li><button id="place_destroyer">
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
+                            </button></li>
+                            <li><button id="place_battleship">
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
+                            </button></li>
+                        </ul>
+                    </div>
+                </div>
+                <!--<ul>
+                <li><button id="place_minesweeper">Place Minesweeper</button></li>
+                <li><button id="place_destroyer">Place Destroyer</button></li>
+                <li><button id="place_battleship">Place Battleship</button></li>
+                <li><input type="checkbox" id="is_vertical">Vertical</input></li>
+                </ul>-->
+            </div>
+        </div>
+</div>
+</div>
 <script type="text/javascript" src="/assets/game.js"></script>
 <script>
     initGame();
 </script>
 
+</html>
 </@layout.myLayout>

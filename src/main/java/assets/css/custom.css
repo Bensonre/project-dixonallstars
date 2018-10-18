@@ -1,6 +1,107 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+#player_copy{
+    height:100%;
+    width:100%;
+}
+#opponent{
+    height: 100%;
+    width:100%;
+}
+#page{
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+}
 
+#main_container{
+    display:flex;
+    flex-direction: column;
+    width: 500px;
+    height:850px;
+    border:2px solid black;
+    margin: 50px 0px;
+    background-color: White;
+    box-shadow:20px 20px 40px rgba(0,37,37,.70)
+
+}
+.upper_box{
+    height:500px;
+    width:100%;
+}
+.lower_box{
+    height:350px;
+    width:100%;
+    display: flex;
+    flex-direction: row;
+}
+.lower_left{
+    display: flex;
+    flex-direction: column;
+    width:200px;
+    font-size:25px;
+    border: 0;
+    border-right: 1px;
+    border-style: solid;
+    border-color: black;
+}
+.arrow-holder{
+    display:inline-block;
+    margin-left:10px;
+    background-color: black;
+    color: white;
+    width: 35px;
+    height: 30px;
+    border-radius:5px;
+}
+.arrow{
+    padding-left: 12px;
+    font-size:25px;
+    color: white;
+
+}
+.board_container{
+    padding: 0px 10px 0px 25px;
+    font-size:25px;
+}
+.ship_select{
+    padding: 0px 10px 0px 25px;
+}
+
+.small_box{
+    height:270px;
+    width:270px;
+    margin: 0px 0px 10px;
+    background-color: white;
+}
+.lower_right{
+    width:300px;
+    height:350px;
+    background-color:#252A2B;
+    color:white;
+}
+.lower_right_title{
+    margin-left: 80px;
+    margin-right: 80px;
+    border-bottom: 3px solid white;
+}
+.smaller_margins{
+    margin-left: 73px;
+    margin-right: 73px;
+}
+.ships{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.shipbox{
+  width:30px;
+  height:30px;
+  margin:0;
+  padding:0;
+  border: 2px solid black;
+  display:inline-block;
+}
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
@@ -15,9 +116,23 @@
     border: 1px solid black;
     width: 30px;
 }
+.legend{
+    width:20px;
+    height:20px;
+    border: 1px solid black
+}
+.key{
+    display:flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+    margin: 5px;
+}
+.tut{
+    margin: 10px;
+}
 
 td:hover {
-    background-color: gray;
+    background-color: aqua;
 }
 
 .placed {
@@ -29,13 +144,40 @@ td:hover {
 }
 
 .hit {
-    background-color: orange;
-}
-
-.sink {
     background-color: red;
 }
 
+.sink {
+    background-color: DarkRed;
+}
+
 .miss {
-    background-color: blue;
+    background-color: white;
+}
+.inactive{
+    display:none;
+}
+table{
+    background-color: lightgray;
+}
+ul{
+    display:block;
+    padding:0 0 30px;
+}
+li{
+    display:block;
+    margin: 5px;
+}
+p{
+    margin:2px;
+    font-size:25px;
+}
+button{
+    margin-top: 15px;
+    border-style:hidden;
+    border-radius:5px;
+    background-color: lightgray;
+}
+button:hover{
+    background-color: aqua;
 }

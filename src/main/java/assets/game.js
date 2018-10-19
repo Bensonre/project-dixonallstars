@@ -103,35 +103,40 @@ function sendXhr(method, url, data, handler) {
     req.setRequestHeader("Content-Type", "application/json");
     req.send(JSON.stringify(data));
 }
-function finishPlacement(size,table){
- for (let i=0; i<size; i++) {
-            let cell;
-            if(vertical) {
+// this function is code removed from place function so it could be reused other than that Reese didn't touch it
+function finishPlacement(size,table, vertical){
+ for (let i=0; i<size; i++) {// goes through for the length of the ship being placed
+            let cell;// name for the current space on board that the board is trying to hilight
+            if(vertical) {//if the ship will be placed vertically increment through the rows
                 let tableRow = table.rows[row+i];
                 if (tableRow === undefined) {
                     // ship is over the edge; let the back end deal with it
                     break;
                 }
                 cell = tableRow.cells[col];
-            } else {
+            } else {//if the ship isn't vertical increment through the columns
                 cell = table.rows[row].cells[col+i];
             }
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
                 break;
             }
-            cell.classList.toggle("placed");
+            cell.classList.toggle("placed");//add class placed to cell so it will show up with color on the board!
         }
   }
+//this is not a function I wrote but comments were asked for it so i will do my best
 function place(size) {
     return function() {
-        let row = this.parentNode.rowIndex;
+        let row = this.parentNode.rowIndex;// i believe these lines get the info from the cell clicked so ships will be placed in the right location
         let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
-        let table = document.getElementById("player");
-        let table2 = document.getElementById("player_copy");
-        finishPlacement(size,table);
-        finishPlacement(size,table2);
+        vertical = document.getElementById("is_vertical").checked;// this recieves info on weather or not the play check the box for vertical
+                                                                  //******** it will need to be chnged for the arrow keys to work****************************************************
+        let table = document.getElementById("player");// this makes sure the right table is selected for ship placement
+        let table2 = document.getElementById("player_copy");// i added this so player copy will be able to have the ships placed just like player
+        finishPlacement(size,table, vertical);//finish placement is not a function I wrote, the lines of code it contains used to be a part of place function
+                                    //but I needed it to place for both player and player copy so instead of just copying all the code I took what
+                                    //was already there and put it into a funtion so I could reuse the code.
+        finishPlacement(size,table2, vertical);
 
     }
 }

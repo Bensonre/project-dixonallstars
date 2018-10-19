@@ -1,5 +1,6 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+/*sets up the two large grids to take up as much space as we give them*/
 #player_copy{
     height:100%;
     width:100%;
@@ -8,6 +9,7 @@
     height: 100%;
     width:100%;
 }
+/*centers main container on page*/
 #page{
     display:flex;
     flex-direction:row;
@@ -25,16 +27,19 @@
     box-shadow:20px 20px 40px rgba(0,37,37,.70)
 
 }
+/*holds uper half of main container*/
 .upper_box{
     height:500px;
     width:100%;
 }
+/*holds lower half of main container*/
 .lower_box{
     height:350px;
     width:100%;
     display: flex;
     flex-direction: row;
 }
+/*contains the lowwer left box in both phases*/
 .lower_left{
     display: flex;
     flex-direction: column;
@@ -45,6 +50,7 @@
     border-style: solid;
     border-color: black;
 }
+/*puts black backround around arrow keys and rounds the corners*/
 .arrow-holder{
     display:inline-block;
     margin-left:10px;
@@ -54,46 +60,54 @@
     height: 30px;
     border-radius:5px;
 }
+/*centers arrow keys in box and makes them white*/
 .arrow{
     padding-left: 12px;
     font-size:25px;
     color: white;
 
 }
+/*lower right durring attack*/
 .board_container{
     padding: 0px 10px 0px 25px;
     font-size:25px;
 }
+/*lowwer right during placement*/
 .ship_select{
     padding: 0px 10px 0px 25px;
 }
-
+/* this is the white box that shows up on the lower right said durring placement contains ship buttons durring attack contains player board*/
 .small_box{
     height:270px;
     width:270px;
     margin: 0px 0px 10px;
     background-color: white;
 }
+/*this is the box containing all the lower right section of the main container*/
 .lower_right{
     width:300px;
     height:350px;
     background-color:#252A2B;
     color:white;
 }
+/*this adds and underline efffect to lowwer right box titles and centers them*/
 .lower_right_title{
     margin-left: 80px;
     margin-right: 80px;
     border-bottom: 3px solid white;
 }
+/*this was done to make smaller margins than the one above for attack so the underline fits better and the words to remain central without stacking*/
 .smaller_margins{
     margin-left: 73px;
     margin-right: 73px;
 }
+/*this is the unordered list containing the ship selection buttons*/
 .ships{
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+/*this is the class held by the boxes/divs that show up in the buttons for slecting a ship*/
 .shipbox{
   width:30px;
   height:30px;
@@ -102,35 +116,39 @@
   border: 2px solid black;
   display:inline-block;
 }
+/*was here before i touched*/
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
 }
-
+/*was here before i touched*/
 .battleGrid tr {
     border: 1px solid black;
     height: 30px;
 }
-
+/*was here before i touched*/
 .battleGrid td {
     border: 1px solid black;
     width: 30px;
 }
+/*makes the boxes that show up in lowwer left durring attack mode indicating what a hit miss and sunk space loop like*/
 .legend{
     width:20px;
     height:20px;
     border: 1px solid black
 }
+/* is the unordered list containing the legend for hit miss sunk... */
 .key{
     display:flex;
     flex-direction:row;
     flex-wrap: wrap;
     margin: 5px;
 }
+/*gives a nice margin to the tutorial/instructions in place ship mode on lowwer left*/
 .tut{
     margin: 10px;
 }
-
+/*sets colors for diffent boxes when tagged as hit miss and others td is the standard box*/
 td:hover {
     background-color: aqua;
 }
@@ -154,30 +172,37 @@ td:hover {
 .miss {
     background-color: white;
 }
+/* most important line in here!********* makes it so stuff marked as inactive doesn't show up on page*/
 .inactive{
     display:none;
 }
+/*color the grids*/
 table{
     background-color: lightgray;
 }
+/*git rid of bullet points on list and push it a little right*/
 ul{
     display:block;
     padding:0 0 30px;
 }
+/*allows for a small seperation in list elements */
 li{
     display:block;
     margin: 5px;
 }
+/*standard paragrpah text format */
 p{
     margin:2px;
     font-size:25px;
 }
+/*make the buttons look a little more sleek and modern*/
 button{
     margin-top: 15px;
     border-style:hidden;
     border-radius:5px;
     background-color: lightgray;
 }
+/*change button color when moused over*/
 button:hover{
     background-color: aqua;
 }

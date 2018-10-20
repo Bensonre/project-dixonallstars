@@ -81,6 +81,52 @@
             </div>
         </div>
 </div>
+
+    <div id="modal-backdrop-inv" class="inactive"></div> <!-- this is the invalid move modal -->
+    <div id="modal-inv" class="inactive">
+        <div class="modal-dialog-inv">
+
+            <div class="modal-header-inv">
+                <h3>Invalid move</h3>
+                <button type="button" class="modal-close-button-inv">&times;</button>  <!-- close button to exit -->
+            </div>
+
+            <div class="modal-body-inv">  <!-- hard coded text for body -->
+                <h4>
+                    The move you attempted to make was invalid.
+                    You may only place one of each ship type.
+                    Ships may not hang off of the board or occupy the same square.
+                    If you are attacking, you may not attack the same square twice.
+                </h4>
+            </div>
+
+            <div class="modal-footer-inv">  <!-- okay button to exit -->
+                <button type="button" class="modal-okay-button-inv">Okay</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modal-backdrop-gg" class="inactive"></div> <!-- this is the game over modal -->
+    <div id="modal-gg" class="inactive">
+        <div class="modal-dialog-gg">
+
+            <div class="modal-header-gg">
+                <h3>Game Over!</h3>
+                <button type="button" class="modal-close-button-gg">&times;</button> <!-- close button to exit -->
+            </div>
+
+            <div class="modal-body-gg">
+                <h4 id="surrenderText"></h4>  <!-- the js will fill this value based on who wins -->
+            </div>
+
+            <div class="modal-footer-gg">
+                <button type="button" class="modal-okay-button-gg">Okay</button> <!-- okay button to exit -->
+            </div>
+
+        </div>
+    </div>
+
 </div>
 <script type="text/javascript" src="/assets/game.js"></script>
 <script>

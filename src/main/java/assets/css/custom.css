@@ -206,3 +206,169 @@ button{
 button:hover{
     background-color: aqua;
 }
+
+/* Dim background when model exists */
+#modal-backdrop-inv {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Base modal */
+#modal-inv {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1010;
+  overflow: scroll;
+}
+
+/* Modal dialog box */
+.modal-dialog-inv {
+  width: auto;
+  max-width: 600px;
+  min-width: 350px;
+  min-height: 300px;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+/* Top of modal */
+.modal-header-inv {
+  position: relative;
+  padding: 10px 20px;
+}
+
+/* Text on top of modal */
+.modal-header-inv h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+/* modal close button */
+.modal-close-button-inv {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Body of modal */
+.modal-body-inv {
+  padding: 20px;
+}
+
+/* Footer of modal */
+.modal-footer-inv {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 10px 20px 10px;
+}
+
+/* Okay button */
+.modal-footer-inv button {
+  font-size: 20px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+/* hovering over okay button */
+.modal-footer-inv .modal-okay-button-inv:hover {
+  background-color: #eee;
+}
+
+
+/* All of the following are the
+   same as for their counterparts
+   for inv above */
+#modal-backdrop-gg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+#modal-gg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1010;
+  overflow: scroll;
+}
+
+.modal-dialog-gg {
+  width: auto;
+  max-width: 600px;
+  min-width: 350px;
+  min-height: 300px;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+.modal-header-gg {
+  position: relative;
+  padding: 10px 20px;
+}
+
+.modal-header-gg h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.modal-close-button-gg {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.modal-body-gg {
+  padding: 20px;
+}
+
+.modal-footer-gg {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 10px 20px 10px;
+}
+
+.modal-footer-gg button {
+  font-size: 20px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.modal-footer-gg .modal-okay-button-gg:hover {
+  background-color: #eee;
+}

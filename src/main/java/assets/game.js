@@ -1,8 +1,9 @@
-var isSetup = true;
+var isSetup = true;  // Are we in the place ship phase or not
 var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var gg = false;  // Is the game over or not
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -25,8 +26,12 @@ function markHits(board, elementId, surrenderText) {
             className = "hit";
         else if (attack.result === "SUNK")
             className = "sunk"
-        else if (attack.result === "SURRENDER")
-            alert(surrenderText);
+        else if (attack.result === "SURRENDER") {
+            if (gg == false) { // If game over modal has never been opened before
+                openGG(surrenderText); // Create game over modal with correct surrender text
+                gg = true; // Set to true so we don't open game over again
+            }
+        }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
 }
@@ -94,7 +99,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            openInv(); //Open the invalid modal
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -161,3 +166,38 @@ function initGame() {
         game = data;
     });
 };
+
+//Opens the invalid move modal.
+function openInv(){
+	document.getElementById("modal-backdrop-inv").classList.remove("inactive");
+	document.getElementById("modal-inv").classList.remove("inactive");
+}
+
+//closes the invalid move modal.
+function closeInv(){
+	document.getElementById("modal-backdrop-inv").classList.add("inactive");
+	document.getElementById("modal-inv").classList.add("inactive");
+}
+
+//Closes the invalid move modal when one of the buttons is clicked
+document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click",closeInv);
+document.getElementsByClassName("modal-okay-button-inv")[0].addEventListener("click",closeInv);
+
+
+
+//Opens the game over modal.
+function openGG(surrenderText){
+	document.getElementById("modal-backdrop-gg").classList.remove("inactive");
+	document.getElementById("modal-gg").classList.remove("inactive");
+	document.getElementById("surrenderText").textContent = surrenderText;
+}
+
+//closes the game over modal.
+function closeGG(){
+	document.getElementById("modal-backdrop-gg").classList.add("inactive");
+	document.getElementById("modal-gg").classList.add("inactive");
+}
+
+//Closes the game over modal when one of the buttons is clicked
+document.getElementsByClassName("modal-close-button-gg")[0].addEventListener("click",closeGG);
+document.getElementsByClassName("modal-okay-button-gg")[0].addEventListener("click",closeGG);

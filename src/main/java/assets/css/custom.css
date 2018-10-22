@@ -81,7 +81,6 @@
 /* lower right during attack */
 .board_container{
     padding: 0px 10px 0px 22.5px;
-    font-size:25px;
 }
 
 /* lower right during placement */
@@ -146,30 +145,52 @@
     border: 1px solid black;
     border-spacing: 0px;
     background-color: lightblue;
-
 }
-/* was here before i touched */
+
+/* grid boxes */
 .battleGrid tr {
-    border: 1px solid darkgray;
+    border: 1px solid #909090;
     height: 30px;
 }
-/* was here before i touched */
+
+/* grid boxes */
 .battleGrid td {
-    border: 1px solid darkgray;
+    border: 1px solid #909090;
     width: 30px;
 }
 
-/* legend box */
+/* player second stage small version needs to be defined differently than main grids
+   lighter shade of blue. lighter shade of grey */
+#player{
+    margin: 10px 0px 0px 0px;
+    background-color: #c4e3ed;
+}
+
+/* grid boxes */
+#player tr {
+    border: 0.5px solid #BEBEBE;
+    height: 25px;
+}
+
+/* grid boxes */
+#player td {
+    border: 0.5px solid #BEBEBE;
+    width: 25px;
+}
+
+/* individual boxes in the legend key */
 .legend{
-    width:30px;
+    width:20px;
     height:20px;
-    border: 1px solid black
+    margin:5px;
+    border: 1px solid black;
+    margin-left: 10px;
 }
 
 /* is the unordered list containing the legend for hit miss sunk... */
 .key{
     display:flex;
-    flex-direction:row;
+    flex-direction:column;
     flex-wrap: wrap;
     margin: 5px;
 }
@@ -244,10 +265,13 @@ ul{
     padding:0 0 30px;
 }
 
-/*allows for a small separation in list elements */
+/* allows for a small separation in list elements */
 li{
-    display:block;
-    margin: 5px;
+    display:flex;
+    flex-direction:row;
+    padding: 5px;
+    font-family: 'Kalam';
+    font-size: 20px;
 }
 
 /*standard paragraph text format */
@@ -293,7 +317,7 @@ button:hover{
 /* base */
 #modal-inv {
   position: fixed;
-  top: 0;
+  top: 200px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -379,7 +403,7 @@ button:hover{
 
 #modal-gg {
   position: fixed;
-  top: 0;
+  top: 200px;
   bottom: 0;
   left: 0;
   right: 0;

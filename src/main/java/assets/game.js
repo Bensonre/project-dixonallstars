@@ -5,6 +5,18 @@ var shipType;
 var vertical;
 var gg = false;  // Is the game over or not
 
+function highlightSelectedShip(){
+    var ships = document.querySelector("ships");
+    var btns = ships.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function() {
+        var current = document.querySelector("btnactive");
+        current[0].classList.remove("btnactive");
+        this.classList.add("btnactive");
+      });
+    }
+}
+
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');

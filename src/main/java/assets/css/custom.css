@@ -21,7 +21,7 @@
     flex-direction: column;
     width: 500px;
     height:850px;
-    border:2px solid black;
+    border:2px solid black; /* main border */
     margin: 50px 0px;
     background-color: white;
     box-shadow:20px 20px 40px rgba(0,37,37,.70)
@@ -52,39 +52,48 @@
     border-style: solid;
     border-color: black;
 }
-/* puts black background around arrow keys and rounds the corners */
+/* puts dark gray background around arrow keys and rounds the corners */
 .arrow-holder{
-    display:inline-block;
-    margin-left:10px;
-    background-color: black;
+    display: inline-block;
+    margin-left: 10px;
+    background-color: #505050;
     color: white;
     width: 35px;
-    height: 30px;
+    height: 35px;
     border-radius:5px;
 }
+
+/* take away awkward gap between the two arrows by making margin specific to left only */
+#right-arrow{
+    margin-left: 0px;
+}
+
 /*centers arrow keys in box and makes them white*/
 .arrow{
     padding-left: 12px;
+    padding-top: 5px;
     font-size:25px;
     color: white;
-
 }
+
+/* =======  LOWER RIGHT  ================================================================= */
+
 /* lower right during attack */
 .board_container{
-    padding: 0px 10px 0px 25px;
+    padding: 0px 10px 0px 22.5px;
     font-size:25px;
 }
 
 /* lower right during placement */
 .ship_select{
-    padding: 0px 10px 0px 25px;
+    padding: 0px 10px 0px 22.5px;
 }
 
 /* lower right box (internal) {ship select then player board} */
 .small_box{
     height:270px;
     width:270px;
-    margin: 0px 0px 10px;
+    margin: 0px 0px 0px 0px;
     background-color: white;
 }
 
@@ -98,28 +107,35 @@
 
 /* adds an underline effect to lower right box titles and centers them */
 .lower_right_title{
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 80px;
+    margin-right: 80px;
     font-family: 'Kalam'
     font-size: 25px;
+    font-weight: 700;
 /*    border-bottom: 3px solid white;*/
 }
-/* this was done to make smaller margins than the one above for attack so the underline fits better and the words to remain central without stacking */
+/* this was done to make smaller margins than the one above for attack
+   so the underline fits better and the words to remain central without stacking */
+
+/* we may need to find a better solution because what about different resolutions? */
 .smaller_margins{
     margin-left: 73px;
     margin-right: 73px;
 }
+
 /*this is the unordered list containing the ship selection buttons*/
 .ships{
+    padding: 15px 15px 15px 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-/*this is the class held by the boxes/divs that show up in the buttons for slecting a ship*/
+
+/* this is the class held by the boxes/divs that show up in the buttons for selecting a ship*/
 .shipbox{
   width:30px;
   height:30px;
-  margin:0;
+  margin: 0;
   padding:0;
   border: 2px solid black;
   display:inline-block;
@@ -163,34 +179,54 @@
     margin: 10px;
 }
 
-/* =======  MINI BOX HIGHLIGHTING  ====================================== */
+/* =======  MINI BOX HIGHLIGHTING  ======================================================= */
 
-/* LK this is you */
+
+/* this color matches the ship placement color at least for now since we
+   need at least some level of interactivity and we're trying to figure
+   out the placement bug. */
 td:hover {
-    background-color: aqua;
+    background-color: #505050;
 }
 
+/* I added this for coloring of the legend. LK, you will have to figure out
+   how to get the target to only be during attacking... */
+.target {
+    background-color: darkred;
+}
+
+/* something is going wrong with this? I'm not aware as to what's causing our
+   placement bug... */
 .placed {
-    background-color: aqua;
+    background-color: red;
 }
 
+/* a dark shade of grey to imitate an actual battleship.
+   black on the bord is harsh to the eye as well */
 .occupied {
     background-color: #505050;
 }
 
+/* red is a color that communicates danger/alarm/error, not
+   success like we want our hits to communicate. red is also
+   the color of the crosshair. going orange instead. */
 .hit {
     background-color: orange;
 }
 
+/* after some testing, this was nice for having contrast without
+   the contrast being too harsh. */
 .sunk {
-    background-color: #e69500;
+    background-color: #e67e00;
 }
 
+/* the current light blue base background is nice. we could
+   experiment with a different shade for this if you wanted. */
 .miss {
     background-color: steelblue;
 }
 
-/* =======  INACTIVE  ====================================== */
+/* =======  INACTIVE  ==================================================================== */
 .inactive{
     display:none;
 }
@@ -199,6 +235,8 @@ td:hover {
 table {
 
 }
+
+/* =======  LIST, PARAGRAPH, AND BUTTONS  ================================================ */
 
 /* get rid of bullet points on list and push it a little right */
 ul{
@@ -214,25 +252,32 @@ li{
 
 /*standard paragraph text format */
 p{
-    margin:2px;
-    font-size:20px;
+    margin: 2px;
+    font-size: 20px;
     font-family: 'Kalam'
 }
 
 /* make the buttons look a little more sleek and modern */
 button{
-    margin-top: 15px;
+    margin-top: 0px;
     border-style:hidden;
-    border-radius:5px;
+    border-radius:0px;
     background-color: lightgray;
+    padding: 0px 0px 0px;
 }
 
 /* button color when moused over */
+/* orange for uniformity/satisfaction, also aqua is too close in color to the water */
 button:hover{
-    background-color: aqua;
+    background-color: orange;
 }
 
-/* =======  MODAL STUFF BELOW  ====================================== */
+/* hover and active. used for ship select */
+.active, .button:hover{
+    background-color: orange;
+}
+
+/* =======  MODAL STUFF BELOW  ======================================================== */
 
 /* dim background when modal exists */
 #modal-backdrop-inv {
@@ -396,4 +441,10 @@ button:hover{
 
 .modal-footer-gg .modal-okay-button-gg:hover {
   background-color: #eee;
+}
+
+h3{
+    font-family: 'Kalam';
+    font-size: 50px;
+    font-weight: 700;
 }

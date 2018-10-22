@@ -24,10 +24,11 @@
                 <div class="lower_left"> <!-- this is whats present on the left side of the lower box-->
                 <p> Attack Enemy ships by clicking on spaces above!</p>
                 <ul class="key"><!--this is all the information in the key or legend-->
-                    <li>Hit<div class="hit legend">     </div></li><!-- the divs are empty boxes that will be colored-->
-                    <li>Miss<div class="miss legend">     </div></li>
+                    <!-- the divs are empty boxes that will be colored-->
+                    <li>Target<div class="target legend">     </div></li>
+                    <li>Hit<div class="hit legend">     </div></li>
                     <li>Sunk<div class="sunk legend">     </div></li>
-                    <li>Target<div class="placed legend">     </div></li>
+                    <li>Miss<div class="miss legend">     </div></li>
                 </ul>
             </div>
                 <div class="lower_right board_container"><!-- contains all the stuff on the lowwer right and its board-->
@@ -51,7 +52,7 @@
                   <div class="arrow-holder"><!-- this is the box around the arrow-->
                     <i class="fas fa-caret-left arrow"></i> <!-- this is the symbol for the left arrowkey -->
                   </div>
-                  <div class="arrow-holder">
+                  <div id="right-arrow" class="arrow-holder"><!-- janky -->
                     <i class="fas fa-caret-right arrow"></i>
                   </div>
                 </div>
@@ -60,7 +61,11 @@
                     <p class="lower_right_title">Place Ships</p>
                     <div class="small_box">
                         <ul class="ships">
-                            <li><button id="place_minesweeper">
+                            <!-- the new structure here replicates the ui in game and
+                                 is used for the new highlighting js function -->
+                            <li><button class="btnactive" id="place_battleship">
+                                <div class="shipbox"></div>
+                                <div class="shipbox"></div>
                                 <div class="shipbox"></div>
                                 <div class="shipbox"></div>
                             </button></li>
@@ -69,9 +74,7 @@
                                 <div class="shipbox"></div>
                                 <div class="shipbox"></div>
                             </button></li>
-                            <li><button id="place_battleship">
-                                <div class="shipbox"></div>
-                                <div class="shipbox"></div>
+                            <li><button id="place_minesweeper">
                                 <div class="shipbox"></div>
                                 <div class="shipbox"></div>
                             </button></li>
@@ -98,12 +101,14 @@
             </div>
 
             <div class="modal-body-inv">  <!-- hard coded text for body -->
-                <h4>
-                    The move you attempted to make was invalid.
-                    You may only place one of each ship type.
-                    Ships may not hang off of the board or occupy the same square.
-                    If you are attacking, you may not attack the same square twice.
-                </h4>
+                <p>
+                    <strong>Ship Placement</strong><br>
+                    You may only place one of each ship type<br>
+                    Ships must be placed within the boundaries of the board<br>
+                    Ships may not occupy the same area<br><br>
+                    <strong>Gameplay</strong><br>
+                    Each location may only be attacked once<br>
+                </p>
             </div>
 
             <div class="modal-footer-inv">  <!-- okay button to exit -->

@@ -1,12 +1,18 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
-<!--- the below contains the stuff nesasary for the  arrows form font awesome--->
+
+<!--- google font // Kalam --->
+<link href="https://fonts.googleapis.com/css?family=Kalam:400,700" rel="stylesheet">
+
+<!--- font awesome import for arrow buttons-->
 <html class="fontawesome-i2svg-active fontawesome-i2svg-complete"><head>
     <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" defer=""></script>
 
 
 
-<!--<h1>The Battleship game</h1>-->
+
+
+    <!--<h1>The Battleship game</h1>-->
 <div id="page"><!-- this holds all the info on the page-->
 <div id="main_container"> <!-- this is the container that will hold the two boards and instructions in the midle of the page -->
         <div id="attack_mode" class="inactive"> <!-- this is what is present on the page when the player has placed all of their ships -->
@@ -38,9 +44,9 @@
             </div>
             <div class="lower_box">
               <div class="instructions lower_left">
-                <p class="tut">Select ship type on right</p> <!-- tut is sort hand for tutorial -->
-                <p class="tut">Place ship on board above</p>
-                <p class="tut">Rotate ship with arrow keys</p>
+                <p class="tut">Select Ship From Right</p> <!-- tut is sort hand for tutorial -->
+                <p class="tut">Place on Board Above</p>
+                <p class="tut">Rotate Ship With Arrow Keys</p>
                 <div> <!--this div is necessary to break the arrow keys out of the coloumn flex box used by lower_left so the can appear inline-->
                   <div class="arrow-holder"><!-- this is the box around the arrow-->
                     <i class="fas fa-caret-left arrow"></i> <!-- this is the symbol for the left arrowkey -->

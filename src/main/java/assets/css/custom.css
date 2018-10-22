@@ -1,6 +1,5 @@
-/* Add additional stylesheets below
--------------------------------------------------- */
-/*sets up the two large grids to take up as much space as we give them*/
+
+
 #player_copy{
     height:100%;
     width:100%;
@@ -9,7 +8,8 @@
     height: 100%;
     width:100%;
 }
-/*centers main container on page*/
+
+/* centers main container on page */
 #page{
     display:flex;
     flex-direction:row;
@@ -23,23 +23,25 @@
     height:850px;
     border:2px solid black;
     margin: 50px 0px;
-    background-color: White;
+    background-color: white;
     box-shadow:20px 20px 40px rgba(0,37,37,.70)
 
 }
-/*holds uper half of main container*/
+
+/* holds upper half of main container */
 .upper_box{
     height:500px;
     width:100%;
 }
-/*holds lower half of main container*/
+
+/* holds lower half of main container */
 .lower_box{
     height:350px;
     width:100%;
     display: flex;
     flex-direction: row;
 }
-/*contains the lowwer left box in both phases*/
+/* contains the lower left box in both phases */
 .lower_left{
     display: flex;
     flex-direction: column;
@@ -50,7 +52,7 @@
     border-style: solid;
     border-color: black;
 }
-/*puts black backround around arrow keys and rounds the corners*/
+/* puts black background around arrow keys and rounds the corners */
 .arrow-holder{
     display:inline-block;
     margin-left:10px;
@@ -67,36 +69,42 @@
     color: white;
 
 }
-/*lower right durring attack*/
+/* lower right during attack */
 .board_container{
     padding: 0px 10px 0px 25px;
     font-size:25px;
 }
-/*lowwer right during placement*/
+
+/* lower right during placement */
 .ship_select{
     padding: 0px 10px 0px 25px;
 }
-/* this is the white box that shows up on the lower right said durring placement contains ship buttons durring attack contains player board*/
+
+/* lower right box (internal) {ship select then player board} */
 .small_box{
     height:270px;
     width:270px;
     margin: 0px 0px 10px;
     background-color: white;
 }
-/*this is the box containing all the lower right section of the main container*/
+
+/* lower right box (external) */
 .lower_right{
     width:300px;
     height:350px;
     background-color:#252A2B;
     color:white;
 }
-/*this adds and underline efffect to lowwer right box titles and centers them*/
+
+/* adds an underline effect to lower right box titles and centers them */
 .lower_right_title{
-    margin-left: 80px;
-    margin-right: 80px;
-    border-bottom: 3px solid white;
+    margin-left: 40px;
+    margin-right: 40px;
+    font-family: 'Kalam'
+    font-size: 25px;
+/*    border-bottom: 3px solid white;*/
 }
-/*this was done to make smaller margins than the one above for attack so the underline fits better and the words to remain central without stacking*/
+/* this was done to make smaller margins than the one above for attack so the underline fits better and the words to remain central without stacking */
 .smaller_margins{
     margin-left: 73px;
     margin-right: 73px;
@@ -116,27 +124,32 @@
   border: 2px solid black;
   display:inline-block;
 }
-/*was here before i touched*/
+
+/* exterior of grid */
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
+    background-color: lightblue;
+
 }
-/*was here before i touched*/
+/* was here before i touched */
 .battleGrid tr {
-    border: 1px solid black;
+    border: 1px solid darkgray;
     height: 30px;
 }
-/*was here before i touched*/
+/* was here before i touched */
 .battleGrid td {
-    border: 1px solid black;
+    border: 1px solid darkgray;
     width: 30px;
 }
-/*makes the boxes that show up in lowwer left durring attack mode indicating what a hit miss and sunk space loop like*/
+
+/* legend box */
 .legend{
-    width:20px;
+    width:30px;
     height:20px;
     border: 1px solid black
 }
+
 /* is the unordered list containing the legend for hit miss sunk... */
 .key{
     display:flex;
@@ -144,11 +157,15 @@
     flex-wrap: wrap;
     margin: 5px;
 }
-/*gives a nice margin to the tutorial/instructions in place ship mode on lowwer left*/
+
+/*gives a nice margin to the tutorial/instructions in place ship mode on lower left */
 .tut{
     margin: 10px;
 }
-/*sets colors for diffent boxes when tagged as hit miss and others td is the standard box*/
+
+/* =======  MINI BOX HIGHLIGHTING  ====================================== */
+
+/* LK this is you */
 td:hover {
     background-color: aqua;
 }
@@ -158,56 +175,66 @@ td:hover {
 }
 
 .occupied {
-    background-color: black;
+    background-color: #505050;
 }
 
 .hit {
-    background-color: red;
+    background-color: orange;
 }
 
 .sunk {
-    background-color: DarkRed;
+    background-color: #e69500;
 }
 
 .miss {
-    background-color: white;
+    background-color: steelblue;
 }
-/* most important line in here!********* makes it so stuff marked as inactive doesn't show up on page*/
+
+/* =======  INACTIVE  ====================================== */
 .inactive{
     display:none;
 }
-/*color the grids*/
-table{
-    background-color: lightgray;
+
+/* color the grids */
+table {
+
 }
-/*git rid of bullet points on list and push it a little right*/
+
+/* get rid of bullet points on list and push it a little right */
 ul{
     display:block;
     padding:0 0 30px;
 }
-/*allows for a small seperation in list elements */
+
+/*allows for a small separation in list elements */
 li{
     display:block;
     margin: 5px;
 }
-/*standard paragrpah text format */
+
+/*standard paragraph text format */
 p{
     margin:2px;
-    font-size:25px;
+    font-size:20px;
+    font-family: 'Kalam'
 }
-/*make the buttons look a little more sleek and modern*/
+
+/* make the buttons look a little more sleek and modern */
 button{
     margin-top: 15px;
     border-style:hidden;
     border-radius:5px;
     background-color: lightgray;
 }
-/*change button color when moused over*/
+
+/* button color when moused over */
 button:hover{
     background-color: aqua;
 }
 
-/* Dim background when model exists */
+/* =======  MODAL STUFF BELOW  ====================================== */
+
+/* dim background when modal exists */
 #modal-backdrop-inv {
   position: fixed;
   top: 0;
@@ -218,7 +245,7 @@ button:hover{
   background-color: rgba(0, 0, 0, 0.85);
 }
 
-/* Base modal */
+/* base */
 #modal-inv {
   position: fixed;
   top: 0;
@@ -229,7 +256,7 @@ button:hover{
   overflow: scroll;
 }
 
-/* Modal dialog box */
+/* dialog box */
 .modal-dialog-inv {
   width: auto;
   max-width: 600px;
@@ -240,19 +267,19 @@ button:hover{
   border-radius: 15px;
 }
 
-/* Top of modal */
+/* banner */
 .modal-header-inv {
   position: relative;
   padding: 10px 20px;
 }
 
-/* Text on top of modal */
+/* header */
 .modal-header-inv h3 {
   margin: 0;
   font-size: 28px;
 }
 
-/* modal close button */
+/* close button */
 .modal-close-button-inv {
   position: absolute;
   right: 10px;
@@ -264,19 +291,19 @@ button:hover{
   cursor: pointer;
 }
 
-/* Body of modal */
+/* body */
 .modal-body-inv {
   padding: 20px;
 }
 
-/* Footer of modal */
+/* footer */
 .modal-footer-inv {
   display: flex;
   justify-content: flex-end;
   padding: 10px 10px 20px 10px;
 }
 
-/* Okay button */
+/* okay button */
 .modal-footer-inv button {
   font-size: 20px;
   background-color: #fff;
@@ -294,9 +321,7 @@ button:hover{
 }
 
 
-/* All of the following are the
-   same as for their counterparts
-   for inv above */
+/* ======= SECOND MODAL STUFF BELOW  ====================================== */
 #modal-backdrop-gg {
   position: fixed;
   top: 0;

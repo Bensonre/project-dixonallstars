@@ -22,13 +22,13 @@
             </div>
             <div class="lower_box"> <!--this contains all of the items in the lower half of the main container durring attack mode-->
                 <div class="lower_left"> <!-- this is whats present on the left side of the lower box-->
-                <p> Attack Enemy ships by clicking on spaces above!</p>
+                <p> Attack Enemy Ships by Clicking Spaces Above!</p>
                 <ul class="key"><!--this is all the information in the key or legend-->
                     <!-- the divs are empty boxes that will be colored-->
-                    <li><strong>Target</strong><div class="target legend">     </div></li>
-                    <li><strong>Hit</strong><div class="hit legend"></div></li>
-                    <li><strong>Sunk</strong><div class="sunk legend"></div></li>
-                    <li><strong>Miss</strong><div class="miss legend"></div></li>
+                    <li><strong class="legendTitle">Target</strong><div class="target legend">     </div></li>
+                    <li><strong class="legendTitle">Hit</strong><div class="hit legend"></div></li>
+                    <li><strong class="legendTitle">Sunk</strong><div class="sunk legend"></div></li>
+                    <li><strong class="legendTitle">Miss</strong><div class="miss legend"></div></li>
                 </ul>
             </div>
                 <div class="lower_right board_container"><!-- contains all the stuff on the lowwer right and its board-->
@@ -104,6 +104,7 @@
                 <p>
                     <strong>Ship Placement</strong><br>
                     You may only place one of each ship type<br>
+                    After you place a ship, you must select another one<br>
                     Ships must be placed within the boundaries of the board<br>
                     Ships may not occupy the same area<br><br>
                     <strong>Gameplay</strong><br>
@@ -124,15 +125,15 @@
 
             <div class="modal-header-gg">
                 <h3>Game Over!</h3>
-                <button type="button" class="modal-close-button-gg">&times;</button> <!-- close button to exit -->
+                <!-- <button type="button" class="modal-close-button-gg">&times;</button> <!-- close button to exit -->
             </div>
 
             <div class="modal-body-gg">
-                <h4 id="surrenderText"></h4>  <!-- the js will fill this value based on who wins -->
+                <p id="surrenderText"></p>  <!-- the js will fill this value based on who wins -->
             </div>
 
             <div class="modal-footer-gg">
-                <button type="button" class="modal-okay-button-gg">Okay</button> <!-- okay button to exit -->
+                <!-- <button type="button" class="modal-okay-button-gg">Okay</button> <!-- okay button to exit -->
             </div>
 
         </div>

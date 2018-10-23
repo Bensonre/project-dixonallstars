@@ -37,10 +37,14 @@
 /* holds lower half of main container */
 .lower_box{
     height:350px;
-    width:100%;
+    width:499px; /* fine tuning */
     display: flex;
     flex-direction: row;
+    border-bottom: 3px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
 }
+
 /* contains the lower left box in both phases */
 .lower_left{
     display: flex;
@@ -52,6 +56,11 @@
     border-style: solid;
     border-color: black;
 }
+
+.lower_left p{
+  margin: 10px;
+}
+
 /* puts dark gray background around arrow keys and rounds the corners */
 .arrow-holder{
     display: inline-block;
@@ -102,6 +111,8 @@
     height:350px;
     background-color:#252A2B;
     color:white;
+    border-right: 1px solid black;
+
 }
 
 /* adds an underline effect to lower right box titles and centers them */
@@ -160,7 +171,8 @@
 }
 
 /* player second stage small version needs to be defined differently than main grids
-   lighter shade of blue. lighter shade of grey */
+   lighter shade of blue. lighter shade of grey , thinner grid lines
+   #c4e3ed and #BEBEBE */
 #player{
     margin: 10px 0px 0px 0px;
     background-color: #c4e3ed;
@@ -168,13 +180,13 @@
 
 /* grid boxes */
 #player tr {
-    border: 0.5px solid #BEBEBE;
+    border: 1px solid #BEBEBE;
     height: 25px;
 }
 
 /* grid boxes */
 #player td {
-    border: 0.5px solid #BEBEBE;
+    border: 1px solid #BEBEBE;
     width: 25px;
 }
 
@@ -185,6 +197,10 @@
     margin:5px;
     border: 1px solid black;
     margin-left: 10px;
+}
+
+.legendTitle{
+    width:60px;
 }
 
 /* is the unordered list containing the legend for hit miss sunk... */
@@ -297,7 +313,7 @@ button:hover{
 }
 
 /* hover and active. used for ship select */
-.active, .button:hover{
+.btnactive{
     background-color: orange;
 }
 
@@ -351,13 +367,16 @@ button:hover{
 /* close button */
 .modal-close-button-inv {
   position: absolute;
-  right: 10px;
-  top: 5px;
-  font-size: 24px;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+    background: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 3px;
+    cursor: pointer;
 }
 
 /* body */
@@ -374,14 +393,14 @@ button:hover{
 
 /* okay button */
 .modal-footer-inv button {
-  font-size: 20px;
-  background-color: #fff;
-  color: #333;
-  border: 1px solid #333;
-  border-radius: 5px;
-  padding: 10px;
-  margin-right: 20px;
-  cursor: pointer;
+   font-size: 20px;
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 7px;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 /* hovering over okay button */
@@ -431,16 +450,17 @@ button:hover{
   font-size: 28px;
 }
 
-.modal-close-button-gg {
+/* currently commented out in js and html */
+/*.modal-close-button-gg {
   position: absolute;
-  right: 10px;
-  top: 5px;
+  right: 15px;
+  top: 15px;
   font-size: 24px;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
-}
+}*/
 
 .modal-body-gg {
   padding: 20px;
@@ -452,23 +472,36 @@ button:hover{
   padding: 10px 10px 20px 10px;
 }
 
+
+/* currently commented out in js and html */
+/* game over okay button */
+/*
 .modal-footer-gg button {
   font-size: 20px;
   background-color: #fff;
   color: #333;
-  border: 1px solid #333;
+  border: 2px solid #333;
   border-radius: 5px;
-  padding: 10px;
-  margin-right: 20px;
+  padding: 7px;
+  margin-right: 10px;
+  margin-top: 95px;
   cursor: pointer;
-}
+}*/
 
 .modal-footer-gg .modal-okay-button-gg:hover {
   background-color: #eee;
 }
 
+/* headline text for both error and game over modals */
 h3{
     font-family: 'Kalam';
     font-size: 50px;
     font-weight: 700;
+}
+
+/* end of game modal text body */
+h4{
+  font-family: 'Kalam';
+  font-size: 25px;
+  font-weight: 400;
 }

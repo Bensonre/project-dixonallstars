@@ -518,3 +518,8 @@ h4{
   font-size: 25px;
   font-weight: 400;
 }
+
+html{
+    background-image:url('background.jpg');
+    background-size: cover;
+}

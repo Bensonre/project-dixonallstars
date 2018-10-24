@@ -1,58 +1,55 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
 
-<!--- google font // Kalam --->
+<!--- google font // Kalam, a handwritten style to match our themed backdrop --->
 <link href="https://fonts.googleapis.com/css?family=Kalam:400,700" rel="stylesheet">
 
 <!--- font awesome import for arrow buttons-->
 <html class="fontawesome-i2svg-active fontawesome-i2svg-complete"><head>
     <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" defer=""></script>
 
+    <!-- unnecessary for the aesthetic we're going for <h1>The Battleship game</h1>-->
 
 
-
-
-    <!--<h1>The Battleship game</h1>-->
-<div id="page"><!-- this holds all the info on the page-->
-<div id="main_container"> <!-- this is the container that will hold the two boards and instructions in the midle of the page -->
-        <div id="attack_mode" class="inactive"> <!-- this is what is present on the page when the player has placed all of their ships -->
-            <div class="upper_box"><!-- this contains the upper region of the box and the inside grid-->
-                <table id="opponent" class="battleGrid"><!-- this is the AI's board -->
+<div id="page"><!-- all info on the page -->
+<div id="main_container"> <!-- holds the entire central element which contains all interactivity -->
+        <div id="attack_mode" class="inactive"> <!-- gameplay stage -->
+            <div class="upper_box"><!-- primary container for the upper half -->
+                <table id="opponent" class="battleGrid"> <!-- AI's board -->
                 </table>
             </div>
             <div class="lower_box"> <!--this contains all of the items in the lower half of the main container durring attack mode-->
                 <div class="lower_left"> <!-- this is whats present on the left side of the lower box-->
                 <p> Attack Enemy Ships by Clicking Spaces Above!</p>
-                <ul class="key"><!--this is all the information in the key or legend-->
-                    <!-- the divs are empty boxes that will be colored-->
+                <ul class="key"> <!--this is all the information in the key or legend-->
                     <li><strong class="legendTitle">Target</strong><div class="target legend">     </div></li>
                     <li><strong class="legendTitle">Hit</strong><div class="hit legend"></div></li>
                     <li><strong class="legendTitle">Sunk</strong><div class="sunk legend"></div></li>
                     <li><strong class="legendTitle">Miss</strong><div class="miss legend"></div></li>
                 </ul>
             </div>
-                <div class="lower_right board_container"><!-- contains all the stuff on the lowwer right and its board-->
-                    <p class="lower_right_title smaller_margins">Player Board</p><!-- title for lower right reqion filled up to much space so i had to decrease the margins so it fit right-->
-                    <table id="player" class="battleGrid small_box"><!-- original player board -->
+                <div class="lower_right board_container"> <!-- contains all the stuff on the lower right and its board-->
+                    <p class="lower_right_title smaller_margins">Player Board</p>
+                    <table id="player" class="battleGrid small_box"> <!-- original player board -->
                 </table>
                  </div>
             </div>
        </div>
-        <div id="placement_mode"> <!-- this contains all the stuff present in the main container durring ship placement-->
+        <div id="placement_mode"> <!-- this contains all the stuff present in the main container during ship placement-->
             <div class="upper_box">
-             <table id="player_copy" class="battleGrid"> <!-- this is a copy of the player board -->
+             <table id="player_copy" class="battleGrid"> <!-- copy of the player board -->
              </table>
             </div>
             <div class="lower_box">
               <div class="instructions lower_left">
-                <p class="tut">Select Ship From Right</p> <!-- tut is sort hand for tutorial -->
+                <p class="tut">Select Ship From Right</p> <!-- short hand for tutorial -->
                 <p class="tut">Place on Board Above</p>
                 <p class="tut">Rotate Ship With Arrow Keys</p>
-                <div> <!--this div is necessary to break the arrow keys out of the coloumn flex box used by lower_left so the can appear inline-->
+                <div> <!--this div is necessary to break the arrow keys out of the column flex box used by lower_left so the can appear inline-->
                   <div class="arrow-holder"><!-- this is the box around the arrow-->
-                    <i class="fas fa-caret-left arrow"></i> <!-- this is the symbol for the left arrowkey -->
+                    <i class="fas fa-caret-left arrow"></i> <!-- this is the symbol for the left arrow key -->
                   </div>
-                  <div id="right-arrow" class="arrow-holder"><!-- janky -->
+                  <div id="right-arrow" class="arrow-holder"><!-- right arrow needs to be treated differently than left -->
                     <i class="fas fa-caret-right arrow"></i>
                   </div>
                 </div>
@@ -61,8 +58,8 @@
                     <p class="lower_right_title">Place Ships</p>
                     <div class="small_box">
                         <ul class="ships">
-                            <!-- the new structure here replicates the ui in game and
-                                 is used for the new highlighting js function -->
+                            <!-- btnactive class is cycled through the three to highlight the currently selected ship
+                                 orange during ship placement -->
                             <li><button class="btnactive" id="place_battleship">
                                 <div class="shipbox"></div>
                                 <div class="shipbox"></div>
@@ -119,20 +116,22 @@
         </div>
     </div>
 
-    <div id="modal-backdrop-gg" class="inactive"></div> <!-- this is the game over modal -->
+    <div id="modal-backdrop-gg" class="inactive"></div> <!-- game over modal -->
     <div id="modal-gg" class="inactive">
         <div class="modal-dialog-gg">
 
             <div class="modal-header-gg">
                 <h3>Game Over!</h3>
+                <!-- game over x button -->
                 <!-- <button type="button" class="modal-close-button-gg">&times;</button> <!-- close button to exit -->
             </div>
 
             <div class="modal-body-gg">
-                <p id="surrenderText"></p>  <!-- the js will fill this value based on who wins -->
+                <p id="surrenderText"></p>  <!-- js fills this value based on who wins -->
             </div>
 
             <div class="modal-footer-gg">
+                <!-- game over okay button -->
                 <!-- <button type="button" class="modal-okay-button-gg">Okay</button> <!-- okay button to exit -->
             </div>
 
@@ -140,10 +139,11 @@
     </div>
 
 </div>
+
 <script type="text/javascript" src="/assets/game.js"></script>
-<script>
-    initGame();
-</script>
+<script> initGame(); </script>
 
 </html>
+
+<!-- this line has been here all along? It isn't breaking anything, and we don't know what it does -->
 </@layout.myLayout>

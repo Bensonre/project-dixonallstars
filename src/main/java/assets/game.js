@@ -1,9 +1,9 @@
-var isSetup = true;  // Are we in the place ship phase or not
+var isSetup = true;  // indicates ship placement phase vs gameplay phase
 var placedShips = 0;
 var game;
 var shipType;
 var vertical;
-var gg = false;  // Is the game over or not
+var gg = false;  // indicates end of game
 
 
 function makeGrid(table, isPlayer) {
@@ -160,8 +160,12 @@ function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
 
+    /* let player choose ship, but start with Battleship initially to make it more
+    intuitive and user-friendly */
     shipType = "BATTLESHIP";
 
+    /* each function initially removes highlighting of ship select ships, then adds the
+       highlighting to the active ship */
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
        shipType = "MINESWEEPER";
        registerCellListener(place(2));
@@ -204,7 +208,7 @@ function closeInv(){
 document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click",closeInv);
 document.getElementsByClassName("modal-okay-button-inv")[0].addEventListener("click",closeInv);
 
-//Opens the game over modal.
+// open game over modal
 function openGG(surrenderText){
 	document.getElementById("modal-backdrop-gg").classList.remove("inactive");
 	document.getElementById("modal-gg").classList.remove("inactive");

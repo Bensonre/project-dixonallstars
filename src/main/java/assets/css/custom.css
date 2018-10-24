@@ -1,13 +1,19 @@
 
+/* =======  PRIMARY GRIDS  =============================================================== */
 
+/* placement phase player board */
 #player_copy{
     height:100%;
     width:100%;
 }
+
+/* attack phase opponent board */
 #opponent{
     height: 100%;
     width:100%;
 }
+
+/* =======  BOX CONTAINERS  ============================================================== */
 
 /* centers main container on page */
 #page{
@@ -25,7 +31,6 @@
     margin: 50px 0px;
     background-color: white;
     box-shadow:20px 20px 40px rgba(0,37,37,.70)
-
 }
 
 /* holds upper half of main container */
@@ -37,7 +42,7 @@
 /* holds lower half of main container */
 .lower_box{
     height:350px;
-    width:499px; /* fine tuning */
+    width:499px; /* fine tuning of borders */
     display: flex;
     flex-direction: row;
     border-bottom: 3px solid black;
@@ -45,7 +50,7 @@
     border-left: 1px solid black;
 }
 
-/* contains the lower left box in both phases */
+/* lower left box in both phases */
 .lower_left{
     display: flex;
     flex-direction: column;
@@ -61,6 +66,8 @@
   margin: 10px;
 }
 
+/* =======  ARROW KEYS  ================================================================== */
+
 /* puts dark gray background around arrow keys and rounds the corners */
 .arrow-holder{
     display: inline-block;
@@ -72,16 +79,16 @@
     border-radius:5px;
 }
 
-/* take away awkward gap between the two arrows by making margin specific to left only */
+/* clean up aesthetic of the arrows */
 #right-arrow{
     margin-left: 0px;
 }
 
-/*centers arrow keys in box and makes them white*/
+/* centers arrow keys in box and makes them white */
 .arrow{
     padding-left: 12px;
     padding-top: 5px;
-    font-size:25px;
+    font-size: 25px;
     color: white;
 }
 
@@ -119,6 +126,7 @@
 .lower_right_title{
     margin-left: 80px;
     margin-right: 80px;
+    padding-top: 2px;
     font-family: 'Kalam'
     font-size: 25px;
     font-weight: 700;
@@ -151,6 +159,8 @@
   display:inline-block;
 }
 
+/* =======  GRIDS ======================================================================== */
+
 /* exterior of grid */
 .battleGrid {
     border: 1px solid black;
@@ -170,9 +180,7 @@
     width: 30px;
 }
 
-/* player second stage small version needs to be defined differently than main grids
-   lighter shade of blue. lighter shade of grey , thinner grid lines
-   #c4e3ed and #BEBEBE */
+/* player second stage small version needs to be defined differently than main grids */
 #player{
     margin: 10px 0px 0px 0px;
     background-color: #c4e3ed;
@@ -189,6 +197,8 @@
     border: 1px solid #BEBEBE;
     width: 25px;
 }
+
+/* =======  LEGEND  ====================================================================== */
 
 /* individual boxes in the legend key */
 .legend{
@@ -219,21 +229,19 @@
 /* =======  MINI BOX HIGHLIGHTING  ======================================================= */
 
 
-/* this color matches the ship placement color at least for now since we
-   need at least some level of interactivity and we're trying to figure
-   out the placement bug. */
+/* this color intentionally matches ship color */
 td:hover {
     background-color: #505050;
 }
 
 /* I added this for coloring of the legend. LK, you will have to figure out
-   how to get the target to only be during attacking... */
+   how to get the target to only be during attacking... TODO */
 .target {
     background-color: darkred;
 }
 
-/* something is going wrong with this? I'm not aware as to what's causing our
-   placement bug... */
+/* Is there something potentially going wrong with this? I'm not aware as to
+   what's causing our placement bug... TODO */
 .placed {
     background-color: red;
 }
@@ -257,20 +265,17 @@ td:hover {
     background-color: #e67e00;
 }
 
-/* the current light blue base background is nice. we could
-   experiment with a different shade for this if you wanted. */
+/* same thing. did some experimenting for the proper level of contrast/similarity */
 .miss {
     background-color: steelblue;
 }
 
 /* =======  INACTIVE  ==================================================================== */
+
+/* important line */
+
 .inactive{
     display:none;
-}
-
-/* color the grids */
-table {
-
 }
 
 /* =======  LIST, PARAGRAPH, AND BUTTONS  ================================================ */
@@ -290,7 +295,7 @@ li{
     font-size: 20px;
 }
 
-/*standard paragraph text format */
+/* standard paragraph text format */
 p{
     margin: 2px;
     font-size: 20px;
@@ -315,6 +320,14 @@ button:hover{
 /* hover and active. used for ship select */
 .btnactive{
     background-color: orange;
+}
+
+/* LK TODO */
+#opponent:hover{
+/*    font awesome / google icons   */
+/* slow rotation if you can */
+/* arrow keys are first priority */
+    cursor: pointer;
 }
 
 /* =======  MODAL STUFF BELOW  ======================================================== */
@@ -409,7 +422,7 @@ button:hover{
 }
 
 
-/* ======= SECOND MODAL STUFF BELOW  ====================================== */
+/* ======= GAME OVER MODAL STUFF BELOW  ================================================== */
 #modal-backdrop-gg {
   position: fixed;
   top: 0;
@@ -450,7 +463,7 @@ button:hover{
   font-size: 28px;
 }
 
-/* currently commented out in js and html */
+/* currently commented out in js and html to make code more robust */
 /*.modal-close-button-gg {
   position: absolute;
   right: 15px;
@@ -473,7 +486,7 @@ button:hover{
 }
 
 
-/* currently commented out in js and html */
+/* currently commented out in js and html to make code more robust */
 /* game over okay button */
 /*
 .modal-footer-gg button {

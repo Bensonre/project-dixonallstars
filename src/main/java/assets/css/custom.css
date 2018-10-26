@@ -79,6 +79,23 @@
     border-radius:5px;
 }
 
+.arrow-show{
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+    background-color: orange;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius:5px;
+}
+
+.arrows-for-vert{
+    padding-left: 9px;
+    padding-top: 5px;
+    font-size: 25px;
+    color: white;
+}
 /* clean up aesthetic of the arrows */
 #right-arrow{
     margin-left: 0px;
@@ -327,7 +344,7 @@ button:hover{
 /*    font awesome / google icons   */
 /* slow rotation if you can */
 /* arrow keys are first priority */
-    cursor: pointer;
+    cursor: url('target.cur'),crosshair;
 }
 
 /* =======  MODAL STUFF BELOW  ======================================================== */
@@ -485,7 +502,6 @@ button:hover{
   padding: 10px 10px 20px 10px;
 }
 
-
 /* currently commented out in js and html to make code more robust */
 /* game over okay button */
 /*
@@ -521,5 +537,5 @@ h4{
 
 html{
     background-image:url('background.jpg');
-    background-size: cover;
+    background-size: 100% 100%;
 }

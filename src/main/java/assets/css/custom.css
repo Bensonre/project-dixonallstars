@@ -521,5 +521,5 @@ h4{
 
 html{
     background-image:url('background.jpg');
-    background-size: cover;
+    background-size: 100% 100%;
 }

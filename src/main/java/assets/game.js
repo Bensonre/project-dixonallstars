@@ -2,7 +2,8 @@ var isSetup = true;  // indicates ship placement phase vs gameplay phase
 var placedShips = 0;
 var game;
 var shipType;
-var vertical;
+var vertical = 0;
+var verticalButton = document;
 var gg = false;  // indicates end of game
 
 
@@ -142,7 +143,8 @@ function place(size) {
 
         // this receives info on weather or not the play check the box for vertical
         // *** it will need to be changed for the arrow keys to work ****
-        vertical = document.getElementById("is_vertical").checked;
+        // dont think we need this line anymore
+        //vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player"); // this makes sure the right table is selected for ship placement
         let table2 = document.getElementById("player_copy"); // i added this so player copy will be able to have the ships placed just like player
 
@@ -215,6 +217,24 @@ function openGG(surrenderText){
 	document.getElementById("surrenderText").textContent = surrenderText;
 }
 
+
+function checkBox(){
+    if(vertical == 1) {
+        vertical = 0;
+    }
+    else{
+        vertical = 1;
+    }
+}
+
+
+   verticalButton.addEventListener('keydown', function(e) {
+        var key = e.keyCode;
+        if(key === 37 || key === 39){
+               checkBox();
+        }
+    });
+  // verticalButton.addEventListener('39',checkBox);
 /* currently commented out since we want the game over modal to terminate the game.
    leaving code in for potential future use */
 

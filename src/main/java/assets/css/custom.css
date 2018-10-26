@@ -327,7 +327,7 @@ button:hover{
 /*    font awesome / google icons   */
 /* slow rotation if you can */
 /* arrow keys are first priority */
-    cursor: pointer;
+    cursor: url('target.cur'),crosshair;
 }
 
 /* =======  MODAL STUFF BELOW  ======================================================== */
@@ -485,7 +485,6 @@ button:hover{
   padding: 10px 10px 20px 10px;
 }
 
-
 /* currently commented out in js and html to make code more robust */
 /* game over okay button */
 /*
@@ -521,5 +520,5 @@ h4{
 
 html{
     background-image:url('background.jpg');
-    background-size: cover;
+    background-size: 100% 100%;
 }

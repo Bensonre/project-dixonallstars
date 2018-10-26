@@ -221,9 +221,13 @@ function openGG(surrenderText){
 function checkBox(){
     if(vertical == 1) {
         vertical = 0;
+        document.getElementById("arrow_vert").classList.add("inactive");
+        document.getElementById("arrow_horizontal").classList.remove("inactive");
     }
     else{
         vertical = 1;
+        document.getElementById("arrow_vert").classList.remove("inactive");
+        document.getElementById("arrow_horizontal").classList.add("inactive");
     }
 }
 

@@ -20,7 +20,7 @@ public class ResultTest {
     @Test
     public void testShip() {
         Result resultObject = new Result();
-        Ship ship = new Ship("MINESWEEPER");
+        Ship ship = new Minesweeper();
 
         resultObject.setShip(ship);
         Ship returned_ship = resultObject.getShip();

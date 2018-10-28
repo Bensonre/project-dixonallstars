@@ -26,8 +26,15 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
+            Ship new_ship;
             String rkind = randKind();
-            Ship new_ship = new Ship(rkind);
+            if (rkind.equals("MINESWEEPER")) {
+                new_ship = new Minesweeper();
+            } else if (rkind.equals("DESTROYER")) {
+                new_ship = new Destroyer();
+            } else {
+                new_ship = new Battleship();
+            }
             int row = randRow();
             char col = randCol();
             boolean vert = randVertical();

@@ -52,9 +52,9 @@ public class GameTest {
     @Test
     public void testPlaceShip() {
         // Make ships
-        Ship playerShip1 = new Ship("BATTLESHIP");
-        Ship playerShip2 = new Ship("MINESWEEPER");
-        Ship playerShip3 = new Ship("DESTROYER");
+        Ship playerShip1 = new Battleship();
+        Ship playerShip2 = new Minesweeper();
+        Ship playerShip3 = new Destroyer();
         Game myGame = new Game();
 
         // Make sure the ships don't get hung up
@@ -70,9 +70,9 @@ public class GameTest {
     @Test
     public void testAttack() {
         // Make ships
-        Ship playerShip1 = new Ship("BATTLESHIP");
-        Ship playerShip2 = new Ship("MINESWEEPER");
-        Ship playerShip3 = new Ship("DESTROYER");
+        Ship playerShip1 = new Battleship();
+        Ship playerShip2 = new Minesweeper();
+        Ship playerShip3 = new Destroyer();
         Game myGame = new Game();
 
         // Make sure the ships don't get hung up

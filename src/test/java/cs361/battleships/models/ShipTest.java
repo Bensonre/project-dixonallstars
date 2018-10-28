@@ -12,25 +12,25 @@ import static junit.framework.TestCase.assertTrue;
 public class ShipTest {
     @Test
     public void testMineSweeperSetShip() {
-        Ship mine = new Ship("MINESWEEPER");
+        Ship mine = new Minesweeper();
         assertTrue("MINESWEEPER"==mine.getKind());
         assertTrue(2 ==mine.getLength());
     }
     @Test
     public void testDestroyersetShip(){
-        Ship destroyer = new Ship("DESTROYER");
+        Ship destroyer = new Destroyer();
         assertTrue("DESTROYER"==destroyer.getKind());
         assertTrue(3 ==destroyer.getLength());
     }
     @Test
     public void testBattleShipsetShip(){
-        Ship battleship = new Ship("BATTLESHIP");
+        Ship battleship = new Battleship();
         assertTrue("BATTLESHIP"==battleship.getKind());
         assertTrue(4 ==battleship.getLength());
     }
     @Test
     public void testSetOccupiedSquares(){
-        Ship mine = new Ship("MINESWEEPER");
+        Ship mine = new Minesweeper();
         mine.setOccupiedSquares(1,'A',false);
         List<Square> squares = new ArrayList<>();
         squares.add(new Square(1,'A'));
@@ -42,7 +42,7 @@ public class ShipTest {
     }
     @Test
     public void testSetOccupiedSquaresVertical(){
-        Ship mine = new Ship("MINESWEEPER");
+        Ship mine = new Minesweeper();
         mine.setOccupiedSquares(1,'A',true);
         List<Square> squares = new ArrayList<>();
         squares.add(new Square(1,'A'));
@@ -54,7 +54,7 @@ public class ShipTest {
     }
     @Test
     public void testSetOccupiedSquaresVerticalDestroyer() {
-        Ship mine = new Ship("DESTROYER");
+        Ship mine = new Destroyer();
         mine.setOccupiedSquares(1, 'A', true);
         List<Square> squares = new ArrayList<>();
         squares.add(new Square(1, 'A'));
@@ -69,7 +69,7 @@ public class ShipTest {
     }
     @Test
     public void testSetOccupiedSquaresDestroyer(){
-        Ship mine = new Ship("DESTROYER");
+        Ship mine = new Destroyer();
         mine.setOccupiedSquares(1,'A',false);
         List<Square> squares = new ArrayList<>();
         squares.add(new Square(1,'A'));
@@ -84,7 +84,7 @@ public class ShipTest {
     }
     @Test
     public void testSetOccupiedSquaresVerticalBattleShip(){
-        Ship mine = new Ship("BATTLESHIP");
+        Ship mine = new Battleship();
         mine.setOccupiedSquares(1,'A',true);
         List<Square> squares = new ArrayList<>();
         squares.add(new Square(1,'A'));
@@ -102,7 +102,7 @@ public class ShipTest {
     }
     @Test
     public void testSetOccupiedSquaresBattleShip(){
-        Ship mine = new Ship("BATTLESHIP");
+        Ship mine = new Battleship();
         mine.setOccupiedSquares(1,'A',false);
         List<Square> squares = new ArrayList<>();
         squares.add(new Square(1,'A'));

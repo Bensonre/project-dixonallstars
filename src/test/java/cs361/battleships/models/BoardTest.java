@@ -13,29 +13,29 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
+        assertFalse(board.placeShip(new Minesweeper(), 11, 'C', true));
     }
 
     @Test
     public void testShipHangingOverEdgeOfBoard(){
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'C', true));
+        assertFalse(board.placeShip(new Minesweeper(), 10, 'C', true));
     }
 
     @Test
     public void testShipHangingOverEdgeOfBoardHorizontally(){
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'J', false));
+        assertFalse(board.placeShip(new Minesweeper(), 10, 'J', false));
     }
 
     @Test
     public void testSetandGetShips() {
         Board board = new Board();
         Board board2 = new Board();
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 9, 'C', true));
-        assertTrue(board.placeShip(new Ship("DESTROYER"), 8, 'D', true));
-        assertTrue(board2.placeShip(new Ship("MINESWEEPER"), 9, 'D', true));
-        assertTrue(board2.placeShip(new Ship("DESTROYER"), 8, 'C', true));
+        assertTrue(board.placeShip(new Minesweeper(), 9, 'C', true));
+        assertTrue(board.placeShip(new Destroyer(), 8, 'D', true));
+        assertTrue(board2.placeShip(new Minesweeper(), 9, 'D', true));
+        assertTrue(board2.placeShip(new Destroyer(), 8, 'C', true));
         assertFalse(board.getShips() == board2.getShips());
         board2.setShips(board.getShips());
         assertTrue(board.getShips() == board2.getShips());
@@ -44,8 +44,8 @@ public class BoardTest {
     @Test
     public void testIfShipsOnBoard(){
         Board board=new Board();
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 9, 'C', true));
-        assertTrue(board.placeShip(new Ship("DESTROYER"), 8, 'D', true));
+        assertTrue(board.placeShip(new Minesweeper(), 9, 'C', true));
+        assertTrue(board.placeShip(new Destroyer(), 8, 'D', true));
         List <Ship> ships = new ArrayList();
              ships   = board.getShips();
         Ship ship1=ships.get(0);
@@ -58,15 +58,15 @@ public class BoardTest {
     @Test
    public void testIfShipsOverlap(){
        Board board=new Board();
-       assertTrue(board.placeShip(new Ship("MINESWEEPER"), 9, 'C', true));
-       assertFalse(board.placeShip(new Ship("DESTROYER"), 8, 'C', true));
+       assertTrue(board.placeShip(new Minesweeper(), 9, 'C', true));
+       assertFalse(board.placeShip(new Destroyer(), 8, 'C', true));
    }
 
    @Test
    public void testIfShipsOverlapHorizontal(){
         Board board=new Board();
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 9, 'C', true));
-        assertFalse(board.placeShip(new Ship("DESTROYER"), 10, 'B', false));
+        assertTrue(board.placeShip(new Minesweeper(), 9, 'C', true));
+        assertFalse(board.placeShip(new Destroyer(), 10, 'B', false));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class BoardTest {
         Result res = board.attack(2, 'C');  // Test miss with no ships on
         assertSame(expected.getResult(), res.getResult());
 
-        Ship ship = new Ship("MINESWEEPER");
+        Ship ship = new Minesweeper();
         board.placeShip(ship,7, 'E', false);
 
         res = board.attack(2, 'D');  // Test miss w ship on board.
@@ -155,7 +155,7 @@ public class BoardTest {
 
         Result res = new Result();
 
-        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        Ship ship = new Minesweeper(); // Put ship on board
         board.placeShip(ship,7, 'E', true);
 
         List<Ship> shiplist = board.getShips(); // Make sure ship is on board
@@ -189,7 +189,7 @@ public class BoardTest {
 
         Result res = new Result();
 
-        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        Ship ship = new Minesweeper(); // Put ship on board
         board.placeShip(ship,7, 'E', false);
 
         List<Ship> shiplist = board.getShips(); // Make sure ship is on board
@@ -213,9 +213,9 @@ public class BoardTest {
     @Test
     public void testShipAlreadyPlaced(){
         Board board = new Board();
-        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        Ship ship = new Minesweeper(); // Put ship on board
         board.placeShip(ship,7, 'E', false);
-        Ship ship2 = new Ship("MINESWEEPER"); // create ship2
+        Ship ship2 = new Minesweeper(); // create ship2
         assertFalse(board.placeShip(ship2,8, 'C', true));//since ship of same type already placed
                                                                         // on board should return false
 
@@ -224,20 +224,20 @@ public class BoardTest {
     @Test
     public void testPlaceShipOfEveryType(){
         Board board = new Board();
-        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        Ship ship = new Minesweeper(); // Put ship on board
         board.placeShip(ship,7, 'E', false);
-        Ship ship2 = new Ship("DESTROYER"); // create ship2
-        Ship ship3 = new Ship("BATTLESHIP"); // create ship2
+        Ship ship2 = new Destroyer(); // create ship2
+        Ship ship3 = new Battleship(); // create ship2
         assertTrue(board.placeShip(ship2,5, 'C', true));//should ne able to place a ship of a new type;
         assertTrue(board.placeShip(ship3,3,'B',true));//should be able to place a ship of a new kind;
     }
     @Test
     public void testPlaceShipOfNewTypeAfterFailingPlacement(){
         Board board = new Board();
-        Ship ship = new Ship("MINESWEEPER"); // Put ship on board
+        Ship ship = new Minesweeper(); // Put ship on board
         board.placeShip(ship,7, 'E', false);
-        Ship ship2 = new Ship("MINESWEEPER"); // create ship2
-        Ship ship3 = new Ship("DESTROYER"); // create ship2
+        Ship ship2 = new Minesweeper(); // create ship2
+        Ship ship3 = new Destroyer(); // create ship2
         assertFalse(board.placeShip(ship2,5, 'C', true));//shouldn't be able to place a ship of same kind
         assertTrue(board.placeShip(ship3,5,'C',true));//should be able to place a ship of a new kind;
     }
@@ -249,11 +249,11 @@ public class BoardTest {
         Result expected = new Result();
         expected.setResult(AtackStatus.SURRENDER);
 
-        Ship shipM = new Ship("MINESWEEPER"); // Put ship on board
+        Ship shipM = new Minesweeper(); // Put ship on board
         board.placeShip(shipM,1, 'A', false);
-        Ship shipD = new Ship("DESTROYER"); // Put ship on board
+        Ship shipD = new Destroyer(); // Put ship on board
         board.placeShip(shipD,2, 'A', false);
-        Ship shipB = new Ship("BATTLESHIP"); // Put ship on board
+        Ship shipB = new Battleship(); // Put ship on board
         board.placeShip(shipB,3, 'A', false);
 
         List<Ship> shiplist = board.getShips(); // Make sure ship is on board

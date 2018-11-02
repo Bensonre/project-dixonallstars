@@ -13,4 +13,22 @@ public class Battleship extends Ship {
         this.occupiedSquares.add(new Square(0, 'A'));
         this.length=4;
     }
+
+    public void setCaptainsQuarters(int row, char column, boolean vertical){
+        String col= "ABCDEFGHIJ";// makes a string of characters to get cols
+        int c=0;// used for index of cols
+        if (vertical){// Set it two above the origin
+            this.captainsQuarters = new Square(row + 2, column);
+        }
+        else {// Set it two to the right of the origin
+            for (int i=0; i<col.length(); i++){//selects the right index to use for col
+                if (col.charAt(i)== column){
+                    c=i;
+                    break;
+                }
+            }
+            this.captainsQuarters = new Square(row,col.charAt(2+c));
+        }
+        this.armor = 2;
+    }
 }

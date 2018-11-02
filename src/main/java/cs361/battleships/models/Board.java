@@ -49,6 +49,7 @@ public class Board {
 				}
 			}
 			ship.setOccupiedSquares(x, y, isVertical); // ship passed so add it's squares to its list and added it to the boards list
+			ship.setCaptainsQuarters(x, y, isVertical);
 			this.ships.add(ship);
 			return true;
 	}
@@ -76,6 +77,7 @@ public class Board {
 			}
 		}
 			ship.setOccupiedSquares(x, y, isVertical);// ship passed so add it's squares to its list and added it to the boards list
+			ship.setCaptainsQuarters(x, y, isVertical);
 			this.ships.add(ship);
 			return true;
 	}

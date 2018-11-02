@@ -10,6 +10,8 @@ public class Ship {
 	@JsonProperty protected List<Square> occupiedSquares;// holds the locations on the board the is present at
 	protected String kind; // holds the kind of ship that is present
 	protected int length;// holds the number of spaces the ship takes up
+	protected Square captainsQuarters; // The square that the captains quarter is on
+	protected int armor; // How much armor the captains quarter has
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
@@ -47,5 +49,24 @@ public class Ship {
 
 	public String getKind(){
 		return this.kind;
+	}
+
+	// Overridden by the child classes
+	public void setCaptainsQuarters(int x, char y, boolean b) {}
+
+	public Square getCaptainsQuarters() {
+		return this.captainsQuarters;
+	}
+
+	public void hitCaptainsQuarters() {
+		this.armor--;
+	}
+
+	// If it has armor, it is not sunk yet
+	public boolean sunkCaptainsQuarters() {
+		if (this.armor > 0) {
+			return false;
+		}
+		return true;
 	}
 }

@@ -9,10 +9,10 @@ public class ResultTest {
     @Test
     public void testResult() {
         Result resultObject = new Result();
-        AtackStatus as = AtackStatus.HIT;
+        AttackStatus as = AttackStatus.HIT;
 
         resultObject.setResult(as);
-        AtackStatus returned_as = resultObject.getResult();
+        AttackStatus returned_as = resultObject.getResult();
 
         assertSame(as, returned_as);
     }

@@ -2,7 +2,6 @@ package cs361.battleships.models;
 
 import org.junit.Test;
 
-import javax.xml.stream.Location;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class BoardTest {
         Board board = new Board();
         List<Result> attacks = new ArrayList<Result>();
         Result res = new Result();
-        res.setResult(AtackStatus.INVALID);
+        res.setResult(AttackStatus.INVALID);
         attacks.add(res);
 
         board.setAttacks(attacks);
@@ -87,7 +86,7 @@ public class BoardTest {
         Result res = board.attack(-3, 'R');
 
         Result expected = new Result();
-        expected.setResult(AtackStatus.INVALID);
+        expected.setResult(AttackStatus.INVALID);
 
         assertSame(expected.getResult(), res.getResult());
     }
@@ -98,7 +97,7 @@ public class BoardTest {
 
         List<Result> attacks = new ArrayList<Result>();
         Result adder = new Result();
-        adder.setResult(AtackStatus.MISS);
+        adder.setResult(AttackStatus.MISS);
         adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
@@ -106,7 +105,7 @@ public class BoardTest {
         Result res = board.attack(1, 'A');
 
         Result expected = new Result();
-        expected.setResult(AtackStatus.INVALID);
+        expected.setResult(AttackStatus.INVALID);
 
         assertSame(expected.getResult(), res.getResult());
     }
@@ -116,11 +115,11 @@ public class BoardTest {
         Board board = new Board();
 
         Result expected = new Result();
-        expected.setResult(AtackStatus.MISS);
+        expected.setResult(AttackStatus.MISS);
 
         List<Result> attacks = new ArrayList<Result>();
         Result adder = new Result();
-        adder.setResult(AtackStatus.MISS);
+        adder.setResult(AttackStatus.MISS);
         adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
@@ -134,7 +133,7 @@ public class BoardTest {
         res = board.attack(2, 'D');  // Test miss w ship on board.
         assertSame(expected.getResult(), res.getResult());
 
-        expected.setResult(AtackStatus.INVALID); // Test that attacks can't be repeated.
+        expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
         res = board.attack(2, 'D');
         assertSame(expected.getResult(), res.getResult());
     }
@@ -144,11 +143,11 @@ public class BoardTest {
         Board board = new Board();
 
         Result expected = new Result();
-        expected.setResult(AtackStatus.HIT);
+        expected.setResult(AttackStatus.HIT);
 
         List<Result> attacks = new ArrayList<Result>();  // Add a miss on to the board
         Result adder = new Result();
-        adder.setResult(AtackStatus.MISS);
+        adder.setResult(AttackStatus.MISS);
         adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
@@ -168,7 +167,7 @@ public class BoardTest {
         res = board.attack(8, 'E');  // Test hits ship on board.
         assertSame(expected.getResult(), res.getResult());
 
-        expected.setResult(AtackStatus.INVALID); // Test that attacks can't be repeated.
+        expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
         res = board.attack(8, 'E');
         assertSame(expected.getResult(), res.getResult());
     }
@@ -178,11 +177,11 @@ public class BoardTest {
         Board board = new Board();
 
         Result expected = new Result();
-        expected.setResult(AtackStatus.HIT);
+        expected.setResult(AttackStatus.HIT);
 
         List<Result> attacks = new ArrayList<Result>();  // Add a miss to the board.
         Result adder = new Result();
-        adder.setResult(AtackStatus.MISS);
+        adder.setResult(AttackStatus.MISS);
         adder.setLocation(new Square(1,'A'));
         attacks.add(adder);
         board.setAttacks(attacks);
@@ -202,11 +201,11 @@ public class BoardTest {
         res = board.attack(7, 'F');  // Test hits ship on board.
         assertSame(expected.getResult(), res.getResult());
 
-        expected.setResult(AtackStatus.SUNK); // Tests that final blow sinks the ship.
+        expected.setResult(AttackStatus.SUNK); // Tests that final blow sinks the ship.
         res = board.attack(7,'E');
         assertSame(expected.getResult(),res.getResult());
 
-        expected.setResult(AtackStatus.INVALID); // Test that attacks can't be repeated.
+        expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
         res = board.attack(7, 'F');
         assertSame(expected.getResult(), res.getResult());
     }
@@ -247,7 +246,7 @@ public class BoardTest {
         Board board = new Board();
 
         Result expected = new Result();
-        expected.setResult(AtackStatus.SURRENDER);
+        expected.setResult(AttackStatus.SURRENDER);
 
         Ship shipM = new Minesweeper(); // Put ship on board
         board.placeShip(shipM,1, 'A', false);

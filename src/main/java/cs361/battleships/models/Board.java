@@ -105,12 +105,9 @@ public class Board {
 
 	}
 
-	/*
-	DO NOT change the signature of this method. It is used by the grading scripts.
-
-	--Returns the result object of the attack AND adds it to the board's attacks
-	 */
-	public Result attack(int x, char y) {
+	// Checks to see if the attack is not on a ship or is invalid.  Returns null if its a valid attack on a ship.
+	// Returns the result of the attack otherwise and alters the attack array appropriately.
+	public Result checkNoShips(int x, char y) {
 		Result res = new Result();
 
 		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board.
@@ -134,7 +131,13 @@ public class Board {
 
 			return res;
 		}
+		return null;
+	}
 
+	// Controls the logic if a ship is attacked.
+	// Returns the result of the attack and alters the attack array appropriately.
+	public Result attackOnShip(int x, char y) {
+		Result res = new Result();
 		Ship attackedShip = hitShip(x, y);  // Get the ship that is being hit
 
 		res.setLocation(new Square(x, y));
@@ -190,6 +193,27 @@ public class Board {
 			setAttacks(attacks);
 		}
 
+		return res;
+	}
+
+	/*
+	DO NOT change the signature of this method. It is used by the grading scripts.
+
+	--Returns the result object of the attack AND adds it to the board's attacks
+	 */
+	public Result attack(int x, char y) {
+
+		// Checks cases for no ships
+		Result res;
+		res = checkNoShips(x,y);
+
+		// Return the result if the attack isn't on a ship
+		if (res != null) {
+			return res;
+		}
+
+		// Continue if it is on a ship
+		res = attackOnShip(x, y);
 
 		return res;
 	}

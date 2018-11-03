@@ -75,10 +75,6 @@ public class Ship {
 		}
 	}
 
-	public String getKind(){
-		return this.kind;
-	}
-
 	// Overridden by the child classes
 	public void setCaptainsQuarters(int x, char y, boolean b) {}
 

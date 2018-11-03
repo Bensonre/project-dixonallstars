@@ -31,6 +31,8 @@ public class Ship {
 	@JsonProperty protected List<Square> occupiedSquares; // an array of locations that the ship occupies
 	protected String kind; // ship type
 	protected int length; // number of spaces ship will occupy
+	protected Square captainsQuarters; // The square that the captains quarter is on
+	protected Armor armor; // How much armor the captains quarter has
 
 	// CONSTRUCTOR
 	public Ship() {
@@ -73,5 +75,29 @@ public class Ship {
 		}
 	}
 
+	// Overridden by the child classes
+	public void setCaptainsQuarters(int x, char y, boolean b) {}
 
+	public Square getCaptainsQuarters() {
+		return this.captainsQuarters;
+	}
+
+	// Overridden by the child classes
+	public Armor getArmor() {return this.armor;}
+
+	public void setArmor(Armor armor) {
+		this.armor = armor;
+	}
+
+	public void hitCaptainsQuarters() {
+		this.armor.setArmor(this.armor.getArmor() - 1);
+	}
+
+	// If it has armor, it is not sunk yet
+	public boolean sunkCaptainsQuarters() {
+		if (this.armor.getArmor() > 0) {
+			return false;
+		}
+		return true;
+	}
 }

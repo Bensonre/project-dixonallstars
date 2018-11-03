@@ -27,4 +27,9 @@ public enum AttackStatus {
 	 */
 	INVALID,
 
+	/**
+	 * The result if the captain's quarter is hit but still has armor
+	 */
+	CQHIT,
+
 }

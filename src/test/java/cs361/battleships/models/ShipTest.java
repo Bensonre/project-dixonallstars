@@ -100,6 +100,7 @@ public class ShipTest {
         assertEquals(mine.getOccupiedSquares().get(3).getRow(),squares.get(3).getRow());
         assertEquals(mine.getOccupiedSquares().get(3).getColumn(),squares.get(3).getColumn());
     }
+
     @Test
     public void testSetOccupiedSquaresBattleShip(){
         Ship mine = new Battleship();
@@ -117,6 +118,41 @@ public class ShipTest {
         assertEquals(mine.getOccupiedSquares().get(2).getColumn(),squares.get(2).getColumn());
         assertEquals(mine.getOccupiedSquares().get(3).getRow(),squares.get(3).getRow());
         assertEquals(mine.getOccupiedSquares().get(3).getColumn(),squares.get(3).getColumn());
+    }
+
+    @Test
+    public void testSetAndHitCaptainsQuarters() {
+        Board board = new Board();
+
+        Ship mine = new Minesweeper();
+        Ship battle = new Battleship();
+        Ship destroyer = new Destroyer();
+
+        assertTrue(board.placeShip(mine, 1, 'A', false));
+        assertTrue(board.placeShip(destroyer, 2, 'A', false));
+        assertTrue(board.placeShip(battle, 6, 'E', true));
+
+        assertEquals(1, mine.getCaptainsQuarters().getRow());
+        assertEquals('A', mine.getCaptainsQuarters().getColumn());
+        assertFalse(mine.sunkCaptainsQuarters());
+        mine.hitCaptainsQuarters();
+        assertTrue(mine.sunkCaptainsQuarters());
+
+        assertEquals(2, destroyer.getCaptainsQuarters().getRow());
+        assertEquals('B', destroyer.getCaptainsQuarters().getColumn());
+        assertFalse(destroyer.sunkCaptainsQuarters());
+        destroyer.hitCaptainsQuarters();
+        assertFalse(destroyer.sunkCaptainsQuarters());
+        destroyer.hitCaptainsQuarters();
+        assertTrue(destroyer.sunkCaptainsQuarters());
+
+        assertEquals(8, battle.getCaptainsQuarters().getRow());
+        assertEquals('E', battle.getCaptainsQuarters().getColumn());
+        assertFalse(battle.sunkCaptainsQuarters());
+        battle.hitCaptainsQuarters();
+        assertFalse(battle.sunkCaptainsQuarters());
+        battle.hitCaptainsQuarters();
+        assertTrue(battle.sunkCaptainsQuarters());
     }
 
 }

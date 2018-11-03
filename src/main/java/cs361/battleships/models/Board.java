@@ -55,6 +55,7 @@ public class Board {
 				}
 			}
 			ship.setOccupiedSquares(x, y, isVertical); // ship passed so add it's squares to its list and added it to the boards list
+			ship.setCaptainsQuarters(x, y, isVertical);
 			this.ships.add(ship);
 			return true;
 	}
@@ -83,6 +84,7 @@ public class Board {
 			}
 		}
 			ship.setOccupiedSquares(x, y, isVertical);// ship passed so add it's squares to its list and added it to the boards list
+			ship.setCaptainsQuarters(x, y, isVertical);
 			this.ships.add(ship);
 			return true;
 	}
@@ -103,12 +105,9 @@ public class Board {
 
 	}
 
-	/*
-	DO NOT change the signature of this method. It is used by the grading scripts.
-
-	--Returns the result object of the attack AND adds it to the board's attacks
-	 */
-	public Result attack(int x, char y) {
+	// Checks to see if the attack is not on a ship or is invalid.  Returns null if its a valid attack on a ship.
+	// Returns the result of the attack otherwise and alters the attack array appropriately.
+	public Result checkNoShips(int x, char y) {
 		Result res = new Result();
 
 		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board.
@@ -116,7 +115,8 @@ public class Board {
 			return res;
 		}
 
-		if (previouslyAttacked(x, y)) { // Invalid if the attack has already been attempted.
+		// Invalid if the attack has already been attempted and did not hit the CQ.
+		if (previouslyAttacked(x, y) && (!alreadyCQHit(x, y))) {
 			res.setResult(AttackStatus.INVALID);
 			return res;
 		}
@@ -131,32 +131,87 @@ public class Board {
 
 			return res;
 		}
+		return null;
+	}
 
+	// Controls the logic if a ship is attacked.
+	// Returns the result of the attack and alters the attack array appropriately.
+	public Result attackOnShip(int x, char y) {
+		Result res = new Result();
 		Ship attackedShip = hitShip(x, y);  // Get the ship that is being hit
 
-		res.setResult(AttackStatus.HIT); // Make a hit result
 		res.setLocation(new Square(x, y));
 		res.setShip(attackedShip);
 
-		List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
-		attacks.add(res);
-		setAttacks(attacks);
+		if (attackingCQ(attackedShip, x, y)) {
+			res.setResult(AttackStatus.CQHIT); // Make a CQhit result
 
-		if (sunkShip(attackedShip)) {  // If the ship has been sunk
-			attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
-			res.setResult(AttackStatus.SUNK);
+			List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
 			attacks.add(res);
 			setAttacks(attacks);
+
+			attackedShip.hitCaptainsQuarters();
+			if (attackedShip.sunkCaptainsQuarters()) {
+				this.attacks.remove(res); // remove cqhit from the board
+				removeShip(attackedShip); // remove all ships squares from the board
+				hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
+
+				// Make the result of the attack a sunk
+				res.setResult(AttackStatus.SUNK);
+				attacks = getAttacks();
+				attacks.add(res);
+				setAttacks(attacks);
+			} else {
+				// make new miss object and return it for the test script.
+				Result missResult = new Result();
+				missResult.setResult(AttackStatus.MISS);
+				missResult.setLocation(new Square(x, y));
+				missResult.setShip(attackedShip);
+				return missResult;
+			}
+		} else {
+			res.setResult(AttackStatus.HIT); // Make a hit result
+
+			List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
+			attacks.add(res);
+			setAttacks(attacks);
+
+			if (sunkShip(attackedShip)) {  // If the ship has been sunk
+				this.attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
+				res.setResult(AttackStatus.SUNK);
+				attacks = getAttacks();
+				attacks.add(res);
+				setAttacks(attacks);
+			}
 		}
 
-
-		if (gameOver()) { //if ship has been sunk
-			attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
+		if (gameOver()) { // If all ships are sunk
+			this.attacks.remove(res);  // Remove the SUNK from the board and replace it with SURRENDER
 			res.setResult(AttackStatus.SURRENDER);
 			attacks.add(res);
 			setAttacks(attacks);
 		}
+		return res;
+	}
 
+	/*
+	DO NOT change the signature of this method. It is used by the grading scripts.
+
+	--Returns the result object of the attack AND adds it to the board's attacks
+	 */
+	public Result attack(int x, char y) {
+
+		// Checks cases for no ships
+		Result res;
+		res = checkNoShips(x,y);
+
+		// Return the result if the attack isn't on a ship
+		if (res != null) {
+			return res;
+		}
+
+		// Continue if it is on a ship
+		res = attackOnShip(x, y);
 
 		return res;
 	}
@@ -261,6 +316,72 @@ public class Board {
 			return true;
 		}
 		return false;
+	}
+
+	// True if this already hit square is an unsunk captains quarters
+	public boolean alreadyCQHit(int x, char y) {
+		List<Result> attacks = getAttacks();
+		for (int i = 0; i < attacks.size(); i++) { // For all previous attacks
+			Square loc = attacks.get(i).getLocation(); // Get location
+			if (loc != null) {
+				if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
+					if (attacks.get(i).getResult().equals(AttackStatus.CQHIT)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	// returns true if the input coordinates are the ships captains quarters
+	public boolean attackingCQ(Ship attackedShip, int x, char y) {
+		if (attackedShip.getCaptainsQuarters().getColumn() == y && attackedShip.getCaptainsQuarters().getRow() == x) {
+			return true;
+		}
+		return false;
+	}
+
+	// Removes all attacks on a given ship from the attacks array
+	public void removeShip(Ship ship) {
+		List<Square> occupiedSquares = ship.getOccupiedSquares(); //
+		for (int i = 0; i < occupiedSquares.size(); i++) {  // For all of the ships squares
+			Square loc = occupiedSquares.get(i);
+			int row = loc.getRow();
+			char col = loc.getColumn();
+
+			for (int j = 0; j < attacks.size(); j++) {  // For all of the attacked squares
+				Square attacked_loc = attacks.get(j).getLocation();
+				if (attacked_loc != null) {
+					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()) {  // If that location is the same as the ship
+						attacks.remove(attacks.get(j));
+					}
+				}
+			}
+		}
+	}
+
+	// Adds a hit to all spots that are not the captains quarter
+	public void hitAllNonCQ(Ship ship) {
+		List<Square> occupiedSquares = ship.getOccupiedSquares(); //
+		for (int i = 0; i < occupiedSquares.size(); i++) {  // For all of the ships squares
+			Square loc = occupiedSquares.get(i);
+			int row = loc.getRow();
+			char col = loc.getColumn();
+
+			// If this not the captain's quarter
+			if (row != ship.getCaptainsQuarters().getRow() || col != ship.getCaptainsQuarters().getColumn()) {
+				// Add it as a hit to the attacks array
+				Result res = new Result();
+				res.setResult(AttackStatus.HIT);
+				res.setLocation(new Square(row,col));
+				res.setShip(ship);
+
+				List<Result> attacks = getAttacks(); // Set the attack on the board
+				attacks.add(res);
+				setAttacks(attacks);
+			}
+		}
 	}
 
 }

@@ -1,13 +1,19 @@
 package cs361.battleships.models;
 
-import controllers.AttackGameAction;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Follows SRP by only performing responsibilities logically connected to a physical board.
+This includes: the creating of the ships array, the creating of the results array, the placing of ships,
+			   the attacking of ships, and several checks regarding the status of the BOARD.
+
+All actions have a logical equivalent with a game of battleship being played IRL.
+ */
+
 public class Board {
 
-	private List<Ship> ships;// holds the locations on the board the is present at
+	private List<Ship> ships; // holds the locations on the board the is present at
 	private List<Result> attacks;
 
 	/*
@@ -18,7 +24,7 @@ public class Board {
 		this.ships = new ArrayList<Ship>();
 	}
 
-	//returns weather or not a ship of this type has been placed on the board
+	// returns whether or not a ship of this type has been placed on the board
 	public boolean alreadyPlaced(Ship ship) {
 		for (int i = 0; i < this.ships.size(); i++) {
 			if (this.ships.get(i).getKind().equals(ship.getKind()))
@@ -27,7 +33,7 @@ public class Board {
 		return false;
 	}
 
-
+	// place a ship vertically on the board, in a north-south/top-down manner
 	public boolean placeVertical(Ship ship, int shipLength, int x, char y, boolean isVertical) {
 		if (x + (shipLength) > 11 || x < 1)
 			return false; // ensures ship cant go over the edge of board
@@ -35,14 +41,14 @@ public class Board {
 			return false; // ships can't go over edge of board 74 == J
 		}
 		List<Ship> shipsList = this.ships;
-		for (int i = 0; i < shipsList.size(); i++) {// this loop ensure a ships isn't placed over a different one
+		for (int i = 0; i < shipsList.size(); i++) { // this loop ensure a ships isn't placed over a different one
 			//currentShip is the ship being acessed in ships list, the loop itterates through the number of ships
 			 Ship currentShip = shipsList.get(i);
-			 for (int j = 0; j < currentShip.getLength(); j++) {//j represents the the square being checked in current ships square list
-			 	for (int k = 0; k < shipLength; k++) {// k represents the squares that the newly placed ships will take
-			 		if (x + k == currentShip.getOccupiedSquares().get(j).getRow()) {// tests to see if the ship being placed is in the same row as the current ship
-			 			if (y == currentShip.getOccupiedSquares().get(j).getColumn()) {// tests to see if the ship being [laced is in the same col as the current ship
-			 				return false;// if both the above cases are true the ship is in the same square as the current ship and can't be placed.
+			 for (int j = 0; j < currentShip.getLength(); j++) { //j represents the the square being checked in current ships square list
+			 	for (int k = 0; k < shipLength; k++) { // k represents the squares that the newly placed ships will take
+			 		if (x + k == currentShip.getOccupiedSquares().get(j).getRow()) { // tests to see if the ship being placed is in the same row as the current ship
+			 			if (y == currentShip.getOccupiedSquares().get(j).getColumn()) { // tests to see if the ship being [laced is in the same col as the current ship
+			 				return false; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
 							}
 						}
 					}
@@ -53,6 +59,7 @@ public class Board {
 			return true;
 	}
 
+	// place a ship horizontally on the board, in a west-east/left-right manner
 	public boolean placeHorizontal(Ship ship, int shipLength, int x, char y, boolean isVertical) {
 		if (y + (shipLength) > 'K' || y < 'A') {
 			return false;
@@ -63,7 +70,7 @@ public class Board {
 
 		List<Ship> shipsList = this.ships;
 		for (int i = 0; i < shipsList.size(); i++) {// this loop ensure a ships isn't placed over a different one
-			// currentship represents the ship being acessed in ships list, the loop itterates through the number of ships
+			// currentship represents the ship being accessed in ships list, the loop iterates through the number of ships
 			Ship currentShip = shipsList.get(i);
 			for (int j = 0; j < currentShip.getLength(); j++) {//j represents the the square being checked in current ships square list
 				for (int k = 0; k < shipLength; k++) {// k represents the squares that the newly placed ships will take
@@ -86,8 +93,10 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		if (alreadyPlaced(ship))
 			return false;
+
 		int shipLength = ship.getLength(); // store length in var for easier access
-		if (isVertical) { // test cases if the ship is vertical
+
+		if (isVertical) {
 			return (placeVertical(ship, shipLength, x, y, isVertical));
 		}
 			return (placeHorizontal(ship, shipLength, x, y, isVertical));
@@ -96,24 +105,24 @@ public class Board {
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
-	 */
 
-	// Returns the result object of the attack AND adds it to the boards attacks.
+	--Returns the result object of the attack AND adds it to the board's attacks
+	 */
 	public Result attack(int x, char y) {
 		Result res = new Result();
 
 		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board.
-			res.setResult(AtackStatus.INVALID);
+			res.setResult(AttackStatus.INVALID);
 			return res;
 		}
 
 		if (previouslyAttacked(x, y)) { // Invalid if the attack has already been attempted.
-			res.setResult(AtackStatus.INVALID);
+			res.setResult(AttackStatus.INVALID);
 			return res;
 		}
 
 		if (!shipOnSpot(x, y)) { // If not a ship on the spot, record a miss.
-			res.setResult(AtackStatus.MISS);
+			res.setResult(AttackStatus.MISS);
 			res.setLocation(new Square(x, y));
 
 			List<Result> attacks = getAttacks();
@@ -125,7 +134,7 @@ public class Board {
 
 		Ship attackedShip = hitShip(x, y);  // Get the ship that is being hit
 
-		res.setResult(AtackStatus.HIT); // Make a hit result
+		res.setResult(AttackStatus.HIT); // Make a hit result
 		res.setLocation(new Square(x, y));
 		res.setShip(attackedShip);
 
@@ -135,7 +144,7 @@ public class Board {
 
 		if (sunkShip(attackedShip)) {  // If the ship has been sunk
 			attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
-			res.setResult(AtackStatus.SUNK);
+			res.setResult(AttackStatus.SUNK);
 			attacks.add(res);
 			setAttacks(attacks);
 		}
@@ -143,7 +152,7 @@ public class Board {
 
 		if (gameOver()) { //if ship has been sunk
 			attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
-			res.setResult(AtackStatus.SURRENDER);
+			res.setResult(AttackStatus.SURRENDER);
 			attacks.add(res);
 			setAttacks(attacks);
 		}
@@ -152,19 +161,18 @@ public class Board {
 		return res;
 	}
 
-
+	// GETTERS
 	public List<Ship> getShips() {
 		return this.ships;
 	}
-
-	public void setShips(List<Ship> ships) {
-		this.ships = ships;
-	}
-
 	public List<Result> getAttacks() {
 		return attacks;
 	}
 
+	// SETTERS
+	public void setShips(List<Ship> ships) {
+		this.ships = ships;
+	}
 	public void setAttacks(List<Result> attacks) {
 		this.attacks = attacks;
 	}
@@ -228,7 +236,7 @@ public class Board {
 				Square attacked_loc = attacks.get(j).getLocation();
 				if (attacked_loc != null) {
 					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()) {  // If that location is the same as the ship
-						if (attacks.get(j).getResult() == AtackStatus.HIT || attacks.get(j).getResult() == AtackStatus.SUNK) {
+						if (attacks.get(j).getResult() == AttackStatus.HIT || attacks.get(j).getResult() == AttackStatus.SUNK) {
 							attacked = true;  // Mark the ship as attacked
 						}
 					}
@@ -245,7 +253,7 @@ public class Board {
 	boolean gameOver() {
 		int sunkShips = 0;
 		for (int i = 0; i < attacks.size(); i++) { //for all results
-			if (attacks.get(i).getResult() == AtackStatus.SUNK) { //if a result is sunk, add to sunkShips
+			if (attacks.get(i).getResult() == AttackStatus.SUNK) { //if a result is sunk, add to sunkShips
 				sunkShips++;
 			}
 		}

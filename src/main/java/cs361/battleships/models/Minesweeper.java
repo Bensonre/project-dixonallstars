@@ -2,6 +2,8 @@ package cs361.battleships.models;
 
 import java.util.ArrayList;
 
+// S.O.L.I.D. evaluation contained in Ship class
+
 public class Minesweeper extends Ship {
 
     public Minesweeper() {

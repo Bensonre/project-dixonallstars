@@ -153,7 +153,6 @@ public class Board {
 			attackedShip.hitCaptainsQuarters();
 			if (attackedShip.sunkCaptainsQuarters()) {
 				this.attacks.remove(res); // remove cqhit from the board
-
 				removeShip(attackedShip); // remove all ships squares from the board
 				hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
 
@@ -192,7 +191,6 @@ public class Board {
 			attacks.add(res);
 			setAttacks(attacks);
 		}
-
 		return res;
 	}
 

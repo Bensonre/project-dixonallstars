@@ -30,6 +30,8 @@ public class Destroyer extends Ship {
             }
             this.captainsQuarters = new Square(row,col.charAt(1+c));
         }
-        this.armor = 2;
+        Armor armor = new Armor();
+        armor.setArmor(2);
+        this.armor = armor;
     }
 }

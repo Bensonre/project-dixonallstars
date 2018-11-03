@@ -32,7 +32,7 @@ public class Ship {
 	protected String kind; // ship type
 	protected int length; // number of spaces ship will occupy
 	protected Square captainsQuarters; // The square that the captains quarter is on
-	protected int armor; // How much armor the captains quarter has
+	protected Armor armor; // How much armor the captains quarter has
 
 	// CONSTRUCTOR
 	public Ship() {
@@ -82,13 +82,20 @@ public class Ship {
 		return this.captainsQuarters;
 	}
 
+	// Overridden by the child classes
+	public Armor getArmor() {return this.armor;}
+
+	public void setArmor(Armor armor) {
+		this.armor = armor;
+	}
+
 	public void hitCaptainsQuarters() {
-		this.armor--;
+		this.armor.setArmor(this.armor.getArmor() - 1);
 	}
 
 	// If it has armor, it is not sunk yet
 	public boolean sunkCaptainsQuarters() {
-		if (this.armor > 0) {
+		if (this.armor.getArmor() > 0) {
 			return false;
 		}
 		return true;

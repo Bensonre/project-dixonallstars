@@ -104,7 +104,12 @@ public class Board {
 			return (placeHorizontal(ship, shipLength, x, y, isVertical));
 
 	}
-
+	public boolean checkOffBoard(int x, char y) {
+		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board
+			return false;
+		}
+		return true;
+	}
 	// Checks to see if the attack is not on a ship or is invalid.  Returns null if its a valid attack on a ship.
 	// Returns the result of the attack otherwise and alters the attack array appropriately.
 	public Result checkNoShips(int x, char y) {
@@ -159,7 +164,7 @@ public class Board {
 				// Make the result of the attack a sunk
 				res.setResult(AttackStatus.SUNK);
 				attacks = getAttacks();
-				attacks.add(res);
+				this.attacks.add(res);
 				setAttacks(attacks);
 			} else {
 				// make new miss object and return it for the test script.
@@ -194,24 +199,78 @@ public class Board {
 		return res;
 	}
 
+	public Result SonarAttack (int x, char y){
+		Result PrimarySquare= new Result();
+		List<Square> squares= new ArrayList<Square>();
+
+		for(int i=-2;i<3;i++){
+			int j;
+			if (i==0){
+				j=-2;
+			}
+			else if (i%2==0){
+				j=0;
+			}
+			else{
+				j=1;
+			}
+			for (j=j;j<=-j;j++){
+				Result currentSquare= new Result();
+				if (!previouslyAttacked(x+i, (char) (y+j)) && shipOnSpot(x+i, (char) (y+j)) && !checkOffBoard(x+i, (char)(y+j))) {
+					currentSquare.setResult(AttackStatus.SONAR_OCCUPIED);
+					squares.add(new Square(x+i, (char)(y+j)));
+					currentSquare.setLocation(squares.get(squares.size()-1));
+					attacks = getAttacks();
+					this.attacks.add(currentSquare);
+					setAttacks(attacks);
+				}
+				else if (!previouslyAttacked(x+i, (char) (y+j)) && !checkOffBoard(x, (char)(y+j))) {
+						currentSquare.setResult(AttackStatus.SONAR_EMPTY);
+						squares.add(new Square(x + i, (char) (y + j)));
+						currentSquare.setLocation(squares.get(squares.size()-1));
+						attacks = getAttacks();
+						this.attacks.add(currentSquare);
+						setAttacks(attacks);
+				}
+				if (i==0 && j==0){
+					PrimarySquare.setResult(currentSquare.getResult());
+					PrimarySquare.setLocation(currentSquare.getLocation());
+				}
+
+			}
+		}
+		return PrimarySquare;
+	}
+
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 
 	--Returns the result object of the attack AND adds it to the board's attacks
 	 */
-	public Result attack(int x, char y) {
+	public Result attack(int x, char y, boolean Sonar) {
 
 		// Checks cases for no ships
 		Result res;
+		if (Sonar){// if attack was a valid hit and sonar was used
+			if (!previouslyAttacked(x,y) && !checkOffBoard(x,y))
+			res = SonarAttack(x,y);
+			else
+				res=null;
+		}
+		else{
 		res = checkNoShips(x,y);
 
 		// Return the result if the attack isn't on a ship
 		if (res != null) {
+
 			return res;
 		}
 
 		// Continue if it is on a ship
-		res = attackOnShip(x, y);
+
+
+			res = attackOnShip(x, y);
+		}
 
 		return res;
 	}

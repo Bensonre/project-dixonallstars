@@ -80,8 +80,8 @@ public class GameTest {
         assertTrue(myGame.placeShip(playerShip2, 7, 'E', true));
         assertTrue(myGame.placeShip(playerShip3, 2, 'B', false));
 
-        assertTrue(myGame.attack(1,'A')); // First attack should work
-        myGame.attack(1,'A'); // Results uncertain due to captains quarters
-        assertFalse(myGame.attack(1,'A')); // Subsequent attacks on place should break
+        assertTrue(myGame.attack(1,'A',false)); // First attack should work
+        myGame.attack(1,'A',false); // Results uncertain due to captains quarters
+        assertFalse(myGame.attack(1,'A',false)); // Subsequent attacks on place should break
     }
 }

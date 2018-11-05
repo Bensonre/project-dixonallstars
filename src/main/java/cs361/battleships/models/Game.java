@@ -67,10 +67,10 @@ public class Game {
 
 	gets a valid attack from both the player and the AI
 	 */
-    public boolean attack(int x, char y) {
+    public boolean attack(int x, char y, boolean Sonar) {
 
         // get an action from the user
-        Result playerAttack = opponentsBoard.attack(x, y);
+        Result playerAttack = opponentsBoard.attack(x, y, Sonar);
         if (playerAttack.getResult() == AttackStatus.INVALID) {
             return false;
         }
@@ -80,7 +80,7 @@ public class Game {
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol());
+            opponentAttackResult = playersBoard.attack(randRow(), randCol(), randVertical());
         } while (opponentAttackResult.getResult() == AttackStatus.INVALID);
 
         return true;

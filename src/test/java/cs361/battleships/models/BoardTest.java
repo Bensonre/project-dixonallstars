@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Test;
 
+import javax.validation.constraints.AssertFalse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class BoardTest {
     @Test
     public void testAttackOffBoard() {
         Board board = new Board();
-        Result res = board.attack(-3, 'R');
+        Result res = board.attack(-3, 'R', false);
 
         Result expected = new Result();
         expected.setResult(AttackStatus.INVALID);
@@ -103,7 +104,7 @@ public class BoardTest {
         attacks.add(adder);
         board.setAttacks(attacks);
 
-        Result res = board.attack(1, 'A');
+        Result res = board.attack(1, 'A', false);
 
         Result expected = new Result();
         expected.setResult(AttackStatus.INVALID);
@@ -125,17 +126,17 @@ public class BoardTest {
         attacks.add(adder);
         board.setAttacks(attacks);
 
-        Result res = board.attack(2, 'C');  // Test miss with no ships on
+        Result res = board.attack(2, 'C', false);  // Test miss with no ships on
         assertSame(expected.getResult(), res.getResult());
 
         Ship ship = new Minesweeper();
         board.placeShip(ship, 7, 'E', false);
 
-        res = board.attack(2, 'D');  // Test miss w ship on board.
+        res = board.attack(2, 'D', false);  // Test miss w ship on board.
         assertSame(expected.getResult(), res.getResult());
 
         expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
-        res = board.attack(2, 'D');
+        res = board.attack(2, 'D', false);
         assertSame(expected.getResult(), res.getResult());
     }
 
@@ -165,11 +166,11 @@ public class BoardTest {
         assertSame('E', l.getColumn());
 
 
-        res = board.attack(8, 'E');  // Test hits ship on board.
+        res = board.attack(8, 'E', false);  // Test hits ship on board.
         assertSame(expected.getResult(), res.getResult());
 
         expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
-        res = board.attack(8, 'E');
+        res = board.attack(8, 'E', false);
         assertSame(expected.getResult(), res.getResult());
     }
 
@@ -199,15 +200,15 @@ public class BoardTest {
         assertSame('F', l.getColumn());
 
 
-        res = board.attack(7, 'F');  // Test hits ship on board.
+        res = board.attack(7, 'F', false);  // Test hits ship on board.
         assertSame(expected.getResult(), res.getResult());
 
         expected.setResult(AttackStatus.SUNK); // Tests that final blow sinks the ship.
-        res = board.attack(7, 'E');
+        res = board.attack(7, 'E', false);
         assertSame(expected.getResult(), res.getResult());
 
         expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
-        res = board.attack(7, 'F');
+        res = board.attack(7, 'F', false);
         assertSame(expected.getResult(), res.getResult());
     }
 
@@ -262,19 +263,19 @@ public class BoardTest {
         List<Ship> shiplist = board.getShips(); // Make sure ship is on board
 
         // Attack all ships to death
-        board.attack(1, 'A');
-        board.attack(1, 'B');
+        board.attack(1, 'A', false);
+        board.attack(1, 'B',false);
 
-        board.attack(2, 'A');
-        board.attack(2, 'B');
-        board.attack(2, 'B');
-        board.attack(2, 'C');
+        board.attack(2, 'A',false);
+        board.attack(2, 'B',false);
+        board.attack(2, 'B',false);
+        board.attack(2, 'C',false);
 
-        board.attack(3, 'A');
-        board.attack(3, 'B');
-        board.attack(3, 'C');
-        board.attack(3, 'D');
-        Result res = board.attack(3, 'C');
+        board.attack(3, 'A',false);
+        board.attack(3, 'B',false);
+        board.attack(3, 'C',false);
+        board.attack(3, 'D',false);
+        Result res = board.attack(3, 'C',false);
 
         // Make sure the game is a surrender
         assertSame(expected.getResult(), res.getResult());
@@ -374,23 +375,23 @@ public class BoardTest {
 
 
         // Make sure the CQ returns a SUNK correctly for all ships
-        res = board.attack(1, 'A');
+        res = board.attack(1, 'A',false);
         assertSame(expected.getResult(), res.getResult());
 
-        res = board.attack(2, 'B');
-        res = board.attack(2, 'B');
+        res = board.attack(2, 'B',false);
+        res = board.attack(2, 'B',false);
         assertSame(expected.getResult(), res.getResult());
 
 
         expected.setResult(AttackStatus.SURRENDER);
-        board.attack(3, 'C');
-        res = board.attack(3, 'C');
+        board.attack(3, 'C',false);
+        res = board.attack(3, 'C',false);
 
         assertSame(expected.getResult(), res.getResult());
     }
 
     @Test
-    public void testCQReturnsMissMarksHit() {
+    public void  testCQReturnsMissMarksHit() {
         Board board = new Board();
 
         Result expected = new Result();
@@ -404,14 +405,279 @@ public class BoardTest {
 
         Result res;
 
-        res = board.attack(2, 'B'); // Attack CQ and make sure its a miss
+        res = board.attack(2, 'B',false); // Attack CQ and make sure its a miss
         assertSame(expected.getResult(), res.getResult());
 
         assertSame(board.getAttacks().get(0).getResult(), AttackStatus.CQHIT); // Make sure its actually a CQHIT on backend
 
         expected.setResult(AttackStatus.SUNK); // Make sure second hit is a sunk
-        res = board.attack(2, 'B');
+        res = board.attack(2, 'B',false);
         assertSame(expected.getResult(), res.getResult());
+    }
+    @Test
+    public void testSonarOnEmptyBoard() {
+        Board board = new Board();
+        List<Result> hardResults= new ArrayList<Result>();// hard coded list of expected results;
+
+        Result r1= new Result();
+        r1.setLocation(new Square(5,'c') );
+        r1.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r1);
+
+        Result r2= new Result();
+        r2.setLocation(new Square(4,'D') );
+        r2.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r2);
+
+        Result r3= new Result();
+        r3.setLocation(new Square(5,'D') );
+        r3.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r3);
+
+        Result r4= new Result();
+        r4.setLocation(new Square(6,'D') );
+        r4.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r4);
+
+
+        Result r5= new Result();
+        r5.setLocation(new Square(3,'E') );
+        r5.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r5);
+
+        Result r6= new Result();
+        r6.setLocation(new Square(4,'E') );
+        r6.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r6);
+
+        Result r7= new Result();
+        r7.setLocation(new Square(5,'E') );
+        r7.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r7);
+
+        Result r8= new Result();
+        r8.setLocation(new Square(6,'E') );
+        r8.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r8);
+
+        Result r9= new Result();
+        r9.setLocation(new Square(7,'E') );
+        r9.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r9);
+
+        Result r10= new Result();
+        r10.setLocation(new Square(4,'F') );
+        r10.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r10);
+
+        Result r11= new Result();
+        r11.setLocation(new Square(5,'F') );
+        r11.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r11);
+
+        Result r12= new Result();
+        r12.setLocation(new Square(6,'F') );
+        r12.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r12);
+
+        Result r13= new Result();
+        r13.setLocation(new Square(5,'G') );
+        r13.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r13);
+
+        board.attack(5,'E',true);
+        for (Result hardResult : hardResults){
+          for (Result boardResult : board.getAttacks()) {
+              if(hardResult.getLocation().getColumn()==boardResult.getLocation().getColumn() && hardResult.getLocation().getRow()==boardResult.getLocation().getRow()){
+                  assertSame(hardResult.getResult(),boardResult.getResult());
+              }
+              assertFalse(boardResult.getLocation().getRow()<3 && boardResult.getLocation().getColumn()<'C');
+              assertFalse(boardResult.getLocation().getRow()>7 && boardResult.getLocation().getColumn()>'G');
+          }
+        }
+    }
+    @Test
+    public void testSonarOnBoardWithShips() {
+        Board board = new Board();
+        List<Result> hardResults= new ArrayList<Result>();// hard coded list of expected results;
+
+        Ship shipM = new Minesweeper(); // Put ship on board
+        board.placeShip(shipM, 5, 'C', false);
+
+        Result r1= new Result();
+        r1.setLocation(new Square(5,'c') );
+        r1.setResult(AttackStatus.SONAR_OCCUPIED);
+        hardResults.add(r1);
+
+        Result r2= new Result();
+        r2.setLocation(new Square(4,'D') );
+        r2.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r2);
+
+        Result r3= new Result();
+        r3.setLocation(new Square(5,'D') );
+        r3.setResult(AttackStatus.SONAR_OCCUPIED);
+        hardResults.add(r3);
+
+        Result r4= new Result();
+        r4.setLocation(new Square(6,'D') );
+        r4.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r4);
+
+
+        Result r5= new Result();
+        r5.setLocation(new Square(3,'E') );
+        r5.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r5);
+
+        Result r6= new Result();
+        r6.setLocation(new Square(4,'E') );
+        r6.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r6);
+
+        Result r7= new Result();
+        r7.setLocation(new Square(5,'E') );
+        r7.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r7);
+
+        Result r8= new Result();
+        r8.setLocation(new Square(6,'E') );
+        r8.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r8);
+
+        Result r9= new Result();
+        r9.setLocation(new Square(7,'E') );
+        r9.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r9);
+
+        Result r10= new Result();
+        r10.setLocation(new Square(4,'F') );
+        r10.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r10);
+
+        Result r11= new Result();
+        r11.setLocation(new Square(5,'F') );
+        r11.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r11);
+
+        Result r12= new Result();
+        r12.setLocation(new Square(6,'F') );
+        r12.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r12);
+
+        Result r13= new Result();
+        r13.setLocation(new Square(5,'G') );
+        r13.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r13);
+
+        board.attack(5,'E',true);
+
+        for (Result hardResult : hardResults){
+          for (Result boardResult : board.getAttacks()) {
+              if(hardResult.getLocation().getColumn()==boardResult.getLocation().getColumn() && hardResult.getLocation().getRow()==boardResult.getLocation().getRow()){
+                  assertSame(hardResult.getResult(),boardResult.getResult());
+              }
+              assertFalse(boardResult.getLocation().getRow()<3 && boardResult.getLocation().getColumn()<'C');
+              assertFalse(boardResult.getLocation().getRow()>7 && boardResult.getLocation().getColumn()>'G');
+          }
+        }
+    }
+    @Test
+    public void testSonarOnAlreadyGuessedSpot() {
+        Board board = new Board();
+        List<Result> hardResults= new ArrayList<Result>();// hard coded list of expected results;
+
+        Ship shipD = new Destroyer(); // Put ship on board
+        board.placeShip(shipD, 5, 'C', false);
+        board.attack(5,'C',false);
+        assertSame(AttackStatus.INVALID,board.attack(5,'C',true).getResult());
+    }
+     @Test
+    public void testSonarDoesNotOverWrightOldAttacks() {
+        Board board = new Board();
+        List<Result> hardResults= new ArrayList<Result>();// hard coded list of expected results;
+
+        Ship shipM = new Minesweeper(); // Put ship on board
+        board.placeShip(shipM, 5, 'C', false);
+        board.attack(5,'C',false);
+         board.attack(5,'F',false);
+        Result r1= new Result();
+        r1.setLocation(new Square(5,'c') );
+        r1.setResult(AttackStatus.SUNK);
+        hardResults.add(r1);
+
+        Result r2= new Result();
+        r2.setLocation(new Square(4,'D') );
+        r2.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r2);
+
+        Result r3= new Result();
+        r3.setLocation(new Square(5,'D') );
+        r3.setResult(AttackStatus.HIT);
+        hardResults.add(r3);
+
+        Result r4= new Result();
+        r4.setLocation(new Square(6,'D') );
+        r4.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r4);
+
+
+        Result r5= new Result();
+        r5.setLocation(new Square(3,'E') );
+        r5.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r5);
+
+        Result r6= new Result();
+        r6.setLocation(new Square(4,'E') );
+        r6.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r6);
+
+        Result r7= new Result();
+        r7.setLocation(new Square(5,'E') );
+        r7.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r7);
+
+        Result r8= new Result();
+        r8.setLocation(new Square(6,'E') );
+        r8.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r8);
+
+        Result r9= new Result();
+        r9.setLocation(new Square(7,'E') );
+        r9.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r9);
+
+        Result r10= new Result();
+        r10.setLocation(new Square(4,'F') );
+        r10.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r10);
+
+        Result r11= new Result();
+        r11.setLocation(new Square(5,'F') );
+        r11.setResult(AttackStatus.MISS);
+        hardResults.add(r11);
+
+        Result r12= new Result();
+        r12.setLocation(new Square(6,'F') );
+        r12.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r12);
+
+        Result r13= new Result();
+        r13.setLocation(new Square(5,'G') );
+        r13.setResult(AttackStatus.SONAR_EMPTY);
+        hardResults.add(r13);
+
+        board.attack(5,'E',true);
+
+        for (Result hardResult : hardResults){
+          for (Result boardResult : board.getAttacks()) {
+              if(hardResult.getLocation().getColumn()==boardResult.getLocation().getColumn() && hardResult.getLocation().getRow()==boardResult.getLocation().getRow()){
+                  assertSame(hardResult.getResult(),boardResult.getResult());
+              }
+              assertFalse(boardResult.getLocation().getRow()<3 && boardResult.getLocation().getColumn()<'C');
+              assertFalse(boardResult.getLocation().getRow()>7 && boardResult.getLocation().getColumn()>'G');
+          }
+        }
     }
 }
 

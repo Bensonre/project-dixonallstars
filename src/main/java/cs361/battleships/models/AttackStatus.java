@@ -31,5 +31,14 @@ public enum AttackStatus {
 	 * The result if the captain's quarter is hit but still has armor
 	 */
 	CQHIT,
+	/**
+	 * Sonar is used and found a Ship in the space
+	 */
+	SONAR_OCCUPIED,
+
+	/**
+	 * Sonar is used and found nothing in the space
+	 */
+	SONAR_EMPTY,
 
 }

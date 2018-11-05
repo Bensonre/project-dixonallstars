@@ -254,24 +254,25 @@ public class Board {
 		if (Sonar){// if attack was a valid hit and sonar was used
 			if (!previouslyAttacked(x,y) && !checkOffBoard(x,y))
 			res = SonarAttack(x,y);
-			else
-				res=null;
+			else {
+				res = new Result();
+				res.setResult(AttackStatus.INVALID);
+			}
 		}
 		else{
-		res = checkNoShips(x,y);
+			res = checkNoShips(x,y);
 
-		// Return the result if the attack isn't on a ship
-		if (res != null) {
+			// Return the result if the attack isn't on a ship
+			if (res != null) {
 
-			return res;
-		}
+				return res;
+			}
 
-		// Continue if it is on a ship
+			// Continue if it is on a ship
 
 
 			res = attackOnShip(x, y);
-		}
-
+			}
 		return res;
 	}
 

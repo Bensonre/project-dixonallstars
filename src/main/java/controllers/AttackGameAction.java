@@ -22,6 +22,6 @@ public class AttackGameAction {
         return y;
     }
 
-    public boolean getSonar() { return Sonar;}
+    public boolean getActionSonar() { return Sonar;}
 
 }

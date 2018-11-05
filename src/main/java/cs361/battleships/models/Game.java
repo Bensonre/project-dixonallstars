@@ -80,7 +80,7 @@ public class Game {
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol(), false);
+            opponentAttackResult = playersBoard.attack(randRow(), randCol(), randVertical());
         } while (opponentAttackResult.getResult() == AttackStatus.INVALID);
 
         return true;

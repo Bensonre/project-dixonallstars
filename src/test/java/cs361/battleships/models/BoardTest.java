@@ -590,7 +590,7 @@ public class BoardTest {
         Ship shipD = new Destroyer(); // Put ship on board
         board.placeShip(shipD, 5, 'C', false);
         board.attack(5,'C',false);
-        assertSame(null,board.attack(5,'C',true));
+        assertSame(AttackStatus.INVALID,board.attack(5,'C',true).getResult());
     }
      @Test
     public void testSonarDoesNotOverWrightOldAttacks() {

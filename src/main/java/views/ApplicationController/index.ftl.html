@@ -26,6 +26,7 @@
                     <li><strong class="legendTitle">Hit</strong><div class="hit legend"></div></li>
                     <li><strong class="legendTitle">Sunk</strong><div class="sunk legend"></div></li>
                     <li><strong class="legendTitle">Miss</strong><div class="miss legend"></div></li>
+                    <li><strong class="legendTitle">CQ-hit</strong><div class="cqhit legend"></div></li>
                 </ul>
             </div>
                 <div class="lower_right board_container"> <!-- contains all the stuff on the lower right and its board-->
@@ -46,7 +47,7 @@
                 <p class="tut">Place on Board Above</p>
                 <p class="tut">Rotate Ship With Arrow Keys</p>
                 <div> <!--this div is necessary to break the arrow keys out of the column flex box used by lower_left so the can appear inline-->
-                  <div class="arrow-holder"><!-- this is the box around the arrow-->
+                  <div class="arrow-holder-left"><!-- this is the box around the arrow-->
                     <i class="fas fa-caret-left arrow"></i> <!-- this is the symbol for the left arrow key -->
                   </div>
                     <div class="arrow-holder"><!-- this is the box around the arrow-->
@@ -111,7 +112,12 @@
                     Ships must be placed within the boundaries of the board<br>
                     Ships may not occupy the same area<br><br>
                     <strong>Gameplay</strong><br>
-                    Each location may only be attacked once<br>
+                    Each location may only be attacked once<br><br>
+                    <strong>Captain's Quarters (CQ)</strong><br>
+                    The Captain's Quarters has armor.<br>
+                    It must be attacked multiple times for it to be "hit".<br>
+                    If the Captain's Quarter is "hit", then the whole ship will sink.<br>
+
                 </p>
             </div>
 

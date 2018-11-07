@@ -71,7 +71,19 @@
 /* puts dark gray background around arrow keys and rounds the corners */
 .arrow-holder{
     display: inline-block;
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: #505050;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius:5px;
+}
+
+.arrow-holder-left{
+    display: inline-block;
     margin-left: 10px;
+    margin-right: 0px;
     background-color: #505050;
     color: white;
     width: 35px;
@@ -82,7 +94,7 @@
 .arrow-show{
     display: inline-block;
     position: relative;
-    margin-left: 10px;
+    margin-left: 20px;
     background-color: orange;
     color: white;
     width: 35px;
@@ -221,12 +233,13 @@
 .legend{
     width:20px;
     height:20px;
-    margin:5px;
+    margin:0px;
     border: 1px solid black;
     margin-left: 10px;
 }
 
 .legendTitle{
+    font-size: 12pt;
     width:60px;
 }
 
@@ -285,6 +298,10 @@ td:hover {
 /* same thing. did some experimenting for the proper level of contrast/similarity */
 .miss {
     background-color: steelblue;
+}
+
+.cqhit {
+    background-color: #6B8E23;
 }
 
 /* =======  INACTIVE  ==================================================================== */

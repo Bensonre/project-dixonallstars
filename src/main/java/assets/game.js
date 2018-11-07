@@ -27,7 +27,10 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK")
-            className = "sunk"
+            className = "sunk";
+        else if (attack.result == "CQHIT"){
+            className = "cqhit";
+           }
         else if (attack.result === "SURRENDER") {
             if (gg == false) { // If game over modal has never been opened before
                 openGG(surrenderText); // Create game over modal with correct surrender text

@@ -94,6 +94,7 @@
                 </ul>-->
             </div>
         </div>
+
 </div>
 
     <div id="modal-backdrop-inv" class="inactive"></div> <!-- this is the invalid move modal -->
@@ -151,30 +152,18 @@
 
     </div>
 
-    <div id="modal-backdrop-sonar" class="inactive"></div> <!-- this is the invalid move modal -->
     <div id="modal-sonar" class="inactive">
-        <div class="modal-dialog-sonar">
-
-            <div class="modal-header-sonar">
-                <h3>Sonar Attack Ready!</h3>
-                <button type="button" class="modal-close-button-sonar">&times;</button>  <!-- close button to exit -->
-            </div>
-
-            <div class="modal-body-sonar">  <!-- hard coded text for body -->
-                <p>
-                    <strong>Instructions</strong><br>
-                    Attack is unlocked once an enemy ship has been destroyed.<br>
-                    You may use the sonar ability twice per game.<br>
-                </p>
-            </div>
-
-            <div class="modal-footer-sonar">  <!-- okay button to exit -->
-                <button type="button" class="modal-fire-button-sonar">Fire!</button>
-            </div>
-
+        <div id="modal-body-sonar">
+            <p>
+                <strong>Sonar Attack Ready!</strong><br>
+                + Ability is unlocked once an enemy ship has been destroyed<br>
+                + You may use the sonar attack twice per game<br>
+            </p>
+        </div>
+        <div id="modal-footer-sonar">  <!-- okay button to exit -->
+            <button type="button" id="fire-sonar-button">Use Sonar</button>
         </div>
     </div>
-
 
 
 </div>

@@ -6,6 +6,13 @@ var vertical = 0;
 var verticalButton = document;
 var gg = false;  // indicates end of game
 
+// var is passed to attack function, indicating what type of attack is being used.
+var isSonarAttack = false;
+
+// used for knowing when sonar is up
+var firstShipSunk = false;
+var sonarsFired = 0;
+
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -26,8 +33,15 @@ function markHits(board, elementId, surrenderText) {
             className = "miss";
         else if (attack.result === "HIT")
             className = "hit";
-        else if (attack.result === "SUNK")
+        else if (attack.result === "SUNK"){
+            // activate sonar ability once first sunk result has been received
+            // TODO: make this only do it for opponent ship sunk
+            if(firstShipSunk == false){
+                firstShipSunk = true;
+                openSonar();
+            }
             className = "sunk";
+        }
         else if (attack.result == "CQHIT"){
             className = "cqhit";
            }
@@ -99,10 +113,13 @@ function cellClick() {
                 document.getElementById("attack_mode").classList.remove("inactive");
             }
         });
+        /* send sonar attack */
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
+            // set isSonarAttack back to false
+            // increment sonarAttacksFired and check if the button needs to be removed
         })
     }
 }
@@ -122,7 +139,7 @@ function sendXhr(method, url, data, handler) {
 }
 
 // this function is code removed from place function so it could be reused other than that Reese didn't touch it
-function finishPlacement(size,table, vertical){
+function finishPlacement(size, table, vertical){
     for (let i=0; i<size; i++) { // goes through for the length of the ship being placed
             let cell; // name for the current space on board that the board is trying to hilight
             if(vertical) { //if the ship will be placed vertically increment through the rows
@@ -215,8 +232,8 @@ function closeInv(){
 }
 
 // close invalid move modal when one of the buttons is clicked
-document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click",closeInv);
-document.getElementsByClassName("modal-okay-button-inv")[0].addEventListener("click",closeInv);
+document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click", closeInv);
+document.getElementsByClassName("modal-okay-button-inv")[0].addEventListener("click", closeInv);
 
 // open game over modal
 function openGG(surrenderText){
@@ -227,28 +244,25 @@ function openGG(surrenderText){
 
 /* ===============    SONAR    ================================================================ */
 
-// open sonar modal
+// open sonar modal. happens when first ship has been sunk.
 function openSonar(){
-	document.getElementById("modal-backdrop-sonar").classList.remove("inactive");
 	document.getElementById("modal-sonar").classList.remove("inactive");
 }
 
-// close sonar modal
+// close sonar modal. happens when two sonars have been fired.
 function closeSonar(){
-	document.getElementById("modal-backdrop-inv").classList.add("inactive");
-	document.getElementById("modal-inv").classList.add("inactive");
+	document.getElementById("modal-sonar").classList.add("inactive");
 }
 
-// close invalid move modal when one of the buttons is clicked
-document.getElementsByClassName("modal-close-button-sonar")[0].addEventListener("click",closeSonar);
-document.getElementsByClassName("modal-fire-button-sonar")[0].addEventListener("click",closeSonar);
+// close sonar modal when one of the buttons is clicked
+document.getElementsByClassName("modal-close-button-sonar")[0].addEventListener("click", closeSonar);
+document.getElementsByClassName("modal-fire-button-sonar")[0].addEventListener("click", closeSonar);
 
 
-/* open Sonar modal when Sonar bool is set to true */
+/* open Sonar modal when Sonar bool is set to true */ /*
 function sonarReady() {
     if () {
         openSonar();
-        return;
     }
     else{
         closeSonar();

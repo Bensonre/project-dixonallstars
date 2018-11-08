@@ -273,16 +273,9 @@ td:hover {
     background-color: #505050;
 }
 
-/* I added this for coloring of the legend. LK, you will have to figure out
-   how to get the target to only be during attacking... TODO */
+/* target shade mirrors crosshair without being too bright */
 .target {
-    background-color: darkred;
-}
-
-/* Is there something potentially going wrong with this? I'm not aware as to
-   what's causing our placement bug... TODO */
-.placed {
-    background-color: red;
+    background-color: #cc0000;
 }
 
 /* a dark shade of grey to imitate an actual battleship.
@@ -318,7 +311,7 @@ td:hover {
     background-color: #262626;
 }
 
-.sonar_unoccupied {
+.sonar_empty {
     background-color: lightgray;
 }
 
@@ -470,6 +463,61 @@ button:hover{
 
 /* hovering over okay button */
 .modal-footer-inv .modal-okay-button-inv:hover {
+  background-color: #eee;
+}
+
+/* =======  SONAR MODAL  ======================================================== */
+
+/* main box positioned relative to the viewport */
+/* cognizant of the backdrop art in precise placement */
+#modal-sonar {
+  position: fixed;
+  top: 500px;
+  right: 150px;
+  z-index: 1010;
+  overflow: scroll;
+
+  width: 250px;
+  height: 215px;
+  margin: 10px;
+  background-color: #fff;
+
+  /* drop shadow of approx. half intensity of main container */
+  box-shadow:10px 10px 20px rgba(0,37,37,.2);
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+/* body that holds text */
+#modal-body-sonar {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+#modal-body-sonar > p {
+    font-size: 16px;
+}
+
+/* footer that holds button */
+#modal-footer-sonar {
+  display: flex;
+  justify-content: center;
+/*  padding: 10px 10px 20px 10px;*/
+}
+
+/* fire sonar button */
+#fire-sonar-button {
+   font-size: 18px;
+   background-color: #fff;
+   color: #333;
+   border-radius: 5px;
+   padding: 10px;
+   cursor: pointer;
+}
+
+/* hovering over fire button */
+#modal-footer-sonar #fire-sonar-button:hover {
   background-color: #eee;
 }
 

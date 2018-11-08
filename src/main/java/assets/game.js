@@ -31,6 +31,12 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result == "CQHIT"){
             className = "cqhit";
            }
+        else if (attack.result == "SONAR_OCCUPIED"){
+            className = "sonar_occupied";
+           }
+        else if (attack.result == "SONAR_UNOCCUPIED"){
+            className = "sonar_unoccupied";
+           }
         else if (attack.result === "SURRENDER") {
             if (gg == false) { // If game over modal has never been opened before
                 openGG(surrenderText); // Create game over modal with correct surrender text
@@ -105,7 +111,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            openInv(); //Open the invalid modal
+            openInv(); // Open the invalid modal
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -219,6 +225,37 @@ function openGG(surrenderText){
 	document.getElementById("surrenderText").textContent = surrenderText;
 }
 
+/* ===============    SONAR    ================================================================ */
+
+// open sonar modal
+function openSonar(){
+	document.getElementById("modal-backdrop-sonar").classList.remove("inactive");
+	document.getElementById("modal-sonar").classList.remove("inactive");
+}
+
+// close sonar modal
+function closeSonar(){
+	document.getElementById("modal-backdrop-inv").classList.add("inactive");
+	document.getElementById("modal-inv").classList.add("inactive");
+}
+
+// close invalid move modal when one of the buttons is clicked
+document.getElementsByClassName("modal-close-button-sonar")[0].addEventListener("click",closeSonar);
+document.getElementsByClassName("modal-fire-button-sonar")[0].addEventListener("click",closeSonar);
+
+
+/* open Sonar modal when Sonar bool is set to true */
+function sonarReady() {
+    if () {
+        openSonar();
+        return;
+    }
+    else{
+        closeSonar();
+    }
+}
+
+/* ===============    ARROW INDICATOR    ======================================================= */
 
 function checkBox(){
     if(vertical == 1) {
@@ -233,7 +270,6 @@ function checkBox(){
     }
 }
 
-
    verticalButton.addEventListener('keydown', function(e) {
         var key = e.keyCode;
         if(key === 37 || key === 39){
@@ -241,6 +277,9 @@ function checkBox(){
         }
     });
   // verticalButton.addEventListener('39',checkBox);
+
+
+/* ===============    GAME OVER MODAL    ====================================================== */
 /* currently commented out since we want the game over modal to terminate the game.
    leaving code in for potential future use */
 

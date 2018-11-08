@@ -64,7 +64,10 @@
 
 .lower_left p{
   margin: 10px;
+  font-size: 20px;
 }
+
+
 
 /* =======  ARROW KEYS  ================================================================== */
 
@@ -240,7 +243,13 @@
 
 .legendTitle{
     font-size: 12pt;
-    width:60px;
+    width:75px;
+}
+
+/* "Attack Enemy Ships by Clicking Spaces Above! */
+#attack_instructions{
+    font-size: 14pt;
+    margin-bottom: 0px;
 }
 
 /* is the unordered list containing the legend for hit miss sunk... */
@@ -304,6 +313,15 @@ td:hover {
     background-color: #6B8E23;
 }
 
+/* basically black, but a little less harsh */
+.sonar_occupied {
+    background-color: #262626;
+}
+
+.sonar_unoccupied {
+    background-color: lightgray;
+}
+
 /* =======  INACTIVE  ==================================================================== */
 
 /* important line */
@@ -314,10 +332,10 @@ td:hover {
 
 /* =======  LIST, PARAGRAPH, AND BUTTONS  ================================================ */
 
-/* get rid of bullet points on list and push it a little right */
+/* get rid of bullet points on list */
 ul{
     display:block;
-    padding:0 0 30px;
+    padding:0 0 0px;
 }
 
 /* allows for a small separation in list elements */
@@ -380,7 +398,7 @@ button:hover{
 /* base */
 #modal-inv {
   position: fixed;
-  top: 200px;
+  top: 100px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -537,6 +555,8 @@ button:hover{
 .modal-footer-gg .modal-okay-button-gg:hover {
   background-color: #eee;
 }
+
+/* ======= FINALIZING TEXT/IMAGE CHANGES  ================================================ */
 
 /* headline text for both error and game over modals */
 h3{

@@ -104,6 +104,7 @@ public class Board {
 			return (placeHorizontal(ship, shipLength, x, y, isVertical));
 
 	}
+	/* ensure parts of the sonar area that extend off the board do not cause errors */
 	public boolean checkOffBoard(int x, char y) {
 		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board
 			return false;
@@ -203,19 +204,26 @@ public class Board {
 		Result PrimarySquare= new Result();
 		List<Square> squares= new ArrayList<Square>();
 
+		/* from -2 spaces to positive 2 spaces (left to right) */
 		for(int i=-2;i<3;i++){
-			int j;
-			if (i==0){
+			int j; /* int var for determining how many boxes from top to bottom */
+
+			/* set num rows according to what col the loop is in */
+			if (i==0){ /* top to bottom range of 5 */
 				j=-2;
 			}
-			else if (i%2==0){
+			else if (i%2==0){ /* top to bottom range of 1 */
 				j=0;
 			}
-			else{
+			else{ /* top to bottom range of 3 */
 				j=1;
 			}
+
+			/* from top to bottom of the column */
 			for (j=j;j<=-j;j++){
-				Result currentSquare= new Result();
+				Result currentSquare = new Result();
+
+				/* tag occupied spaces */
 				if (!previouslyAttacked(x+i, (char) (y+j)) && shipOnSpot(x+i, (char) (y+j)) && !checkOffBoard(x+i, (char)(y+j))) {
 					currentSquare.setResult(AttackStatus.SONAR_OCCUPIED);
 					squares.add(new Square(x+i, (char)(y+j)));
@@ -224,6 +232,8 @@ public class Board {
 					this.attacks.add(currentSquare);
 					setAttacks(attacks);
 				}
+
+				/* tag unoccupied spaces */
 				else if (!previouslyAttacked(x+i, (char) (y+j)) && !checkOffBoard(x, (char)(y+j))) {
 						currentSquare.setResult(AttackStatus.SONAR_EMPTY);
 						squares.add(new Square(x + i, (char) (y + j)));

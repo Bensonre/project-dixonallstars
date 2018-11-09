@@ -102,8 +102,6 @@ public class Game {
                 // randomly choose if it will fire sonar
                 sonarAI = randVertical();
             }
-            System.out.print(sonarAI);
-            System.out.print("\n");
             opponentAttackResult = playersBoard.attack(randRow(), randCol(), sonarAI);
 
             // if opponent attack was successful and was a sonar attack

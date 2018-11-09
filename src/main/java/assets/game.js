@@ -118,7 +118,7 @@ function cellClick() {
                 document.getElementById("attack_mode").classList.remove("inactive");
             }
         });
-        /* send sonar attack */
+
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col, Sonar: isSonarAttackPlayer}, function(data) {
             if(isSonarAttackPlayer == true){

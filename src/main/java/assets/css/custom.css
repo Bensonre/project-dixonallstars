@@ -361,12 +361,11 @@ button:hover{
     background-color: orange;
 }
 
-/* hover and active. used for ship select */
+/* active. used for ship select */
 .btnactive{
     background-color: orange;
 }
 
-/* LK TODO */
 #opponent:hover{
 /*    font awesome / google icons   */
 /* slow rotation if you can */
@@ -520,11 +519,9 @@ button:hover{
   background-color: #eee;
 }
 
-/* hover and active. used for ship select */
-.fireactive{
-    background-color: #eee;
+#modal-footer-sonar #fire-sonar-button.fireactive{
+    background-color: #ccc;
 }
-
 
 /* ======= GAME OVER MODAL STUFF BELOW  ================================================== */
 #modal-backdrop-gg {

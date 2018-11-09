@@ -101,17 +101,16 @@ public class Game {
 
                 // randomly choose if it will fire sonar
                 sonarAI = randVertical();
+            }
+            System.out.print(sonarAI);
+            System.out.print("\n");
+            opponentAttackResult = playersBoard.attack(randRow(), randCol(), sonarAI);
 
-                // if it wants to fire
-                if(sonarAI == true) {
-                    numSonarAI++;
-                    System.out.print(numSonarAI);
-                    System.out.print("\n");
-                }
+            // if opponent attack was successful and was a sonar attack
+            if(opponentAttackResult.getResult() != AttackStatus.INVALID && sonarAI == true){
+                numSonarAI++;
             }
 
-/*            System.out.print(sonarAI);*/
-            opponentAttackResult = playersBoard.attack(randRow(), randCol(), sonarAI);
         } while (opponentAttackResult.getResult() == AttackStatus.INVALID);
 
         return true;

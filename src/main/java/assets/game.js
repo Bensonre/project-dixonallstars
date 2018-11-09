@@ -129,6 +129,8 @@ function cellClick() {
                     closeSonar();
             }
             isSonarAttackPlayer = false; // reset
+            document.getElementById("fire-sonar-button").classList.remove("fireactive");
+
             game = data;
             redrawGrid();
         })
@@ -266,12 +268,11 @@ function closeSonar(){
 }
 
 function fireSonar(){
-    // toggle feature
+    // toggle
     if(isSonarAttackPlayer == true){
         isSonarAttackPlayer = false;
         document.getElementById("fire-sonar-button").classList.remove("fireactive");
     }
-
     else{
         isSonarAttackPlayer = true;
         document.getElementById("fire-sonar-button").classList.add("fireactive");

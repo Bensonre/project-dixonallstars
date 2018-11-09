@@ -6,12 +6,17 @@ var vertical = 0;
 var verticalButton = document;
 var gg = false;  // indicates end of game
 
-// var is passed to attack function, indicating what type of attack is being used.
-var isSonarAttack = false;
+// AI sonar checks are handled in Game Object
 
-// used for knowing when sonar is up
-var firstShipSunk = false;
-var sonarsFired = 0;
+// var is passed to attack function, indicating what type of attack is being used.
+var isSonarAttackPlayer = false;
+
+// used for knowing when sonar is first available for each player
+var firstShipSunkPlayer = false;
+
+// used to know when ability to use sonar should be revoked
+var sonarsFiredPlayer = 0;
+
 
 
 function makeGrid(table, isPlayer) {
@@ -34,23 +39,23 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK"){
-            // activate sonar ability once first sunk result has been received
-            // TODO: make this only do it for opponent ship sunk
-            if(firstShipSunk == false){
-                firstShipSunk = true;
+
+            // if user has sunk an opponent ship, make sonar option available
+            if(firstShipSunkPlayer == false && elementId == "opponent"){
+                firstShipSunkPlayer = true; // so we never open the sonar modal again
                 openSonar();
             }
             className = "sunk";
         }
-        else if (attack.result == "CQHIT"){
+        else if (attack.result === "CQHIT"){
             className = "cqhit";
-           }
-        else if (attack.result == "SONAR_OCCUPIED"){
+        }
+        else if (attack.result === "SONAR_OCCUPIED"){
             className = "sonar_occupied";
-           }
-        else if (attack.result == "SONAR_UNOCCUPIED"){
-            className = "sonar_unoccupied";
-           }
+        }
+        else if (attack.result === "SONAR_EMPTY"){
+            className = "sonar_empty";
+        }
         else if (attack.result === "SURRENDER") {
             if (gg == false) { // If game over modal has never been opened before
                 openGG(surrenderText); // Create game over modal with correct surrender text
@@ -115,11 +120,17 @@ function cellClick() {
         });
         /* send sonar attack */
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, Sonar: isSonarAttackPlayer}, function(data) {
+            if(isSonarAttackPlayer == true){
+                sonarsFiredPlayer++;
+
+                // user has fired two sonars. remove ability to use it
+                if(sonarsFiredPlayer == 2)
+                    closeSonar();
+            }
+            isSonarAttackPlayer = false; // reset
             game = data;
             redrawGrid();
-            // set isSonarAttack back to false
-            // increment sonarAttacksFired and check if the button needs to be removed
         })
     }
 }
@@ -254,20 +265,23 @@ function closeSonar(){
 	document.getElementById("modal-sonar").classList.add("inactive");
 }
 
-// close sonar modal when one of the buttons is clicked
-document.getElementsByClassName("modal-close-button-sonar")[0].addEventListener("click", closeSonar);
-document.getElementsByClassName("modal-fire-button-sonar")[0].addEventListener("click", closeSonar);
-
-
-/* open Sonar modal when Sonar bool is set to true */ /*
-function sonarReady() {
-    if () {
-        openSonar();
+function fireSonar(){
+    // toggle feature
+    if(isSonarAttackPlayer == true){
+        isSonarAttackPlayer = false;
+        document.getElementById("fire-sonar-button").classList.remove("fireactive");
     }
+
     else{
-        closeSonar();
+        isSonarAttackPlayer = true;
+        document.getElementById("fire-sonar-button").classList.add("fireactive");
     }
 }
+
+// fire sonar when user clicks button
+document.getElementById("fire-sonar-button").addEventListener("click", fireSonar);
+
+
 
 /* ===============    ARROW INDICATOR    ======================================================= */
 

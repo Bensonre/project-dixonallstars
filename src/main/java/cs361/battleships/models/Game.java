@@ -1,13 +1,14 @@
 package cs361.battleships.models;
 
 import java.util.Random;
-
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /*
 Follows SRP by only performing responsibilities logically connected to a game of Battleship IRL.
 This includes: the creating of the two boards, the game actions of ship placement and attacks (which occur on the board
-               so the Game class simply *facilitates* board actions).
+so the Game class simply *facilitates* board actions).
 
 Game and Board classes do not inherit, but they have been created with minimalism (ISP) and (OCP) in mind. A third
 board could easily be added, for instance. Or more ships or a larger grid (although the UI would take a bit of a hit
@@ -18,6 +19,9 @@ public class Game {
 
     @JsonProperty private Board playersBoard = new Board();
     @JsonProperty private Board opponentsBoard = new Board();
+
+    static private int numSonarAI = 0;
+    private boolean sonarAI = false;
 
     // seed random number generator
     Random r;
@@ -62,15 +66,27 @@ public class Game {
         return true;
     }
 
+    public boolean oneShipSunk(){
+        List<Ship> ships = playersBoard.getShips();
+
+        // loop through player ships to see if one is sunk
+        for(int i = 0; i < ships.size(); i++) {
+            if ( playersBoard.sunkShip(ships.get(i)) )
+                return true;
+        }
+
+        return false;
+    }
+
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 
 	gets a valid attack from both the player and the AI
 	 */
-    public boolean attack(int x, char y, boolean Sonar) {
+    public boolean attack(int x, char y, boolean SonarPlayer) {
 
         // get an action from the user
-        Result playerAttack = opponentsBoard.attack(x, y, Sonar);
+        Result playerAttack = opponentsBoard.attack(x, y, SonarPlayer);
         if (playerAttack.getResult() == AttackStatus.INVALID) {
             return false;
         }
@@ -78,9 +94,24 @@ public class Game {
         // get an action from the rng AI
         Result opponentAttackResult;
         do {
-            // AI does random attacks, so it might attack the same spot twice
-            // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol(), randVertical());
+            sonarAI = false; // reset
+
+            // if AI can fire a sonar
+            if(numSonarAI < 2 && oneShipSunk()) {
+
+                // randomly choose if it will fire sonar
+                sonarAI = randVertical();
+
+                // if it wants to fire
+                if(sonarAI == true) {
+                    numSonarAI++;
+                    System.out.print(numSonarAI);
+                    System.out.print("\n");
+                }
+            }
+
+/*            System.out.print(sonarAI);*/
+            opponentAttackResult = playersBoard.attack(randRow(), randCol(), sonarAI);
         } while (opponentAttackResult.getResult() == AttackStatus.INVALID);
 
         return true;

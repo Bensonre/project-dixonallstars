@@ -284,9 +284,13 @@ td:hover {
     background-color: #505050;
 }
 
-/* red is a color that communicates danger/alarm/error, not
-   success like we want our hits to communicate. red is also
-   the color of the crosshair. going orange instead. */
+/* basically black, but a little less harsh */
+.sonar_occupied {
+    background-color: #262626;
+}
+.sonar_empty {
+    background-color: lightgray;
+}
 .hit {
     background-color: orange;
 }
@@ -306,14 +310,9 @@ td:hover {
     background-color: #6B8E23;
 }
 
-/* basically black, but a little less harsh */
-.sonar_occupied {
-    background-color: #262626;
-}
 
-.sonar_empty {
-    background-color: lightgray;
-}
+
+
 
 /* =======  INACTIVE  ==================================================================== */
 
@@ -519,6 +518,11 @@ button:hover{
 /* hovering over fire button */
 #modal-footer-sonar #fire-sonar-button:hover {
   background-color: #eee;
+}
+
+/* hover and active. used for ship select */
+.fireactive{
+    background-color: #eee;
 }
 
 

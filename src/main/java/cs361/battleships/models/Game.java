@@ -85,6 +85,10 @@ public class Game {
 	 */
     public boolean attack(int x, char y, boolean SonarPlayer) {
 
+        if (playersBoard.getAttacks().isEmpty()) {
+            numSonarAI = 0;
+        }
+
         // get an action from the user
         Result playerAttack = opponentsBoard.attack(x, y, SonarPlayer);
         if (playerAttack.getResult() == AttackStatus.INVALID) {

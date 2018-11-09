@@ -104,18 +104,19 @@ public class Board {
 			return (placeHorizontal(ship, shipLength, x, y, isVertical));
 
 	}
-	public boolean checkOffBoard(int x, char y) {
-		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board
-			return false;
+	/* ensure parts of the sonar area that extend off the board do not cause errors */
+	public boolean offBoard(int x, char y) {
+		if (y > 'J' || y < 'A' || x > 10 || x < 1) { // Invalid if attack is off the board
+			return true;
 		}
-		return true;
+		return false;
 	}
 	// Checks to see if the attack is not on a ship or is invalid.  Returns null if its a valid attack on a ship.
 	// Returns the result of the attack otherwise and alters the attack array appropriately.
 	public Result checkNoShips(int x, char y) {
 		Result res = new Result();
 
-		if (y > 'J' || y < 'A' || x > 10 || x <= 0) { // Invalid if attack is off the board.
+		if (y > 'J' || y < 'A' || x > 10 || x < 1) { // Invalid if attack is off the board.
 			res.setResult(AttackStatus.INVALID);
 			return res;
 		}
@@ -203,20 +204,27 @@ public class Board {
 		Result PrimarySquare= new Result();
 		List<Square> squares= new ArrayList<Square>();
 
-		for(int i=-2;i<3;i++){
-			int j;
-			if (i==0){
-				j=-2;
+		/* from -2 spaces to positive 2 spaces (top to bottom) */
+		for(int i = -2; i < 3; i++){
+			int width; /* int var for determining how many boxes from left to right */
+
+			/* set num rows according to what col the loop is in */
+			if (i==0){ /* left to right range of 5 */
+				width = 2;
 			}
-			else if (i%2==0){
-				j=0;
+			else if (i == -2 || i == 2){ /* left to right range of 1 */
+				width = 0;
 			}
-			else{
-				j=1;
+			else{ /* left to right range of 3 */
+				width = 1;
 			}
-			for (j=j;j<=-j;j++){
-				Result currentSquare= new Result();
-				if (!previouslyAttacked(x+i, (char) (y+j)) && shipOnSpot(x+i, (char) (y+j)) && !checkOffBoard(x+i, (char)(y+j))) {
+
+			/* from top to bottom of the column */
+			for (int j = -width; j < (width+1); j++){
+				Result currentSquare = new Result();
+
+				/* tag occupied spaces */
+				if (!previouslyAttacked(x+i, (char)(y+j)) && shipOnSpot(x+i, (char)(y+j)) && !offBoard(x+i, (char)(y+j))) {
 					currentSquare.setResult(AttackStatus.SONAR_OCCUPIED);
 					squares.add(new Square(x+i, (char)(y+j)));
 					currentSquare.setLocation(squares.get(squares.size()-1));
@@ -224,13 +232,15 @@ public class Board {
 					this.attacks.add(currentSquare);
 					setAttacks(attacks);
 				}
-				else if (!previouslyAttacked(x+i, (char) (y+j)) && !checkOffBoard(x, (char)(y+j))) {
-						currentSquare.setResult(AttackStatus.SONAR_EMPTY);
-						squares.add(new Square(x + i, (char) (y + j)));
-						currentSquare.setLocation(squares.get(squares.size()-1));
-						attacks = getAttacks();
-						this.attacks.add(currentSquare);
-						setAttacks(attacks);
+
+				/* tag unoccupied spaces */
+				else if (!previouslyAttacked(x+i, (char)(y+j)) && !offBoard(x+i, (char)(y+j))) {
+					currentSquare.setResult(AttackStatus.SONAR_EMPTY);
+					squares.add(new Square(x + i, (char)(y + j)));
+					currentSquare.setLocation(squares.get(squares.size()-1));
+					attacks = getAttacks();
+					this.attacks.add(currentSquare);
+					setAttacks(attacks);
 				}
 				if (i==0 && j==0){
 					PrimarySquare.setResult(currentSquare.getResult());
@@ -252,8 +262,9 @@ public class Board {
 		// Checks cases for no ships
 		Result res;
 		if (Sonar){// if attack was a valid hit and sonar was used
-			if (!previouslyAttacked(x,y) && !checkOffBoard(x,y))
-			res = SonarAttack(x,y);
+			if (!previouslyAttacked(x,y)){
+				res = SonarAttack(x, y);
+			}
 			else {
 				res = new Result();
 				res.setResult(AttackStatus.INVALID);
@@ -296,10 +307,13 @@ public class Board {
 	public boolean previouslyAttacked(int x, char y) {
 		List<Result> attacks = getAttacks();
 		for (int i = 0; i < attacks.size(); i++) { // For all previous attacks
-			Square loc = attacks.get(i).getLocation(); // Get location
-			if (loc != null) {
-				if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
-					return true;
+			// if spot is not tagged by sonar
+			if(!attacks.get(i).getResult().equals(AttackStatus.SONAR_EMPTY) && !attacks.get(i).getResult().equals(AttackStatus.SONAR_OCCUPIED)) {
+				Square loc = attacks.get(i).getLocation(); // Get location
+				if (loc != null) {
+					if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
+						return true;
+					}
 				}
 			}
 		}

@@ -20,13 +20,14 @@
             </div>
             <div class="lower_box"> <!--this contains all of the items in the lower half of the main container durring attack mode-->
                 <div class="lower_left"> <!-- this is whats present on the left side of the lower box-->
-                <p> Attack Enemy Ships by Clicking Spaces Above!</p>
+                <p id="attack_instructions"> Attack Enemy Ships by Clicking Spaces Above!</p>
                 <ul class="key"> <!--this is all the information in the key or legend-->
                     <li><strong class="legendTitle">Target</strong><div class="target legend">     </div></li>
                     <li><strong class="legendTitle">Hit</strong><div class="hit legend"></div></li>
                     <li><strong class="legendTitle">Sunk</strong><div class="sunk legend"></div></li>
                     <li><strong class="legendTitle">Miss</strong><div class="miss legend"></div></li>
-                    <li><strong class="legendTitle">CQ-hit</strong><div class="cqhit legend"></div></li>
+                    <li><strong class="legendTitle">CQ-Hit</strong><div class="cqhit legend"></div></li>
+                    <li><strong class="legendTitle">Sonar Tag</strong><div class="sonar_occupied legend"></div></li>
                 </ul>
             </div>
                 <div class="lower_right board_container"> <!-- contains all the stuff on the lower right and its board-->
@@ -93,6 +94,7 @@
                 </ul>-->
             </div>
         </div>
+
 </div>
 
     <div id="modal-backdrop-inv" class="inactive"></div> <!-- this is the invalid move modal -->
@@ -114,9 +116,8 @@
                     <strong>Gameplay</strong><br>
                     Each location may only be attacked once<br><br>
                     <strong>Captain's Quarters (CQ)</strong><br>
-                    The Captain's Quarters has armor.<br>
-                    It must be attacked multiple times for it to be "hit".<br>
-                    If the Captain's Quarter is "hit", then the whole ship will sink.<br>
+                    Destroy a ship's captain's quarters to immediately sink the ship!<br>
+                    Some captain's quarters will take two hits to destroy.<br>
 
                 </p>
             </div>
@@ -151,6 +152,18 @@
 
     </div>
 
+    <div id="modal-sonar" class="inactive">
+        <div id="modal-body-sonar">
+            <p>
+                <strong>Sonar Attack Ready!</strong><br>
+                + Ability is unlocked once an enemy ship has been destroyed<br>
+                + You may use the sonar attack twice per game<br>
+            </p>
+        </div>
+        <div id="modal-footer-sonar">  <!-- okay button to exit -->
+            <button type="button" id="fire-sonar-button">Use Sonar</button>
+        </div>
+    </div>
 
 
 </div>

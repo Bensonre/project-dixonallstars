@@ -64,7 +64,10 @@
 
 .lower_left p{
   margin: 10px;
+  font-size: 20px;
 }
+
+
 
 /* =======  ARROW KEYS  ================================================================== */
 
@@ -240,7 +243,13 @@
 
 .legendTitle{
     font-size: 12pt;
-    width:60px;
+    width:75px;
+}
+
+/* "Attack Enemy Ships by Clicking Spaces Above! */
+#attack_instructions{
+    font-size: 14pt;
+    margin-bottom: 0px;
 }
 
 /* is the unordered list containing the legend for hit miss sunk... */
@@ -264,16 +273,9 @@ td:hover {
     background-color: #505050;
 }
 
-/* I added this for coloring of the legend. LK, you will have to figure out
-   how to get the target to only be during attacking... TODO */
+/* target shade mirrors crosshair without being too bright */
 .target {
-    background-color: darkred;
-}
-
-/* Is there something potentially going wrong with this? I'm not aware as to
-   what's causing our placement bug... TODO */
-.placed {
-    background-color: red;
+    background-color: #cc0000;
 }
 
 /* a dark shade of grey to imitate an actual battleship.
@@ -282,9 +284,13 @@ td:hover {
     background-color: #505050;
 }
 
-/* red is a color that communicates danger/alarm/error, not
-   success like we want our hits to communicate. red is also
-   the color of the crosshair. going orange instead. */
+/* basically black, but a little less harsh */
+.sonar_occupied {
+    background-color: #262626;
+}
+.sonar_empty {
+    background-color: lightgray;
+}
 .hit {
     background-color: orange;
 }
@@ -304,6 +310,10 @@ td:hover {
     background-color: #6B8E23;
 }
 
+
+
+
+
 /* =======  INACTIVE  ==================================================================== */
 
 /* important line */
@@ -314,10 +324,10 @@ td:hover {
 
 /* =======  LIST, PARAGRAPH, AND BUTTONS  ================================================ */
 
-/* get rid of bullet points on list and push it a little right */
+/* get rid of bullet points on list */
 ul{
     display:block;
-    padding:0 0 30px;
+    padding:0 0 0px;
 }
 
 /* allows for a small separation in list elements */
@@ -351,12 +361,11 @@ button:hover{
     background-color: orange;
 }
 
-/* hover and active. used for ship select */
+/* active. used for ship select */
 .btnactive{
     background-color: orange;
 }
 
-/* LK TODO */
 #opponent:hover{
 /*    font awesome / google icons   */
 /* slow rotation if you can */
@@ -380,7 +389,7 @@ button:hover{
 /* base */
 #modal-inv {
   position: fixed;
-  top: 200px;
+  top: 100px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -455,6 +464,64 @@ button:hover{
   background-color: #eee;
 }
 
+/* =======  SONAR MODAL  ======================================================== */
+
+/* main box positioned relative to the viewport */
+/* cognizant of the backdrop art in precise placement */
+#modal-sonar {
+  position: fixed;
+  top: 500px;
+  right: 150px;
+  z-index: 1010;
+  overflow: scroll;
+
+  width: 250px;
+  height: 215px;
+  margin: 10px;
+  background-color: #fff;
+
+  /* drop shadow of approx. half intensity of main container */
+  box-shadow:10px 10px 20px rgba(0,37,37,.2);
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+/* body that holds text */
+#modal-body-sonar {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+#modal-body-sonar > p {
+    font-size: 16px;
+}
+
+/* footer that holds button */
+#modal-footer-sonar {
+  display: flex;
+  justify-content: center;
+/*  padding: 10px 10px 20px 10px;*/
+}
+
+/* fire sonar button */
+#fire-sonar-button {
+   font-size: 18px;
+   background-color: #fff;
+   color: #333;
+   border-radius: 5px;
+   padding: 10px;
+   cursor: pointer;
+}
+
+/* hovering over fire button */
+#modal-footer-sonar #fire-sonar-button:hover {
+  background-color: #eee;
+}
+
+#modal-footer-sonar #fire-sonar-button.fireactive{
+    background-color: #ccc;
+}
 
 /* ======= GAME OVER MODAL STUFF BELOW  ================================================== */
 #modal-backdrop-gg {
@@ -537,6 +604,8 @@ button:hover{
 .modal-footer-gg .modal-okay-button-gg:hover {
   background-color: #eee;
 }
+
+/* ======= FINALIZING TEXT/IMAGE CHANGES  ================================================ */
 
 /* headline text for both error and game over modals */
 h3{

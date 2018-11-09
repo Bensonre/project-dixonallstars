@@ -495,6 +495,8 @@ public class BoardTest {
               assertFalse(boardResult.getLocation().getRow()>7 && boardResult.getLocation().getColumn()>'G');
           }
         }
+        // 13 sonar squares
+        assertEquals(13, board.getAttacks().size());
     }
     @Test
     public void testSonarOnBoardWithShips() {
@@ -581,6 +583,9 @@ public class BoardTest {
               assertFalse(boardResult.getLocation().getRow()>7 && boardResult.getLocation().getColumn()>'G');
           }
         }
+        // 13 sonar squares
+        assertEquals(13, board.getAttacks().size());
+
     }
     @Test
     public void testSonarOnAlreadyGuessedSpot() {
@@ -678,6 +683,9 @@ public class BoardTest {
               assertFalse(boardResult.getLocation().getRow()>7 && boardResult.getLocation().getColumn()>'G');
           }
         }
+
+        // 13 sonar squares
+        assertEquals(13, board.getAttacks().size());
     }
 }
 

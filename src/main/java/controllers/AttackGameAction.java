@@ -8,7 +8,7 @@ public class AttackGameAction {
     @JsonProperty private Game game;
     @JsonProperty private int x;
     @JsonProperty private char y;
-    @JsonProperty private boolean Sonar;
+    @JsonProperty private boolean Sonar; /* bool for if sonar can be fired */
 
     public Game getGame() {
         return game;

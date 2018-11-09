@@ -6,6 +6,18 @@ var vertical = 0;
 var verticalButton = document;
 var gg = false;  // indicates end of game
 
+// AI sonar checks are handled in Game Object
+
+// var is passed to attack function, indicating what type of attack is being used.
+var isSonarAttackPlayer = false;
+
+// used for knowing when sonar is first available for each player
+var firstShipSunkPlayer = false;
+
+// used to know when ability to use sonar should be revoked
+var sonarsFiredPlayer = 0;
+
+
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -26,11 +38,24 @@ function markHits(board, elementId, surrenderText) {
             className = "miss";
         else if (attack.result === "HIT")
             className = "hit";
-        else if (attack.result === "SUNK")
+        else if (attack.result === "SUNK"){
+
+            // if user has sunk an opponent ship, make sonar option available
+            if(firstShipSunkPlayer == false && elementId == "opponent"){
+                firstShipSunkPlayer = true; // so we never open the sonar modal again
+                openSonar();
+            }
             className = "sunk";
-        else if (attack.result == "CQHIT"){
+        }
+        else if (attack.result === "CQHIT"){
             className = "cqhit";
-           }
+        }
+        else if (attack.result === "SONAR_OCCUPIED"){
+            className = "sonar_occupied";
+        }
+        else if (attack.result === "SONAR_EMPTY"){
+            className = "sonar_empty";
+        }
         else if (attack.result === "SURRENDER") {
             if (gg == false) { // If game over modal has never been opened before
                 openGG(surrenderText); // Create game over modal with correct surrender text
@@ -93,8 +118,19 @@ function cellClick() {
                 document.getElementById("attack_mode").classList.remove("inactive");
             }
         });
+
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, Sonar: isSonarAttackPlayer}, function(data) {
+            if(isSonarAttackPlayer == true){
+                sonarsFiredPlayer++;
+
+                // user has fired two sonars. remove ability to use it
+                if(sonarsFiredPlayer == 2)
+                    closeSonar();
+            }
+            isSonarAttackPlayer = false; // reset
+            document.getElementById("fire-sonar-button").classList.remove("fireactive");
+
             game = data;
             redrawGrid();
         })
@@ -105,7 +141,7 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            openInv(); //Open the invalid modal
+            openInv(); // Open the invalid modal
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -116,7 +152,7 @@ function sendXhr(method, url, data, handler) {
 }
 
 // this function is code removed from place function so it could be reused other than that Reese didn't touch it
-function finishPlacement(size,table, vertical){
+function finishPlacement(size, table, vertical){
     for (let i=0; i<size; i++) { // goes through for the length of the ship being placed
             let cell; // name for the current space on board that the board is trying to hilight
             if(vertical) { //if the ship will be placed vertically increment through the rows
@@ -209,8 +245,8 @@ function closeInv(){
 }
 
 // close invalid move modal when one of the buttons is clicked
-document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click",closeInv);
-document.getElementsByClassName("modal-okay-button-inv")[0].addEventListener("click",closeInv);
+document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click", closeInv);
+document.getElementsByClassName("modal-okay-button-inv")[0].addEventListener("click", closeInv);
 
 // open game over modal
 function openGG(surrenderText){
@@ -219,6 +255,36 @@ function openGG(surrenderText){
 	document.getElementById("surrenderText").textContent = surrenderText;
 }
 
+/* ===============    SONAR    ================================================================ */
+
+// open sonar modal. happens when first ship has been sunk.
+function openSonar(){
+	document.getElementById("modal-sonar").classList.remove("inactive");
+}
+
+// close sonar modal. happens when two sonars have been fired.
+function closeSonar(){
+	document.getElementById("modal-sonar").classList.add("inactive");
+}
+
+function fireSonar(){
+    // toggle
+    if(isSonarAttackPlayer == true){
+        isSonarAttackPlayer = false;
+        document.getElementById("fire-sonar-button").classList.remove("fireactive");
+    }
+    else{
+        isSonarAttackPlayer = true;
+        document.getElementById("fire-sonar-button").classList.add("fireactive");
+    }
+}
+
+// fire sonar when user clicks button
+document.getElementById("fire-sonar-button").addEventListener("click", fireSonar);
+
+
+
+/* ===============    ARROW INDICATOR    ======================================================= */
 
 function checkBox(){
     if(vertical == 1) {
@@ -233,7 +299,6 @@ function checkBox(){
     }
 }
 
-
    verticalButton.addEventListener('keydown', function(e) {
         var key = e.keyCode;
         if(key === 37 || key === 39){
@@ -241,6 +306,9 @@ function checkBox(){
         }
     });
   // verticalButton.addEventListener('39',checkBox);
+
+
+/* ===============    GAME OVER MODAL    ====================================================== */
 /* currently commented out since we want the game over modal to terminate the game.
    leaving code in for potential future use */
 

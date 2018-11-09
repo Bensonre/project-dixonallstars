@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class GameTest {
@@ -84,4 +85,5 @@ public class GameTest {
         myGame.attack(1,'A',false); // Results uncertain due to captains quarters
         assertFalse(myGame.attack(1,'A',false)); // Subsequent attacks on place should break
     }
+
 }

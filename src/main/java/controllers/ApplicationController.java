@@ -38,7 +38,6 @@ public class ApplicationController {
     }
 
     public Result attack(Context context, AttackGameAction g) {
-
         Game game = g.getGame();
         boolean result = game.attack(g.getActionRow(), g.getActionColumn(), g.getActionSonar());
         if (result) {

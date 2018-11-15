@@ -87,7 +87,6 @@ public class Game {
 	gets a valid attack from both the player and the AI
 	 */
     public boolean attack(int x, char y, boolean SonarPlayer) {
-
         if (playersBoard.getAttacks().isEmpty()) {
             numSonarAI = 0;
         }

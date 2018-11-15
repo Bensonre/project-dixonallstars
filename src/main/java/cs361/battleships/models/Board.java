@@ -143,66 +143,82 @@ public class Board {
 	// Controls the logic if a ship is attacked.
 	// Returns the result of the attack and alters the attack array appropriately.
 	public Result attackOnShip(int x, char y) {
+		List<Result> resList = new ArrayList<Result>();
 		Result res = new Result();
 		Result shipres;
-		Ship attackedShip = hitShip(x, y);  // Get the ship that is being hit
+		List<Ship> attackedShips = hitShips(x, y);  // Get the ship that is being hit
+		for (int i = 0; i < attackedShips.size(); i++) {
+			Ship attackedShip = attackedShips.get(i);
+			res.setLocation(new Square(x, y));
+			res.setShip(attackedShip);
 
-		res.setLocation(new Square(x, y));
-		res.setShip(attackedShip);
+			if (attackingCQ(attackedShip, x, y)) {
+				res.setResult(AttackStatus.CQHIT); // Make a CQhit result
 
-		if (attackingCQ(attackedShip, x, y)) {
-			res.setResult(AttackStatus.CQHIT); // Make a CQhit result
+				List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
+				attacks.add(res);
+				setAttacks(attacks);
 
-			List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
-			attacks.add(res);
-			setAttacks(attacks);
-
-			shipres = new Result();
-			shipres.setLocation(res.getLocation());
-			shipres.setResult(res.getResult());
-			attackedShip.addHit(shipres);
+				shipres = new Result();
+				shipres.setLocation(res.getLocation());
+				shipres.setResult(res.getResult());
+				attackedShip.addHit(shipres);
 
 
-			attackedShip.hitCaptainsQuarters();
-			if (attackedShip.sunkCaptainsQuarters()) {
-				this.attacks.remove(res); // remove cqhit from the board
-				attackedShip.removeHit(shipres);
-				removeShip(attackedShip); // remove all ships squares from the board
-				hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
+				attackedShip.hitCaptainsQuarters();
+				if (attackedShip.sunkCaptainsQuarters()) {
+					this.attacks.remove(res); // remove cqhit from the board
+					attackedShip.removeHit(shipres);
+					removeShip(attackedShip); // remove all ships squares from the board
+					hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
 
-				// Make the result of the attack a sunk
-				res.setResult(AttackStatus.SUNK);
-				attacks = getAttacks();
-				this.attacks.add(res);
+					// Make the result of the attack a sunk
+					res.setResult(AttackStatus.SUNK);
+					attacks = getAttacks();
+					this.attacks.add(res);
+					setAttacks(attacks);
+					shipres = new Result();
+					shipres.setLocation(res.getLocation());
+					shipres.setResult(res.getResult());
+					attackedShip.addHit(shipres);
+				} else {
+					resList.add(res);
+					// make new miss object and return it for the test script.
+					Result missResult = new Result();
+					missResult.setResult(AttackStatus.MISS);
+					missResult.setLocation(new Square(x, y));
+					missResult.setShip(attackedShip);
+					return missResult;
+				}
+			} else {
+				res.setResult(AttackStatus.HIT); // Make a hit result
+
+				List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
+				attacks.add(res);
 				setAttacks(attacks);
 				shipres = new Result();
 				shipres.setLocation(res.getLocation());
 				shipres.setResult(res.getResult());
 				attackedShip.addHit(shipres);
-			} else {
-				// make new miss object and return it for the test script.
-				Result missResult = new Result();
-				missResult.setResult(AttackStatus.MISS);
-				missResult.setLocation(new Square(x, y));
-				missResult.setShip(attackedShip);
-				return missResult;
+
+				if (sunkShip(attackedShip)) {  // If the ship has been sunk
+					this.attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
+					attackedShip.removeHit(res);
+					res.setResult(AttackStatus.SUNK);
+					attacks = getAttacks();
+					attacks.add(res);
+					setAttacks(attacks);
+					shipres = new Result();
+					shipres.setLocation(res.getLocation());
+					shipres.setResult(res.getResult());
+					attackedShip.addHit(shipres);
+				}
 			}
-		} else {
-			res.setResult(AttackStatus.HIT); // Make a hit result
 
-			List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
-			attacks.add(res);
-			setAttacks(attacks);
-			shipres = new Result();
-			shipres.setLocation(res.getLocation());
-			shipres.setResult(res.getResult());
-			attackedShip.addHit(shipres);
-
-			if (sunkShip(attackedShip)) {  // If the ship has been sunk
-				this.attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
+			if (gameOver()) { // If all ships are sunk
+				this.attacks.remove(res);  // Remove the SUNK from the board and replace it with SURRENDER
 				attackedShip.removeHit(res);
-				res.setResult(AttackStatus.SUNK);
-				attacks = getAttacks();
+				res.setResult(AttackStatus.SURRENDER);
 				attacks.add(res);
 				setAttacks(attacks);
 				shipres = new Result();
@@ -210,20 +226,25 @@ public class Board {
 				shipres.setResult(res.getResult());
 				attackedShip.addHit(shipres);
 			}
+
+			resList.add(res);
 		}
 
-		if (gameOver()) { // If all ships are sunk
-			this.attacks.remove(res);  // Remove the SUNK from the board and replace it with SURRENDER
-			attackedShip.removeHit(res);
-			res.setResult(AttackStatus.SURRENDER);
-			attacks.add(res);
-			setAttacks(attacks);
-			shipres = new Result();
-			shipres.setLocation(res.getLocation());
-			shipres.setResult(res.getResult());
-			attackedShip.addHit(shipres);
+		if (resList.size() == 1) {
+			return resList.get(0);
 		}
-		return res;
+		else {
+			int num1 = getNum(resList.get(0).getResult());
+			int num2 = getNum(resList.get(1).getResult());
+			if (num1 >= num2) {
+				attacks.remove(resList.get(1));
+				return resList.get(0);
+			}
+			else {
+				attacks.remove(resList.get(0));
+				return resList.get(1);
+			}
+		}
 	}
 
 	public Result SonarAttack (int x, char y){
@@ -363,19 +384,20 @@ public class Board {
 	}
 
 	// Returns the ship being hit at that coordinate
-	public Ship hitShip(int x, char y) {
+	public List<Ship> hitShips(int x, char y) {
+		List <Ship> shipList = new ArrayList<Ship>();
 		for (int i = 0; i < ships.size(); i++) { // For all ships
 			List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
 			for (int j = 0; j < occupiedSquares.size(); j++) { // For each square
 				Square loc = occupiedSquares.get(j);
 				if (loc != null) {
 					if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return the ship.
-						return ships.get(i);
+						shipList.add(ships.get(i));
 					}
 				}
 			}
 		}
-		return null;
+		return shipList;
 	}
 
 	// True if the ship is sunk
@@ -500,6 +522,21 @@ public class Board {
 			}
 		}
 		return null;
+	}
+
+	public int getNum(AttackStatus result) {
+		if (result == AttackStatus.HIT){
+			return 0;
+		}
+		else if (result == AttackStatus.SUNK) {
+			return 2;
+		}
+		else if (result == AttackStatus.SURRENDER){
+			return 3;
+		}
+		else {
+			return 1;
+		}
 	}
 
 }

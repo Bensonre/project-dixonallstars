@@ -15,6 +15,7 @@ public class Battleship extends Ship {
         this.occupiedSquares.add(new Square(0, 'A'));
         this.occupiedSquares.add(new Square(0, 'A'));
         this.length=4;
+        this.submerged = false;
     }
 
     public void setCaptainsQuarters(int row, char column, boolean vertical){

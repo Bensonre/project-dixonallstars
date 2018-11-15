@@ -34,11 +34,12 @@ public class Ship {
 	protected int length; // number of spaces ship will occupy
 	protected Square captainsQuarters; // The square that the captains quarter is on
 	protected Armor armor; // How much armor the captains quarter has
-	protected List<Result> hitSquares; // The squares that are hit on this ship
+	@JsonProperty protected List<Result> hitSquares; // The squares that are hit on this ship
 
 	// CONSTRUCTOR
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
+		hitSquares = new ArrayList<>();
 	}
 
 	// GETTERS

@@ -291,6 +291,9 @@ public class BoardTest {
         placing.setLocation(new Square(1, 'A'));
         List<Result> attacks = new ArrayList<Result>();  // Add a CQHit to the board.
         attacks.add(placing);
+        Battleship b = new Battleship();
+        b.addHit(placing);
+        board.getShips().add(b);
 
         board.setAttacks(attacks);
 

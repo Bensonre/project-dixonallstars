@@ -398,7 +398,7 @@ public class BoardTest {
         Board board = new Board();
 
         Result expected = new Result();
-        expected.setResult(AttackStatus.MISS);
+        expected.setResult(AttackStatus.CQHIT);
 
         Ship shipD = new Destroyer(); // Put ship on board
         board.placeShip(shipD, 2, 'A', false);

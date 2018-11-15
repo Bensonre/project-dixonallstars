@@ -15,6 +15,7 @@ public class Board {
 
 	private List<Ship> ships; // holds the locations on the board the is present at
 	private List<Result> attacks;
+	private boolean enemyHasLazer;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -150,6 +151,12 @@ public class Board {
 		for (int i = 0; i < attackedShips.size(); i++) {
 			Ship attackedShip = attackedShips.get(i);
 			res.setLocation(new Square(x, y));
+			if (attackedShip.isSubmerged() && !enemyHasLazer) {
+				res.setResult(AttackStatus.MISS);
+				this.attacks.add(res);
+				resList.add(res);
+			}
+
 			res.setShip(attackedShip);
 
 			if (attackingCQ(attackedShip, x, y)) {
@@ -173,6 +180,7 @@ public class Board {
 					hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
 
 					// Make the result of the attack a sunk
+					enemyHasLazer = true;
 					res.setResult(AttackStatus.SUNK);
 					attacks = getAttacks();
 					this.attacks.add(res);
@@ -181,14 +189,6 @@ public class Board {
 					shipres.setLocation(res.getLocation());
 					shipres.setResult(res.getResult());
 					attackedShip.addHit(shipres);
-				} else {
-					resList.add(res);
-					// make new miss object and return it for the test script.
-					Result missResult = new Result();
-					missResult.setResult(AttackStatus.MISS);
-					missResult.setLocation(new Square(x, y));
-					missResult.setShip(attackedShip);
-					return missResult;
 				}
 			} else {
 				res.setResult(AttackStatus.HIT); // Make a hit result
@@ -202,6 +202,7 @@ public class Board {
 				attackedShip.addHit(shipres);
 
 				if (sunkShip(attackedShip)) {  // If the ship has been sunk
+					enemyHasLazer = true;
 					this.attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
 					attackedShip.removeHit(res);
 					res.setResult(AttackStatus.SUNK);
@@ -305,6 +306,10 @@ public class Board {
 	--Returns the result object of the attack AND adds it to the board's attacks
 	 */
 	public Result attack(int x, char y, boolean Sonar) {
+
+		if (attacks.isEmpty()) {
+			enemyHasLazer = false;
+		}
 
 		// Checks cases for no ships
 		Result res;

@@ -34,6 +34,7 @@ public class Ship {
 	protected int length; // number of spaces ship will occupy
 	protected Square captainsQuarters; // The square that the captains quarter is on
 	protected Armor armor; // How much armor the captains quarter has
+	protected boolean submerged; // Is the ship submerged
 	@JsonProperty protected List<Result> hitSquares; // The squares that are hit on this ship
 
 	// CONSTRUCTOR
@@ -53,6 +54,7 @@ public class Ship {
 		return this.kind;
 	}
 	public List<Result> getHitSquares() {return hitSquares;}
+	public boolean isSubmerged() {return submerged;}
 
 	// SETTERS
 	public void setOccupiedSquares(int row, char column, boolean vertical){

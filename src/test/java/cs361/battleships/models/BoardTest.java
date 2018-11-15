@@ -107,7 +107,7 @@ public class BoardTest {
         Result res = board.attack(1, 'A', false);
 
         Result expected = new Result();
-        expected.setResult(AttackStatus.INVALID);
+        expected.setResult(AttackStatus.MISS);
 
         assertSame(expected.getResult(), res.getResult());
     }
@@ -135,7 +135,7 @@ public class BoardTest {
         res = board.attack(2, 'D', false);  // Test miss w ship on board.
         assertSame(expected.getResult(), res.getResult());
 
-        expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
+        expected.setResult(AttackStatus.MISS); // Test that attacks can't be repeated.
         res = board.attack(2, 'D', false);
         assertSame(expected.getResult(), res.getResult());
     }
@@ -169,7 +169,7 @@ public class BoardTest {
         res = board.attack(8, 'E', false);  // Test hits ship on board.
         assertSame(expected.getResult(), res.getResult());
 
-        expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
+        // Test that attacks can be repeated.
         res = board.attack(8, 'E', false);
         assertSame(expected.getResult(), res.getResult());
     }
@@ -207,7 +207,7 @@ public class BoardTest {
         res = board.attack(7, 'E', false);
         assertSame(expected.getResult(), res.getResult());
 
-        expected.setResult(AttackStatus.INVALID); // Test that attacks can't be repeated.
+        expected.setResult(AttackStatus.HIT);// Test that attacks can be repeated.
         res = board.attack(7, 'F', false);
         assertSame(expected.getResult(), res.getResult());
     }

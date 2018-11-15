@@ -83,7 +83,7 @@ public class GameTest {
 
         assertTrue(myGame.attack(1,'A',false)); // First attack should work
         myGame.attack(1,'A',false); // Results uncertain due to captains quarters
-        assertFalse(myGame.attack(1,'A',false)); // Subsequent attacks on place should break
+        assertTrue(myGame.attack(1,'A',false)); // Subsequent attacks on place should break
     }
 
 }

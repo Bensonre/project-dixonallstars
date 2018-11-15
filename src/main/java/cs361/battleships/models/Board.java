@@ -121,10 +121,10 @@ public class Board {
 			return res;
 		}
 
-		// Invalid if the attack has already been attempted and did not hit the CQ.
-		if (previouslyAttacked(x, y) && (!alreadyCQHit(x, y))) {
-			res.setResult(AttackStatus.INVALID);
-			return res;
+		// Remove previous attack on the spot
+		if (previouslyAttacked(x, y)) {
+			Result rem = getAttack(x,y);
+			attacks.remove(rem);
 		}
 
 		if (!shipOnSpot(x, y)) { // If not a ship on the spot, record a miss.
@@ -166,7 +166,7 @@ public class Board {
 			attackedShip.hitCaptainsQuarters();
 			if (attackedShip.sunkCaptainsQuarters()) {
 				this.attacks.remove(res); // remove cqhit from the board
-				attackedShip.removeHit(res);
+				attackedShip.removeHit(shipres);
 				removeShip(attackedShip); // remove all ships squares from the board
 				hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
 
@@ -391,7 +391,7 @@ public class Board {
 				Square attacked_loc = ship.getHitSquares().get(j).getLocation();
 				if (attacked_loc != null) {
 					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()) {  // If that location is the same as the ship
-						if (ship.getHitSquares().get(j).getResult() == AttackStatus.HIT || ship.getHitSquares().get(j).getResult() == AttackStatus.SUNK) {
+						if (ship.getHitSquares().get(j).getResult() == AttackStatus.HIT) {
 							attacked = true;  // Mark the ship as attacked
 						}
 					}
@@ -458,12 +458,12 @@ public class Board {
 				Square attacked_loc = attacks.get(j).getLocation();
 				if (attacked_loc != null) {
 					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()) {  // If that location is the same as the ship
-						ship.removeHit(attacks.get(j));
 						attacks.remove(attacks.get(j));
 					}
 				}
 			}
 		}
+		ship.hitSquares.clear();
 	}
 
 	// Adds a hit to all spots that are not the captains quarter
@@ -491,6 +491,15 @@ public class Board {
 				ship.addHit(shipres);
 			}
 		}
+	}
+
+	public Result getAttack(int x, char y) {
+		for (int i = 0; i < attacks.size(); i++) {
+			if (attacks.get(i).getLocation().getRow() == x && attacks.get(i).getLocation().getColumn() == y) {
+				return attacks.get(i);
+			}
+		}
+		return null;
 	}
 
 }

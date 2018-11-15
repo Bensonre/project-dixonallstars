@@ -370,11 +370,11 @@ public class Board {
 			int row = loc.getRow();
 			char col = loc.getColumn();
 
-			for (int j = 0; j < attacks.size(); j++) {  // For all of the attacked squares
-				Square attacked_loc = attacks.get(j).getLocation();
+			for (int j = 0; j < ship.getHitSquares().size(); j++) {  // For all of the attacked squares
+				Square attacked_loc = ship.getHitSquares().get(j).getLocation();
 				if (attacked_loc != null) {
 					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()) {  // If that location is the same as the ship
-						if (attacks.get(j).getResult() == AttackStatus.HIT || attacks.get(j).getResult() == AttackStatus.SUNK) {
+						if (ship.getHitSquares().get(j).getResult() == AttackStatus.HIT || ship.getHitSquares().get(j).getResult() == AttackStatus.SUNK) {
 							attacked = true;  // Mark the ship as attacked
 						}
 					}
@@ -390,9 +390,11 @@ public class Board {
 	//returns true if 3 ships are sunk
 	boolean gameOver() {
 		int sunkShips = 0;
-		for (int i = 0; i < attacks.size(); i++) { //for all results
-			if (attacks.get(i).getResult() == AttackStatus.SUNK) { //if a result is sunk, add to sunkShips
-				sunkShips++;
+		for (int j = 0; j < ships.size(); j++) {
+			for (int i = 0; i < ships.get(j).getHitSquares().size(); i++) { //for all results
+				if (ships.get(j).getHitSquares().get(i).getResult() == AttackStatus.SUNK) { //if a result is sunk, add to sunkShips
+					sunkShips++;
+				}
 			}
 		}
 		if (sunkShips >= 3){
@@ -403,13 +405,15 @@ public class Board {
 
 	// True if this already hit square is an unsunk captains quarters
 	public boolean alreadyCQHit(int x, char y) {
-		List<Result> attacks = getAttacks();
-		for (int i = 0; i < attacks.size(); i++) { // For all previous attacks
-			Square loc = attacks.get(i).getLocation(); // Get location
-			if (loc != null) {
-				if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
-					if (attacks.get(i).getResult().equals(AttackStatus.CQHIT)){
-						return true;
+		for (int j = 0; j < ships.size(); j++) {
+			List<Result> attacks = ships.get(j).getHitSquares();
+			for (int i = 0; i < attacks.size(); i++) { // For all previous attacks
+				Square loc = attacks.get(i).getLocation(); // Get location
+				if (loc != null) {
+					if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to attack return true.
+						if (attacks.get(i).getResult().equals(AttackStatus.CQHIT)) {
+							return true;
+						}
 					}
 				}
 			}

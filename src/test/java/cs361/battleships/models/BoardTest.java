@@ -231,8 +231,11 @@ public class BoardTest {
         board.placeShip(ship, 7, 'E', false);
         Ship ship2 = new Destroyer(); // create ship2
         Ship ship3 = new Battleship(); // create ship2
+        Ship ship4 = new Submarine(true);
         assertTrue(board.placeShip(ship2, 5, 'C', true));//should ne able to place a ship of a new type;
         assertTrue(board.placeShip(ship3, 3, 'B', true));//should be able to place a ship of a new kind;
+        assertTrue(board.placeShip(ship4, 3, 'B', true));
+        assertTrue(board.getShips().get(3).getOccupiedSquares().get(4).getColumn() == 'C');
     }
 
     @Test
@@ -259,6 +262,8 @@ public class BoardTest {
         board.placeShip(shipD, 2, 'A', false);
         Ship shipB = new Battleship(); // Put ship on board
         board.placeShip(shipB, 3, 'A', false);
+        Ship shipS = new Submarine(false);
+        board.placeShip(shipS, 5, 'A', false);
 
         List<Ship> shiplist = board.getShips(); // Make sure ship is on board
 
@@ -270,6 +275,15 @@ public class BoardTest {
         board.attack(2, 'B',false);
         board.attack(2, 'B',false);
         board.attack(2, 'C',false);
+
+        board.attack(5, 'A',false);
+        board.attack(5, 'B',false);
+        board.attack(5, 'B',false);
+        board.attack(5, 'C',false);
+        board.attack(5, 'D', false);
+        board.attack(5, 'D', false);
+        board.attack(6, 'D', false);
+
 
         board.attack(3, 'A',false);
         board.attack(3, 'B',false);
@@ -730,6 +744,41 @@ public class BoardTest {
         res = board.attack(3, 'C',false);
 
         assertSame(expected.getResult(), shipB.getHitSquares().get(3).getResult());
+    }
+
+    @Test
+    public void testSideOffBoard() {
+        Board board = new Board();
+        Ship ship = new Submarine(false); // Put ship on board
+        assertFalse(board.placeShip(ship, 10, 'E', false));
+
+        Ship ship2 = new Submarine(true); // create ship2
+        Ship ship3 = new Destroyer(); // create ship2
+
+        assertTrue(board.placeShip(ship3, 5, 'C', false));//should be able to place a ship of a new kind;
+        assertFalse(board.placeShip(ship, 4, 'C', false));
+    }
+
+    @Test
+    public void testDoubleHit() {
+        Board board = new Board();
+        Ship shipS = new Submarine(true); // Put ship on board
+        Ship shipM = new Minesweeper();
+        Ship shipD = new Destroyer();
+
+        board.placeShip(shipM, 1, 'A', false);
+        board.placeShip(shipD, 5, 'C', false);
+        board.placeShip(shipS, 5, 'D', false);
+
+        board.attack(5, 'D', false);
+        assertSame(1, board.getAttacks().size());
+        assertSame(AttackStatus.CQHIT, board.getAttacks().get(0).getResult());
+        assertSame(0, shipS.getHitSquares().size());
+        board.attack(1, 'A', false);
+        board.attack(5, 'D', false);
+        assertSame(5, board.getAttacks().size());
+        assertSame(AttackStatus.SUNK, board.getAttacks().get(4).getResult());
+        assertSame(AttackStatus.HIT, shipS.getHitSquares().get(0).getResult());
     }
 
 }

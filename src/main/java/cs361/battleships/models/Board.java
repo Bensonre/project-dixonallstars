@@ -34,6 +34,45 @@ public class Board {
 		return false;
 	}
 
+	public boolean cantPlaceSubSideSpot(int x, char y, boolean vert, Ship Placing) {
+		int badx;
+		char bady;
+
+		String col = "ABCDEFGHIJ"; // makes a string of characters to get cols
+		int c = 0; // used for index of cols
+		for (int i = 0; i < col.length(); i++) {//selects the right index to use for col
+			if (col.charAt(i) == y) {
+				c = i;
+				break;
+			}
+		}
+		if (vert) {
+			badx = x + 2;
+			bady = col.charAt(c + 1);
+		} else {
+			badx = x + 1;
+			bady = col.charAt(c + 2);
+		}
+		if (offBoard(badx, bady)) {
+			return true;
+		}
+		List<Ship> shipsList = this.ships;
+		for (int i = 0; i < shipsList.size(); i++) { // this loop ensure a ships isn't placed over a different one
+			//currentShip is the ship being acessed in ships list, the loop itterates through the number of ships
+			Ship currentShip = shipsList.get(i);
+			for (int j = 0; j < currentShip.getLength(); j++) { //j represents the the square being checked in current ships square list
+				if (badx == currentShip.getOccupiedSquares().get(j).getRow()) { // tests to see if the ship being placed is in the same row as the current ship
+					if (bady == currentShip.getOccupiedSquares().get(j).getColumn()) { // tests to see if the ship being [laced is in the same col as the current ship
+						if (!Placing.isSubmerged()) {
+							return true; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	// place a ship vertically on the board, in a north-south/top-down manner
 	public boolean placeVertical(Ship ship, int shipLength, int x, char y, boolean isVertical) {
 		if (x + (shipLength) > 11 || x < 1)
@@ -49,10 +88,17 @@ public class Board {
 			 	for (int k = 0; k < shipLength; k++) { // k represents the squares that the newly placed ships will take
 			 		if (x + k == currentShip.getOccupiedSquares().get(j).getRow()) { // tests to see if the ship being placed is in the same row as the current ship
 			 			if (y == currentShip.getOccupiedSquares().get(j).getColumn()) { // tests to see if the ship being [laced is in the same col as the current ship
-			 				return false; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
+			 				if (!ship.isSubmerged()) {
+								return false; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
 							}
-						}
-					}
+			 			}
+			 		}
+			 	}
+			 }
+		}
+			if (ship.getKind().equals("SUBMARINE")) {
+				if (cantPlaceSubSideSpot(x, y, isVertical, ship)) {
+					return false;
 				}
 			}
 			ship.setOccupiedSquares(x, y, isVertical); // ship passed so add it's squares to its list and added it to the boards list
@@ -78,16 +124,23 @@ public class Board {
 				for (int k = 0; k < shipLength; k++) {// k represents the squares that the newly placed ships will take
 					if (y + k == currentShip.getOccupiedSquares().get(j).getColumn()) {// tests to see if the ship being placed is in the same row as the current ship
 						if (x == currentShip.getOccupiedSquares().get(j).getRow()) {// tests to see if the ship being placed is in the same col as the current ship
-							return false;
+							if (!ship.isSubmerged()) {
+								return false; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
+							}
 						}
 					}
 				}
 			}
 		}
-			ship.setOccupiedSquares(x, y, isVertical);// ship passed so add it's squares to its list and added it to the boards list
-			ship.setCaptainsQuarters(x, y, isVertical);
-			this.ships.add(ship);
-			return true;
+		if (ship.getKind().equals("SUBMARINE")) {
+			if (cantPlaceSubSideSpot(x, y, isVertical, ship)) {
+				return false;
+			}
+		}
+		ship.setOccupiedSquares(x, y, isVertical);// ship passed so add it's squares to its list and added it to the boards list
+		ship.setCaptainsQuarters(x, y, isVertical);
+		this.ships.add(ship);
+		return true;
 	}
 
 	/*
@@ -149,12 +202,14 @@ public class Board {
 		Result shipres;
 		List<Ship> attackedShips = hitShips(x, y);  // Get the ship that is being hit
 		for (int i = 0; i < attackedShips.size(); i++) {
+			res = new Result();
 			Ship attackedShip = attackedShips.get(i);
 			res.setLocation(new Square(x, y));
 			if (attackedShip.isSubmerged() && !enemyHasLazer) {
 				res.setResult(AttackStatus.MISS);
 				this.attacks.add(res);
 				resList.add(res);
+				continue;
 			}
 
 			res.setShip(attackedShip);
@@ -530,17 +585,20 @@ public class Board {
 	}
 
 	public int getNum(AttackStatus result) {
-		if (result == AttackStatus.HIT){
-			return 0;
+		if (result.equals(AttackStatus.HIT)){
+			return 1;
 		}
-		else if (result == AttackStatus.SUNK) {
-			return 2;
-		}
-		else if (result == AttackStatus.SURRENDER){
+		else if (result.equals(AttackStatus.SUNK)) {
 			return 3;
 		}
+		else if (result.equals(AttackStatus.SURRENDER)){
+			return 4;
+		}
+		else if (result.equals(AttackStatus.MISS)){
+			return 0;
+		}
 		else {
-			return 1;
+			return 2;
 		}
 	}
 

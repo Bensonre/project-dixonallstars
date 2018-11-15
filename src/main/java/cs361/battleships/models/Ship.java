@@ -65,6 +65,15 @@ public class Ship {
 		if (vertical){ // iterates rows up for length of ship if ship is vertical
 			for (int i=0; i<this.length; i++){
 				this.occupiedSquares.set(i,new Square (row+i,column));
+				if (i == 2 && this.kind.equals("SUBMARINE")) {
+					for (int j=0; j<col.length(); j++){//selects the right index to use for col
+						if (col.charAt(j)== column){
+							c=j;
+							break;
+						}
+					}
+					this.occupiedSquares.set(i+2, new Square(row+i, col.charAt(1 + c)));
+				}
 			}
 		}
 		else {// iterates up col for length of ship if ship is horizontal
@@ -77,6 +86,9 @@ public class Ship {
 
 			for (int i=0; i<this.length; i++){
 				this.occupiedSquares.set(i, new Square (row,col.charAt(i+c)));
+				if (i == 2 && this.kind.equals("SUBMARINE")) {
+					this.occupiedSquares.set(i+2, new Square(row+1, col.charAt(i+c)));
+				}
 			}
 		}
 	}

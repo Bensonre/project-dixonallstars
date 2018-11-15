@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class Ship {
 	protected int length; // number of spaces ship will occupy
 	protected Square captainsQuarters; // The square that the captains quarter is on
 	protected Armor armor; // How much armor the captains quarter has
+	protected List<Result> hitSquares; // The squares that are hit on this ship
 
 	// CONSTRUCTOR
 	public Ship() {
@@ -49,6 +51,7 @@ public class Ship {
 	public String getKind(){
 		return this.kind;
 	}
+	public List<Result> getHitSquares() {return hitSquares;}
 
 	// SETTERS
 	public void setOccupiedSquares(int row, char column, boolean vertical){
@@ -71,6 +74,23 @@ public class Ship {
 
 			for (int i=0; i<this.length; i++){
 				this.occupiedSquares.set(i, new Square (row,col.charAt(i+c)));
+			}
+		}
+	}
+
+	public void setHitSquares(List<Result> newHits) {hitSquares = newHits;}
+
+	public void addHit(Result add) {hitSquares.add(add);}
+
+	// Removes first occurance of hit at given location
+	public void removeHit(Result rem) {
+		int row = rem.getLocation().getRow();
+		char col = rem.getLocation().getColumn();
+		for (int i = 0; i < hitSquares.size(); i++) { // For all hit squares
+			Square s = hitSquares.get(i).getLocation();
+			if (s.getRow() == row && s.getColumn() == col) { // If its at the spot were looking for
+				hitSquares.remove(i);
+				i = hitSquares.size(); // Get out of here
 			}
 		}
 	}

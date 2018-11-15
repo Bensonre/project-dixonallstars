@@ -687,5 +687,47 @@ public class BoardTest {
         // 13 sonar squares
         assertEquals(13, board.getAttacks().size());
     }
+
+    @Test
+    public void testHitSquares() {
+        Board board = new Board();
+
+        Result expected = new Result();
+        expected.setResult(AttackStatus.SUNK);
+
+        Ship shipM = new Minesweeper(); // Put ship on board
+        board.placeShip(shipM, 1, 'A', false);
+        Ship shipD = new Destroyer(); // Put ship on board
+        board.placeShip(shipD, 2, 'A', false);
+        Ship shipB = new Battleship(); // Put ship on board
+        board.placeShip(shipB, 3, 'A', false);
+
+        List<Ship> shiplist = board.getShips(); // Make sure ship is on board
+
+        Result res;
+
+
+        // Make sure the CQ returns a SUNK correctly for all ships
+        res = board.attack(1, 'A',false);
+        assertSame(expected.getResult(), shipM.getHitSquares().get(1).getResult());
+
+        res = board.attack(2, 'B',false);
+        expected.setResult(AttackStatus.CQHIT);
+        assertSame(expected.getResult(), shipD.getHitSquares().get(0).getResult());
+        expected.setResult(AttackStatus.SUNK);
+        res = board.attack(2, 'B',false);
+        assertSame(expected.getResult(), shipD.getHitSquares().get(2).getResult());
+
+        expected.setResult(AttackStatus.HIT);
+        res = board.attack(3,'A',false);
+        assertSame(expected.getResult(), shipB.getHitSquares().get(0).getResult());
+
+        expected.setResult(AttackStatus.SURRENDER);
+        board.attack(3, 'C',false);
+        res = board.attack(3, 'C',false);
+
+        assertSame(expected.getResult(), shipB.getHitSquares().get(3).getResult());
+    }
+
 }
 

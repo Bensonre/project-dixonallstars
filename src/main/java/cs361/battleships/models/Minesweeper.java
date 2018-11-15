@@ -8,6 +8,7 @@ public class Minesweeper extends Ship {
 
     public Minesweeper() {
         this.occupiedSquares= new ArrayList<Square>();// constructs list
+        this.hitSquares = new ArrayList<Result>();
         this.kind="MINESWEEPER";// sets kind equal to that passed in
         this.occupiedSquares.add(new Square(0, 'A'));
         this.occupiedSquares.add(new Square(0, 'A'));

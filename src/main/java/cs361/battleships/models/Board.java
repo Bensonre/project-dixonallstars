@@ -144,6 +144,7 @@ public class Board {
 	// Returns the result of the attack and alters the attack array appropriately.
 	public Result attackOnShip(int x, char y) {
 		Result res = new Result();
+		Result shipres;
 		Ship attackedShip = hitShip(x, y);  // Get the ship that is being hit
 
 		res.setLocation(new Square(x, y));
@@ -156,7 +157,11 @@ public class Board {
 			attacks.add(res);
 			setAttacks(attacks);
 
-			attackedShip.addHit(res);
+			shipres = new Result();
+			shipres.setLocation(res.getLocation());
+			shipres.setResult(res.getResult());
+			attackedShip.addHit(shipres);
+
 
 			attackedShip.hitCaptainsQuarters();
 			if (attackedShip.sunkCaptainsQuarters()) {
@@ -170,7 +175,10 @@ public class Board {
 				attacks = getAttacks();
 				this.attacks.add(res);
 				setAttacks(attacks);
-				attackedShip.addHit(res);
+				shipres = new Result();
+				shipres.setLocation(res.getLocation());
+				shipres.setResult(res.getResult());
+				attackedShip.addHit(shipres);
 			} else {
 				// make new miss object and return it for the test script.
 				Result missResult = new Result();
@@ -185,7 +193,10 @@ public class Board {
 			List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
 			attacks.add(res);
 			setAttacks(attacks);
-			attackedShip.addHit(res);
+			shipres = new Result();
+			shipres.setLocation(res.getLocation());
+			shipres.setResult(res.getResult());
+			attackedShip.addHit(shipres);
 
 			if (sunkShip(attackedShip)) {  // If the ship has been sunk
 				this.attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
@@ -194,7 +205,10 @@ public class Board {
 				attacks = getAttacks();
 				attacks.add(res);
 				setAttacks(attacks);
-				attackedShip.addHit(res);
+				shipres = new Result();
+				shipres.setLocation(res.getLocation());
+				shipres.setResult(res.getResult());
+				attackedShip.addHit(shipres);
 			}
 		}
 
@@ -204,7 +218,10 @@ public class Board {
 			res.setResult(AttackStatus.SURRENDER);
 			attacks.add(res);
 			setAttacks(attacks);
-			attackedShip.addHit(res);
+			shipres = new Result();
+			shipres.setLocation(res.getLocation());
+			shipres.setResult(res.getResult());
+			attackedShip.addHit(shipres);
 		}
 		return res;
 	}
@@ -468,7 +485,10 @@ public class Board {
 				List<Result> attacks = getAttacks(); // Set the attack on the board
 				attacks.add(res);
 				setAttacks(attacks);
-				ship.addHit(res);
+				Result shipres = new Result();
+				shipres.setLocation(res.getLocation());
+				shipres.setResult(res.getResult());
+				ship.addHit(shipres);
 			}
 		}
 	}

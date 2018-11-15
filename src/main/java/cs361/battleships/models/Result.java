@@ -11,6 +11,9 @@ public class Result {
 	private Ship ship;  // The ship that was hit by the attack
 	private Square location; // The location that was attacked.
 
+	// DEFAULT CONSTRUCTOR
+	public Result(){}
+
 	// GETTERS
 	public AttackStatus getResult() {
 		return this.result;

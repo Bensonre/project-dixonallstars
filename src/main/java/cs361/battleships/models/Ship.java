@@ -81,7 +81,17 @@ public class Ship {
 
 	public void setHitSquares(List<Result> newHits) {hitSquares = newHits;}
 
-	public void addHit(Result add) {hitSquares.add(add);}
+	public void addHit(Result add) {
+		boolean doit = true;
+		for (int i =0; i < hitSquares.size(); i++){
+			if (add.getLocation().equals(hitSquares.get(i).getLocation())) {
+				doit = false;
+			}
+		}
+		if (doit) {
+			hitSquares.add(add);
+		}
+	}
 
 	// Removes first occurance of hit at given location
 	public void removeHit(Result rem) {

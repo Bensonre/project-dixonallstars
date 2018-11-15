@@ -71,8 +71,11 @@ public class Game {
 
         // loop through player ships to see if one is sunk
         for(int i = 0; i < ships.size(); i++) {
-            if ( playersBoard.sunkShip(ships.get(i)) )
-                return true;
+            for (int j = 0; j < playersBoard.getShips().get(i).getHitSquares().size(); j++) {
+                if (playersBoard.getShips().get(i).getHitSquares().get(j).getResult() == AttackStatus.SUNK) {
+                    return true;
+                }
+            }
         }
 
         return false;

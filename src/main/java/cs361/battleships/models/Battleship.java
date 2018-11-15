@@ -8,6 +8,7 @@ public class Battleship extends Ship {
 
     public Battleship() {
         this.occupiedSquares = new ArrayList<Square>(); // constructs list
+        this.hitSquares = new ArrayList<Result>();
         this.kind = "BATTLESHIP"; // sets kind equal to what was passed in
         this.occupiedSquares.add(new Square(0, 'A'));
         this.occupiedSquares.add(new Square(0, 'A'));

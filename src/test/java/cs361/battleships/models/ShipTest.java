@@ -155,4 +155,35 @@ public class ShipTest {
         assertTrue(battle.sunkCaptainsQuarters());
     }
 
+    @Test
+    public void testGetSetHitSquares() {
+        Ship mine = new Minesweeper();
+        Result r = new Result();
+        Square s = new Square(1, 'A');
+        r.setResult(AttackStatus.HIT);
+        r.setShip(mine);
+        r.setLocation(s);
+
+        Result r2 = new Result();
+        Square s2 = new Square(1, 'A');
+
+        r2.setResult(AttackStatus.HIT);
+        r2.setLocation(s2);
+        r2.setShip(mine);
+
+        Result r3 = new Result();
+        Square s3 = new Square(2, 'A');
+
+        r3.setResult(AttackStatus.HIT);
+        r3.setLocation(s3);
+        r3.setShip(mine);
+
+        mine.addHit(r);
+        assertEquals(1, mine.getHitSquares().size());
+        mine.removeHit(r3);
+        assertEquals(1, mine.getHitSquares().size());
+        mine.removeHit(r2);
+        assertEquals(0, mine.getHitSquares().size());
+    }
+
 }

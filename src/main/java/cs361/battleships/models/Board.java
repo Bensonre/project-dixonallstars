@@ -156,9 +156,12 @@ public class Board {
 			attacks.add(res);
 			setAttacks(attacks);
 
+			attackedShip.addHit(res);
+
 			attackedShip.hitCaptainsQuarters();
 			if (attackedShip.sunkCaptainsQuarters()) {
 				this.attacks.remove(res); // remove cqhit from the board
+				attackedShip.removeHit(res);
 				removeShip(attackedShip); // remove all ships squares from the board
 				hitAllNonCQ(attackedShip); // set all ships squares to hit except cq
 
@@ -167,6 +170,7 @@ public class Board {
 				attacks = getAttacks();
 				this.attacks.add(res);
 				setAttacks(attacks);
+				attackedShip.addHit(res);
 			} else {
 				// make new miss object and return it for the test script.
 				Result missResult = new Result();
@@ -181,21 +185,26 @@ public class Board {
 			List<Result> attacks = getAttacks(); // Set the attack as a hit on the board
 			attacks.add(res);
 			setAttacks(attacks);
+			attackedShip.addHit(res);
 
 			if (sunkShip(attackedShip)) {  // If the ship has been sunk
 				this.attacks.remove(res);  // Remove the HIT from the board and replace it with SUNK
+				attackedShip.removeHit(res);
 				res.setResult(AttackStatus.SUNK);
 				attacks = getAttacks();
 				attacks.add(res);
 				setAttacks(attacks);
+				attackedShip.addHit(res);
 			}
 		}
 
 		if (gameOver()) { // If all ships are sunk
 			this.attacks.remove(res);  // Remove the SUNK from the board and replace it with SURRENDER
+			attackedShip.removeHit(res);
 			res.setResult(AttackStatus.SURRENDER);
 			attacks.add(res);
 			setAttacks(attacks);
+			attackedShip.addHit(res);
 		}
 		return res;
 	}
@@ -428,6 +437,7 @@ public class Board {
 				Square attacked_loc = attacks.get(j).getLocation();
 				if (attacked_loc != null) {
 					if (row == attacked_loc.getRow() && col == attacked_loc.getColumn()) {  // If that location is the same as the ship
+						ship.removeHit(attacks.get(j));
 						attacks.remove(attacks.get(j));
 					}
 				}
@@ -454,6 +464,7 @@ public class Board {
 				List<Result> attacks = getAttacks(); // Set the attack on the board
 				attacks.add(res);
 				setAttacks(attacks);
+				ship.addHit(res);
 			}
 		}
 	}

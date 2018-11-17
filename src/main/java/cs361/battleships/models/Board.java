@@ -35,8 +35,8 @@ public class Board {
 	}
 
 	public boolean cantPlaceSubSideSpot(int x, char y, boolean vert, Ship Placing) {
-		int badx;
-		char bady;
+		int checkRow;
+		char checkCol;
 
 		String col = "ABCDEFGHIJ"; // makes a string of characters to get cols
 		int c = 0; // used for index of cols
@@ -47,13 +47,13 @@ public class Board {
 			}
 		}
 		if (vert) {
-			badx = x + 2;
-			bady = col.charAt(c + 1);
+			checkRow = x + 2;
+			checkCol = col.charAt(c + 1);
 		} else {
-			badx = x + 1;
-			bady = col.charAt(c + 2);
+			checkRow = x + 1;
+			checkCol = col.charAt(c + 2);
 		}
-		if (offBoard(badx, bady)) {
+		if (offBoard(checkRow, checkCol)) {
 			return true;
 		}
 		List<Ship> shipsList = this.ships;
@@ -61,8 +61,8 @@ public class Board {
 			//currentShip is the ship being acessed in ships list, the loop itterates through the number of ships
 			Ship currentShip = shipsList.get(i);
 			for (int j = 0; j < currentShip.getLength(); j++) { //j represents the the square being checked in current ships square list
-				if (badx == currentShip.getOccupiedSquares().get(j).getRow()) { // tests to see if the ship being placed is in the same row as the current ship
-					if (bady == currentShip.getOccupiedSquares().get(j).getColumn()) { // tests to see if the ship being [laced is in the same col as the current ship
+				if (checkRow == currentShip.getOccupiedSquares().get(j).getRow()) { // tests to see if the ship being placed is in the same row as the current ship
+					if (checkCol == currentShip.getOccupiedSquares().get(j).getColumn()) { // tests to see if the ship being [laced is in the same col as the current ship
 						if (!Placing.isSubmerged()) {
 							return true; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
 						}

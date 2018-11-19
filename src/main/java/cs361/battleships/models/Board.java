@@ -1,6 +1,8 @@
 package cs361.battleships.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -23,6 +25,100 @@ public class Board {
 	public Board() {
 		this.attacks = new ArrayList<Result>();
 		this.ships = new ArrayList<Ship>();
+	}
+
+	// function takes in u, d, l, or r from the front end user input
+	public moveFleet(char direction){
+		boolean sorted = true;
+		boolean moveShipSuccess;
+
+		// to index into the ships array for moving the fleet
+		//int[] leftOrder = {0,1,2,3};
+		//int[] topOrder = {0,1,2,3};
+
+
+		// sort ships array in TOP-ORDER
+		// loop through while sorted = false. if any swap happens, change sorted to false and run loop again
+		if(direction == 'u' || direction == 'd') {
+			while (sorted == false) {
+				sorted = true;
+
+				// start at the 2nd element
+				for (int i = 1; i < ships.size(); i++) {
+					// first square of each occupiedSquares List will always be top-most
+					// swap if previous ship in list is of higher row
+					if (this.ships.get(i).getOccupiedSquares().get(0).getRow() < this.ships.get(i - 1).getOccupiedSquares().get(0).getRow()) {
+						// will it blend?
+						Collections.swap(ships, i, i - 1);
+						sorted = false;
+					}
+				}
+			}
+		}
+
+		// sort ships array in LEFT-ORDER
+		// loop through while sorted = false. if any swap happens, change sorted to false and run loop again
+		else if(direction == 'l' || direction == 'r') {
+			while (sorted == false) {
+				sorted = true;
+
+				// start at the 2nd element
+				for (int i = 1; i < ships.size(); i++) {
+					// first square of each occupiedSquares List will always be left-most
+					// swap if previous ship in list is of higher row
+					if (this.ships.get(i).getOccupiedSquares().get(0).getColumn() < this.ships.get(i - 1).getOccupiedSquares().get(0).getColumn()) {
+						// will it blend?
+						Collections.swap(ships, i, i - 1);
+						sorted = false;
+					}
+				}
+			}
+		}
+
+		// before entering this switcher statement, ships array is sorted in top-order/left-order
+		if(direction == 'u'){
+			for(int i = 0; i < ships.size(); i++){
+				moveShipSuccess = moveShipUp(ships.get(i));
+			}
+		}
+		else if(direction == 'd'){
+			for(int i = (ships.size() - 1); i >= 0; i--){
+				moveShipSuccess = moveShipDown(ships.get(i));
+			}
+		}
+		else if(direction == 'l'){
+			for(int i = 0; i < ships.size(); i++){
+				moveShipSuccess = moveShipLeft(ships.get(i));
+			}
+		}
+		else if(direction == 'r'){
+			for(int i = (ships.size() - 1); i >= 0; i--){
+				moveShipSuccess = moveShipRight(ships.get(i));
+			}
+		}
+	}
+
+	public boolean moveShipUp(Ship ship){
+		List <Square> squares = ship.getOccupiedSquares();
+		List <Square> testSquares = null;
+//		for(int i=0; i < squares.size(); i++){
+//			testSquares[i] = squares[i];
+//		}
+
+
+		// loop through each square, checking if square can be moved up
+		for(int i=0; i < squares.size(); i++){
+			// set new element to testSquares array
+			testSquares.add(new Square (squares.get(i).getRow(), squares.get(i).getColumn()) );
+
+			// move test square up, then check if valid
+			testSquares.get(i).setRow(testSquares.get(i).getRow()-1);
+
+			if(testSquares.get(i).getRow()< 1){
+				return false;
+			}
+			if(shipOnSpot(testSquares.get(i)))
+		}
 	}
 
 	// returns whether or not a ship of this type has been placed on the board
@@ -156,7 +252,6 @@ public class Board {
 			return (placeVertical(ship, shipLength, x, y, isVertical));
 		}
 			return (placeHorizontal(ship, shipLength, x, y, isVertical));
-
 	}
 	/* ensure parts of the sonar area that extend off the board do not cause errors */
 	public boolean offBoard(int x, char y) {
@@ -427,8 +522,29 @@ public class Board {
 		return false;
 	}
 
+	// True if there is a non-sub at passed in coordinate
+	public boolean shipWillCollide(int x, char y) {
+
+		for (int i = 0; i < ships.size(); i++) { // For all ships
+			// if the ship is not a sub
+			if(ships.get(i).isSubmerged() == false) {
+				List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
+				for (int j = 0; j < occupiedSquares.size(); j++) { // For each square
+					Square loc = occupiedSquares.get(j);
+					if (loc != null) {
+						if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to move to return true.
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	// True if there is a ship on that coordinate
 	public boolean shipOnSpot(int x, char y) {
+
 		for (int i = 0; i < ships.size(); i++) { // For all ships
 			List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
 			for (int j = 0; j < occupiedSquares.size(); j++) { // For each square

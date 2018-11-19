@@ -36,6 +36,7 @@ public class Game {
 	 */
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 
+        // places all player ships
         boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
         if (!successful)
             return false;

@@ -186,7 +186,43 @@ public class BoardTest {
         assertTrue(board.getAttacks().get(1).getLocation().getRow()==2);
         assertTrue(board.getAttacks().get(2).getLocation().getRow()==4);//important One!
 
+        // check if boards attacks results  are Hits
+        assertTrue(board.getAttacks().get(0).getResult() == AttackStatus.HIT);
+        assertTrue(board.getAttacks().get(1).getResult() == AttackStatus.HIT);
+        assertTrue(board.getAttacks().get(2).getResult() == AttackStatus.HIT);
     }
+
+    @Test
+    public void testAttacksOnMovedFleet(){
+        Board board = new Board();
+        Ship d = new Destroyer();
+        Ship b = new Battleship();
+        Ship m = new Minesweeper();
+        Ship s = new Submarine(true);
+        board.placeShip(d, 1, 'A', false);
+        board.placeShip(b, 2,'A', false);
+        board.placeShip(m, 4,'A', false);
+        board.placeShip(s, 3,'A', false);
+
+
+        board.moveFleet('u');
+        assertTrue(d.getOccupiedSquares().get(0).getRow()== 1);
+        assertTrue(b.getOccupiedSquares().get(0).getRow()== 2);
+        assertTrue(m.getOccupiedSquares().get(0).getRow()== 3);
+        assertTrue(s.getOccupiedSquares().get(0).getRow()== 2);
+
+        // attack three moved ships once
+        board.attack(1, 'A', false);
+        board.attack(2, 'A', false);
+        board.attack(3, 'B', false); // don't hit CQ
+
+        // check if attacks hit on the moved ship properly
+        assertTrue(d.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+        assertTrue(b.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+        assertTrue(m.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+
+    }
+
 
     @Test
     public void testInvalidPlacement() {

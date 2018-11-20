@@ -610,7 +610,7 @@ public class Board {
 	public boolean shipWillCollide(int x, char y, Ship ship) {
 
 		for (int i = 0; i < ships.size(); i++) { // For all ships
-			if(ships.get(i).isSubmerged() == true || ship.isSubmerged() == true)
+			if(ship.isSubmerged() == true)
 				return false;
 
 			// if the ship is above water and ship we'd move into is not the same exact ship
@@ -620,7 +620,9 @@ public class Board {
 					Square loc = occupiedSquares.get(j);
 					if (loc != null) {
 						if (loc.getRow() == x && loc.getColumn() == y) { // If that is the location we are trying to move to return true.
-							return true;
+							if(ships.get(i).isSubmerged()==false) {
+								return true;
+							}
 						}
 					}
 				}

@@ -45,12 +45,102 @@ public class BoardTest {
     }
 
     @Test
-    public void testShipMoveCollision(){
+    public void testShipMoveCollisionsHorizontal(){
+        Board board = new Board();
+        Ship ship = new Destroyer();
+        Ship m = new Minesweeper();
+        board.placeShip(ship, 8, 'A', true);
+        board.placeShip(m, 8,'B', false );
 
+        assertFalse(board.moveShipLeft(m));
+        assertFalse(board.moveShipRight(ship));
+    }
+    @Test
+    public void testShipMoveCollisionsVertical(){
+        Board board = new Board();
+        Ship ship = new Destroyer();
+        Ship m = new Minesweeper();
+        board.placeShip(ship, 8, 'A', true);
+        board.placeShip(m, 7,'A', false );
+
+        assertFalse(board.moveShipDown(m));
+        assertFalse(board.moveShipUp(ship));
+    }
+    @Test
+    public void testShipsWillCollide(){
+        Board board= new Board();
+        Ship ship = new Destroyer();
+        Ship m = new Minesweeper();
+        board.placeShip(ship, 8, 'A', true);
+        board.placeShip(m, 7,'A', false );
+
+        assertTrue(board.shipWillCollide(8,'A',m));
+        assertTrue(board.shipWillCollide(7,'A',ship));
+
+    }
+    @Test
+    public void testValidShipMove(){
+        Board board= new Board();
+        Ship ship = new Destroyer();
+        Ship m = new Minesweeper();
+        board.placeShip(ship, 8, 'A', true);
+        board.placeShip(m, 7,'A', false );
+
+        assertTrue(board.moveShipRight(ship));
+        assertTrue(board.moveShipUp(m));
     }
 
     @Test
-    public void testValidShipMove(){
+    public void testSubmergedCollisionTrue(){
+        Board board= new Board();
+        Ship ship = new Destroyer();
+        Ship sub = new Submarine(true);
+        board.placeShip(sub, 5, 'C', true);
+        board.placeShip(ship, 5,'D', false);
+
+        assertTrue(board.moveShipLeft(ship));
+        assertTrue(board.moveShipRight(sub));
+    }
+
+    @Test
+    public void testSubmergedCollisionFalse(){
+        Board board= new Board();
+        Ship ship = new Destroyer();
+        Ship sub = new Submarine(false);
+        board.placeShip(sub, 5, 'C', true);
+        board.placeShip(ship, 5,'D', false);
+
+        assertFalse(board.moveShipLeft(ship));
+        assertFalse(board.moveShipRight(sub));
+    }
+
+    @Test
+    public void testMoveFleetSuccess(){
+        Board board= new Board();
+        Ship ship = new Destroyer();
+        Ship sub = new Submarine(false);
+        board.placeShip(sub, 5, 'C', true);
+        board.placeShip(ship, 5,'D', false);
+
+        board.moveFleet('u');
+        assertTrue(ship.getOccupiedSquares().get(0).getRow()== 4);
+        assertTrue(sub.getOccupiedSquares().get(0).getRow()== 4);
+    }
+
+    @Test
+    public void testMoveFleetAgainstBorder(){
+        Board board = new Board();
+        Ship d = new Destroyer();
+        Ship b = new Battleship();
+        Ship m = new Minesweeper();
+        board.placeShip(d, 1, 'A', false);
+        board.placeShip(b, 2,'A', false);
+        board.placeShip(m, 4,'A', false);
+
+        board.moveFleet('u');
+        assertTrue(d.getOccupiedSquares().get(0).getRow()== 1);
+        assertTrue(b.getOccupiedSquares().get(0).getRow()== 2);
+        assertTrue(m.getOccupiedSquares().get(0).getRow()== 3);
 
     }
 

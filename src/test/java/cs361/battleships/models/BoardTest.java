@@ -122,9 +122,15 @@ public class BoardTest {
         board.placeShip(sub, 5, 'C', true);
         board.placeShip(ship, 5,'D', false);
 
+        // attack ships
+        board.attack(5, 'D', false);
+
         board.moveFleet('u');
         assertTrue(ship.getOccupiedSquares().get(0).getRow()== 4);
         assertTrue(sub.getOccupiedSquares().get(0).getRow()== 4);
+
+        // check if hitSquares moved properly
+        assertTrue(ship.getHitSquares().get(0).getLocation().getRow() == 4);
     }
 
     @Test
@@ -133,14 +139,27 @@ public class BoardTest {
         Ship d = new Destroyer();
         Ship b = new Battleship();
         Ship m = new Minesweeper();
+        Ship s = new Submarine(true);
         board.placeShip(d, 1, 'A', false);
         board.placeShip(b, 2,'A', false);
         board.placeShip(m, 4,'A', false);
+        board.placeShip(s, 3,'A', false);
+
+        // attack three ships once
+        board.attack(1, 'A', false);
+        board.attack(2, 'A', false);
+        board.attack(4, 'B', false); // don't hit CQ
 
         board.moveFleet('u');
         assertTrue(d.getOccupiedSquares().get(0).getRow()== 1);
         assertTrue(b.getOccupiedSquares().get(0).getRow()== 2);
         assertTrue(m.getOccupiedSquares().get(0).getRow()== 3);
+        assertTrue(s.getOccupiedSquares().get(0).getRow()== 2);
+
+        // check if hitSquares moved properly
+        assertTrue(d.getHitSquares().get(0).getLocation().getRow() == 1);
+        assertTrue(b.getHitSquares().get(0).getLocation().getRow() == 2);
+        assertTrue(m.getHitSquares().get(0).getLocation().getRow() == 3);
 
     }
 

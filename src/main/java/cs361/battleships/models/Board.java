@@ -29,13 +29,8 @@ public class Board {
 
 	// function takes in u, d, l, or r from the front end user input
 	public void moveFleet(char direction){
-		boolean sorted = true;
+		boolean sorted = false;
 		boolean moveShipSuccess;
-
-		// to index into the ships array for moving the fleet
-		//int[] leftOrder = {0,1,2,3};
-		//int[] topOrder = {0,1,2,3};
-
 
 		// sort ships array in TOP-ORDER
 		// loop through while sorted = false. if any swap happens, change sorted to false and run loop again
@@ -100,6 +95,7 @@ public class Board {
 
 	public boolean moveShipUp(Ship ship){
 		List <Square> testSquares = ship.getOccupiedSquares();
+        List <Result> hits = ship.getHitSquares();
 
 		// loop through each square, checking if square can be moved up
 		for(int i=0; i < testSquares.size(); i++) {
@@ -107,19 +103,27 @@ public class Board {
 			// check for off board
 			if (testSquares.get(i).getRow()-1 < 1)
 				return false;
-			// check for non-submarine ship occupying possible new space
+			// check for non-submerged ship occupying possible new space
 			if (shipWillCollide(testSquares.get(i).getRow()-1, testSquares.get(i).getColumn(), ship))
 				return false;
+			// move not possible if ship is sunk
+            if(ship.sunkCaptainsQuarters() == true)
+                return false;
 		}
 
 		// if function has progressed to this point, move was valid, move all positions
-		for (int i=0; i < ship.length; i++)
-			ship.occupiedSquares.set(i, new Square (testSquares.get(i).getRow()-1, testSquares.get(i).getColumn()));
+		for (int i=0; i < ship.length; i++) {
+            ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow() - 1, testSquares.get(i).getColumn()));
+        }
+        for (int i=0; i < hits.size(); i++) {
+            hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow()-1,hits.get(i).getLocation().getColumn()));
+        }
 		return true;
 	}
 
 	public boolean moveShipDown(Ship ship){
 		List <Square> testSquares = ship.getOccupiedSquares();
+        List <Result> hits = ship.getHitSquares();
 
 		// loop through each square, checking if square can be moved down
 		for(int i=0; i < testSquares.size(); i++) {
@@ -127,19 +131,27 @@ public class Board {
 			// check for off board
 			if (testSquares.get(i).getRow()+1 > 10)
 				return false;
-			// check for non-submarine ship occupying possible new space
+			// check for non-submerged ship occupying possible new space
 			if (shipWillCollide(testSquares.get(i).getRow()+1, testSquares.get(i).getColumn(), ship))
 				return false;
+            // move not possible if ship is sunk
+            if(ship.sunkCaptainsQuarters() == true)
+                return false;
 		}
 
-		// if function has progressed to this point, move was valid, move all positions
-		for (int i=0; i< ship.length; i++)
-			ship.occupiedSquares.set(i, new Square (testSquares.get(i).getRow()+1, testSquares.get(i).getColumn()));
+        // if function has progressed to this point, move was valid, move all positions
+        for (int i=0; i < ship.length; i++) {
+            ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow() + 1, testSquares.get(i).getColumn()));
+        }
+        for (int i=0; i < hits.size(); i++) {
+            hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow()+1,hits.get(i).getLocation().getColumn()));
+        }
 		return true;
 	}
 
 	public boolean moveShipLeft(Ship ship){
 		List <Square> testSquares = ship.getOccupiedSquares();
+        List <Result> hits = ship.getHitSquares();
 
 		// loop through each square, checking if square can be moved down
 		for(int i=0; i < testSquares.size(); i++) {
@@ -147,19 +159,27 @@ public class Board {
 			// check for off board
 			if ((char)(testSquares.get(i).getColumn()-1) < 'A')
 				return false;
-			// check for non-submarine ship occupying possible new space
+			// check for non-submerged ship occupying possible new space
 			if (shipWillCollide(testSquares.get(i).getRow(), (char)(testSquares.get(i).getColumn()-1), ship))
 				return false;
+            // move not possible if ship is sunk
+            if(ship.sunkCaptainsQuarters() == true)
+                return false;
 		}
 
 		// if function has progressed to this point, move was valid, move all positions
-		for (int i=0; i< ship.length; i++)
-			ship.occupiedSquares.set(i, new Square (testSquares.get(i).getRow(), (char)(testSquares.get(i).getColumn()-1)));
+		for (int i=0; i< ship.length; i++) {
+            ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow(), (char) (testSquares.get(i).getColumn() - 1)));
+        }
+        for (int i=0; i < hits.size(); i++) {
+            hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow(),(char)(hits.get(i).getLocation().getColumn()-1)));
+        }
 		return true;
 	}
 
 	public boolean moveShipRight(Ship ship){
 		List <Square> testSquares = ship.getOccupiedSquares();
+        List <Result> hits = ship.getHitSquares();
 
 		// loop through each square, checking if square can be moved right
 		for(int i=0; i < testSquares.size(); i++) {
@@ -167,14 +187,21 @@ public class Board {
 			// check for off board
 			if ((char)(testSquares.get(i).getColumn()+1) > 'J')
 				return false;
-			// check for non-submarine ship occupying possible new space
+			// check for non-submerged ship occupying possible new space
 			if (shipWillCollide(testSquares.get(i).getRow(), (char)(testSquares.get(i).getColumn()+1), ship))
 				return false;
+            // move not possible if ship is sunk
+            if(ship.sunkCaptainsQuarters() == true)
+                return false;
 		}
 
 		// if function has progressed to this point, hypothetical move was valid, move all positions
-		for (int i=0; i< ship.length; i++)
-			ship.occupiedSquares.set(i, new Square (testSquares.get(i).getRow(), (char)(testSquares.get(i).getColumn()+1)));
+		for (int i=0; i< ship.length; i++) {
+            ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow(), (char) (testSquares.get(i).getColumn() + 1)));
+        }
+        for (int i=0; i < hits.size(); i++) {
+            hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow(),(char)(hits.get(i).getLocation().getColumn()+1)));
+        }
 		return true;
 	}
 
@@ -586,7 +613,7 @@ public class Board {
 			if(ships.get(i).isSubmerged() == true || ship.isSubmerged() == true)
 				return false;
 
-			// if the ship is not a sub and ship we'd move into is not the same exact ship
+			// if the ship is above water and ship we'd move into is not the same exact ship
 			if(ships.get(i).kind.equals(ship.kind) == false) {
 				List<Square> occupiedSquares = ships.get(i).getOccupiedSquares();  // Get ships squares
 				for (int j = 0; j < occupiedSquares.size(); j++) { // For each square

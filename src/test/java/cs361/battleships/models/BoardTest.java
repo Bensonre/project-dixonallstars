@@ -78,6 +78,22 @@ public class BoardTest {
         assertTrue(board.shipWillCollide(7,'A',ship));
 
     }
+     @Test
+    public void testShipsWillCollideSubmergedFirst(){
+        Board board= new Board();
+        Ship sub= new Submarine(true);
+        Ship ship = new Destroyer();
+        Ship m = new Minesweeper();
+        board.placeShip(sub, 9, 'E', false);
+        board.placeShip(ship, 8, 'A', true);
+        board.placeShip(m, 7,'A', false );
+
+        assertTrue(board.shipWillCollide(8,'A',m));
+        assertTrue(board.shipWillCollide(7,'A',ship));
+        assertFalse(board.shipWillCollide(9,'E',ship));
+        assertFalse(board.shipWillCollide(9,'E',m));
+        assertFalse(board.shipWillCollide(8,'A',sub));
+    }
     @Test
     public void testValidShipMove(){
         Board board= new Board();

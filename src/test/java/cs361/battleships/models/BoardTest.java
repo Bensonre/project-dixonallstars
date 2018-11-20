@@ -160,6 +160,15 @@ public class BoardTest {
         assertTrue(d.getHitSquares().get(0).getLocation().getRow() == 1);
         assertTrue(b.getHitSquares().get(0).getLocation().getRow() == 2);
         assertTrue(m.getHitSquares().get(0).getLocation().getRow() == 3);
+        // check if hitSquares moved properly
+        assertTrue(d.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+        assertTrue(b.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+        assertTrue(m.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+
+        // check if boards hit results didn't move
+        assertTrue(board.getAttacks().get(0).getLocation().getRow()==1);
+        assertTrue(board.getAttacks().get(1).getLocation().getRow()==2);
+        assertTrue(board.getAttacks().get(2).getLocation().getRow()==4);//important One!
 
     }
 

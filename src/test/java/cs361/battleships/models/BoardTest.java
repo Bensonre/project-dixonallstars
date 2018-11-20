@@ -11,6 +11,49 @@ import static org.junit.Assert.*;
 
 public class BoardTest {
 
+
+    @Test
+    public void testShipMoveOffBoardLeft(){
+        Board board = new Board();
+        Ship ship = new Destroyer();
+        board.placeShip(ship, 1, 'A', false);
+        assertFalse(board.moveShipLeft(ship));
+    }
+
+    @Test
+    public void testShipMoveOffBoardRight(){
+        Board board = new Board();
+        Ship ship = new Destroyer();
+        board.placeShip(ship, 1, 'H', false);
+        assertFalse(board.moveShipRight(ship));
+    }
+
+    @Test
+    public void testShipMoveOffBoardTop(){
+        Board board = new Board();
+        Ship ship = new Destroyer();
+        board.placeShip(ship, 1, 'A', true);
+        assertFalse(board.moveShipUp(ship));
+    }
+
+    @Test
+    public void testShipMoveOffBoardBottom(){
+        Board board = new Board();
+        Ship ship = new Destroyer();
+        board.placeShip(ship, 8, 'A', true);
+        assertFalse(board.moveShipDown(ship));
+    }
+
+    @Test
+    public void testShipMoveCollision(){
+
+    }
+
+    @Test
+    public void testValidShipMove(){
+
+    }
+
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();

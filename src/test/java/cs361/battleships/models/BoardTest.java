@@ -11,7 +11,31 @@ import static org.junit.Assert.*;
 
 public class BoardTest {
 
+    @Test
+    public void testSinkBattleship(){
+        Board board = new Board();
+        Ship b = new Battleship();
 
+        board.placeShip(b, 1,'A', false);
+
+        Result res= new Result();
+        Result expected= new Result();
+
+
+        expected.setResult(AttackStatus.CQHIT);
+        // hit CQ
+        board.attack(1,'C',false);
+        res.setResult(b.getHitSquares().get(0).getResult());
+        assertEquals(expected.getResult(), res.getResult());
+
+        //Hit CQ again should sink
+        board.attack(1,'C',false);
+        res.setResult(b.getHitSquares().get(3).getResult());
+
+        expected.setResult(AttackStatus.SUNK);
+        assertEquals(expected.getResult(), res.getResult());
+
+    }
     @Test
     public void testShipMoveOffBoardLeft(){
         Board board = new Board();
@@ -202,14 +226,17 @@ public class BoardTest {
         board.placeShip(d, 1, 'A', false);
         board.placeShip(b, 2,'A', false);
         board.placeShip(m, 4,'A', false);
-        board.placeShip(s, 3,'A', false);
+        board.placeShip(s, 6,'A', false);
 
+        // attack destoryer cq before moving;
+        board.attack(1,'B', false);
+        assertTrue(d.getHitSquares().get(0).getResult().equals(AttackStatus.CQHIT));
 
         board.moveFleet('u');
         assertTrue(d.getOccupiedSquares().get(0).getRow()== 1);
         assertTrue(b.getOccupiedSquares().get(0).getRow()== 2);
         assertTrue(m.getOccupiedSquares().get(0).getRow()== 3);
-        assertTrue(s.getOccupiedSquares().get(0).getRow()== 2);
+        assertTrue(s.getOccupiedSquares().get(0).getRow()== 5);
 
         // attack three moved ships once
         board.attack(1, 'A', false);
@@ -217,9 +244,33 @@ public class BoardTest {
         board.attack(3, 'B', false); // don't hit CQ
 
         // check if attacks hit on the moved ship properly
-        assertTrue(d.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+        assertTrue(d.getHitSquares().get(1).getResult() == AttackStatus.HIT);
         assertTrue(b.getHitSquares().get(0).getResult() == AttackStatus.HIT);
         assertTrue(m.getHitSquares().get(0).getResult() == AttackStatus.HIT);
+
+        // attack cq of minesweeper should sink
+        board.attack(3,'A', false);
+        //check for sink
+        assertTrue(m.getHitSquares().get(1).getResult().equals(AttackStatus.SUNK));
+
+        // attack cq of destroyer ship 2nd time should  sink
+        board.attack(1,'B', false);
+        assertTrue(d.getHitSquares().get(2).getResult().equals(AttackStatus.SUNK));
+
+
+        // attack cq of battle ship should return cq hit
+        board.attack(2,'C', false);
+        assertTrue(b.getHitSquares().get(1).getResult().equals(AttackStatus.CQHIT));
+        // attack cq of battle ship 2nd time should  sink
+        board.attack(2,'C', false);
+        assertEquals(AttackStatus.SUNK, b.getHitSquares().get(3).getResult());
+
+        //attack submarine
+        board.attack(5, 'D', false);
+        assertEquals(AttackStatus.CQHIT, s.getHitSquares().get(0).getResult());
+        //attack submarine to sink
+        board.attack(5, 'D', false);
+        assertEquals(AttackStatus.SURRENDER, s.getHitSquares().get(4).getResult());
 
     }
 
@@ -613,7 +664,7 @@ public class BoardTest {
         assertSame(expected.getResult(), res.getResult());
 
 
-        expected.setResult(AttackStatus.SURRENDER);
+        expected.setResult(AttackStatus.SUNK);
         board.attack(3, 'C',false);
         res = board.attack(3, 'C',false);
 
@@ -952,7 +1003,7 @@ public class BoardTest {
         res = board.attack(3,'A',false);
         assertSame(expected.getResult(), shipB.getHitSquares().get(0).getResult());
 
-        expected.setResult(AttackStatus.SURRENDER);
+        expected.setResult(AttackStatus.SUNK);
         board.attack(3, 'C',false);
         res = board.attack(3, 'C',false);
 

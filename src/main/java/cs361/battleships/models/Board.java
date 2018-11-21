@@ -118,6 +118,7 @@ public class Board {
         for (int i=0; i < hits.size(); i++) {
             hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow()-1,hits.get(i).getLocation().getColumn()));
         }
+        	ship.getCaptainsQuarters().setRow(ship.getCaptainsQuarters().getRow()-1);
 		return true;
 	}
 
@@ -146,6 +147,7 @@ public class Board {
         for (int i=0; i < hits.size(); i++) {
             hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow()+1,hits.get(i).getLocation().getColumn()));
         }
+			ship.getCaptainsQuarters().setRow(ship.getCaptainsQuarters().getRow()+1);
 		return true;
 	}
 
@@ -174,6 +176,7 @@ public class Board {
         for (int i=0; i < hits.size(); i++) {
             hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow(),(char)(hits.get(i).getLocation().getColumn()-1)));
         }
+			ship.getCaptainsQuarters().setColumn((char)(ship.getCaptainsQuarters().getColumn()-1));
 		return true;
 	}
 
@@ -202,6 +205,7 @@ public class Board {
         for (int i=0; i < hits.size(); i++) {
             hits.get(i).setLocation(new Square(hits.get(i).getLocation().getRow(),(char)(hits.get(i).getLocation().getColumn()+1)));
         }
+		ship.getCaptainsQuarters().setColumn((char)(ship.getCaptainsQuarters().getColumn()+1));
 		return true;
 	}
 
@@ -701,7 +705,7 @@ public class Board {
 				}
 			}
 		}
-		if (sunkShips >= 3){
+		if (sunkShips >= 4){
 			return true;
 		}
 		return false;

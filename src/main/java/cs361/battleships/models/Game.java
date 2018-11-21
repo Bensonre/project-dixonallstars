@@ -29,11 +29,15 @@ public class Game {
         r = new Random(System.currentTimeMillis());
     }
 
-    /*
-	DO NOT change the signature of this method. It is used by the grading scripts.
+    public Board getPlayersBoard() {
+        return playersBoard;
+    }
 
-	gets a valid ship placement from both the player and the AI
-	 */
+    /*
+        DO NOT change the signature of this method. It is used by the grading scripts.
+
+        gets a valid ship placement from both the player and the AI
+         */
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 
         boolean successful = playersBoard.placeShip(ship, x, y, isVertical);

@@ -18,7 +18,7 @@
 /* centers main container on page */
 #page{
     display:flex;
-    flex-direction:row;
+    flex-direction: row;
     justify-content: center;
 }
 
@@ -521,6 +521,108 @@ button:hover{
 
 #modal-footer-sonar #fire-sonar-button.fireactive{
     background-color: #ccc;
+}
+
+/* =======  MOVE FLEET MODAL  =================================================== */
+
+/* main box positioned relative to the viewport */
+/* cognizant of the backdrop art in precise placement */
+#modal-fleet {
+  position: fixed;
+  top: 150px;
+  left: 150px;
+  z-index: 1010;
+  overflow: scroll;
+
+  width: 250px;
+  height: 300px;
+  margin: 10px;
+  background-color: #fff;
+
+  /* drop shadow of approx. half intensity of main container */
+  box-shadow:10px 10px 20px rgba(0,37,37,.2);
+  border: 2px solid black;
+  border-radius: 15px;
+}
+
+/* body that holds text */
+#modal-body-fleet {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+#modal-body-fleet > p {
+    font-size: 16px;
+}
+
+/* footer that holds button */
+#modal-footer-fleet {
+
+/*  padding: 10px 10px 20px 10px;*/
+}
+
+/* contains the two rows of buttons */
+#move-fleet-button-container{
+   font-size: 1px;
+   background-color: #fff;
+   color: #333;
+   border-radius: 5px;
+   padding: 10px;
+   cursor: pointer;
+   height: 40px;
+   text-align: center;
+}
+
+/* contains up button */
+#move-fleet-button-row1 {
+   display: block;
+   width: 100px;
+   margin-left: 50px;
+}
+
+/* contains left, down, right buttons */
+#move-fleet-button-row2 {
+    display: block;
+}
+
+#move-fleet-button-up {
+  width: 30px;
+  height: 30px;
+  padding-right: 37px;
+  padding-bottom: 35px;
+  margin: 0;
+  border-radius: 20%;
+}
+
+#move-fleet-button-right {
+  width: 30px;
+  height: 30px;
+  padding-right: 33px;
+  padding-left: 4px;
+  padding-bottom: 35px;
+  margin: 0;
+  margin-left: 1px;
+  border-radius: 20%;
+}
+
+#move-fleet-button-down {
+  width: 30px;
+  height: 30px;
+  padding-right: 37px;
+  padding-bottom: 35px;
+  margin: 0;
+  border-radius: 20%;
+}
+
+#move-fleet-button-left {
+  width: 30px;
+  height: 30px;
+  padding-right: 37px;
+  padding-bottom: 35px;
+  margin: 0;
+  margin-left: 1px;
+  border-radius: 20%;
 }
 
 /* ======= GAME OVER MODAL STUFF BELOW  ================================================== */

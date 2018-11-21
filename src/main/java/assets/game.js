@@ -11,13 +11,17 @@ var gg = false;  // indicates end of game
 // var is passed to attack function, indicating what type of attack is being used.
 var isSonarAttackPlayer = false;
 
-// used for knowing when sonar is first available for each player
-var firstShipSunkPlayer = false;
+// used for knowing when sonar/movefleet is first available for each player
+var shipsSunkPlayer = 0;
 
 // used to know when ability to use sonar should be revoked
 var sonarsFiredPlayer = 0;
 
+// used to know when ability to move fleet should be revoked
+var timesMovedFleet = 0;
 
+// char for direction of fleet move
+var moveFleetUserInput = '\0';
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -39,12 +43,21 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK"){
+            // increment count variable when opponent ship is sunk then check for abilities
+            if(elementId == "opponent" && attack == board.attacks[board.attacks.length-1]){
 
-            // if user has sunk an opponent ship, make sonar option available
-            if(firstShipSunkPlayer == false && elementId == "opponent"){
-                firstShipSunkPlayer = true; // so we never open the sonar modal again
-                openSonar();
+                shipsSunkPlayer++;
+                console.log("shipsSunkPlayer:");
+                console.log(shipsSunkPlayer);
+
+                if(shipsSunkPlayer === 1){
+                    openSonar();
+                }
+                if(shipsSunkPlayer === 2){
+                    openFleet();
+                }
             }
+
             className = "sunk";
         }
         else if (attack.result === "CQHIT"){
@@ -119,7 +132,8 @@ function cellClick() {
             }
         });
 
-    } else {
+    }
+    else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col, Sonar: isSonarAttackPlayer}, function(data) {
             if(isSonarAttackPlayer == true){
                 sonarsFiredPlayer++;
@@ -281,6 +295,55 @@ function fireSonar(){
 
 // fire sonar when user clicks button
 document.getElementById("fire-sonar-button").addEventListener("click", fireSonar);
+
+/* ===============    MOVE FLEET    ============================================================= */
+
+// open fleet modal. happens when two ships have been sunk
+function openFleet(){
+	document.getElementById("modal-fleet").classList.remove("inactive");
+}
+
+// close sonar modal. happens when fleet has been moved twice.
+function closeFleet(){
+	document.getElementById("modal-fleet").classList.add("inactive");
+}
+
+function moveFleetRequest(inputDir){
+
+    sendXhr("POST", "/moveFleet", {game: game, direction: inputDir}, function(data) {
+        game = data;
+
+        redrawGrid();
+        timesMovedFleet++;
+        // if user has moved fleet twice, remove option permanently
+        if(timesMovedFleet == 2)
+            closeFleet();
+    });
+}
+
+/* =============    MOVE FLEET FUNCTIONS    ======================= */
+function moveFleetUp(){
+    moveFleetRequest('u');
+}
+
+function moveFleetRight(){
+    moveFleetRequest('r');
+}
+
+function moveFleetDown(){
+     moveFleetRequest('d');
+}
+
+function moveFleetLeft(){
+     moveFleetRequest('l');
+}
+/* =============   ======================    ======================= */
+
+// move fleet in proper direction when user clicks each respective button
+document.getElementById("move-fleet-button-up").addEventListener("click", moveFleetUp);
+document.getElementById("move-fleet-button-right").addEventListener("click", moveFleetRight);
+document.getElementById("move-fleet-button-down").addEventListener("click", moveFleetDown);
+document.getElementById("move-fleet-button-left").addEventListener("click", moveFleetLeft);
 
 
 

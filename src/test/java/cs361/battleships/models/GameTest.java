@@ -14,7 +14,7 @@ public class GameTest {
         Game game = new Game();
         for(int i=0; i<10; i++) {
             String test = game.randKind();
-            assertTrue(test.equals("MINESWEEPER") || test.equals("DESTROYER") || test.equals("BATTLESHIP") );
+            assertTrue(test.equals("MINESWEEPER") || test.equals("DESTROYER") || test.equals("BATTLESHIP") || test.equals("SUBMARINE") );
         }
     }
 

@@ -21,15 +21,20 @@ public class ApplicationController {
     public Result placeShip(Context context, PlacementGameAction g) {
         Game game = g.getGame();
         String kind = g.getShipType();
+        boolean submerged = g.getSubmerged();
         Ship ship;
         if (kind.equals("MINESWEEPER")) {
             ship = new Minesweeper();
         } else if (kind.equals("DESTROYER")) {
             ship = new Destroyer();
-        } else {
+        } else if (kind.equals("BATTLESHIP")) {
             ship = new Battleship();
+        } else {
+            ship = new Submarine(submerged);//submerged=true on land = false
         }
-        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
+
+
+        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());//add submerged
         if (result) {
             return Results.json().render(game);
         } else {
@@ -49,7 +54,7 @@ public class ApplicationController {
 
     public Result moveFleet(Context context, MoveFleetGameAction g) {
         Game game = g.getGame();
-        game.getPlayersBoard().moveFleet(g.getActionDirection());
+        game.moveFleet(g.getActionDirection());
 
         return Results.json().render(game);
     }

@@ -191,6 +191,34 @@
   display:inline-block;
 }
 
+.shipbox-sub{
+  width:30px;
+  height:30px;
+  margin-left: 75px;
+  padding: 0;
+  border: 2px solid black;
+  display:block;
+}
+
+.submerge-button{
+    width:30px;
+    height:30px;
+    margin: 0;
+    padding:0;
+    border-radius: 50px;
+    border: 2px solid black;
+    position: relative;
+    left: 180px;
+    bottom: 40px;
+    color: black;
+}
+
+.submerge-text{
+    position: relative;
+     bottom:30px;
+     right: 25px;
+    }
+
 /* =======  GRIDS ======================================================================== */
 
 /* exterior of grid */
@@ -278,11 +306,19 @@ td:hover {
     background-color: #cc0000;
 }
 
+
+.occupied-submerged{
+    background-color: #001133;
+    opacity: 0.75;
+}
 /* a dark shade of grey to imitate an actual battleship.
    black on the bord is harsh to the eye as well */
 .occupied {
     background-color: #505050;
 }
+
+
+
 
 /* basically black, but a little less harsh */
 .sonar_occupied {
@@ -361,9 +397,19 @@ button:hover{
     background-color: orange;
 }
 
+.submerge-button:hover{
+    background-color: #001133;
+    opacity: 0.5;
+}
+
 /* active. used for ship select */
 .btnactive{
     background-color: orange;
+}
+
+.btnactive-sub{
+    background-color: #001133;
+    opacity: 0.5;
 }
 
 #opponent:hover{
@@ -373,6 +419,13 @@ button:hover{
     cursor: url('target.cur'),crosshair;
 }
 
+/* ======= submarine css has to be defined after button ==========*/
+.sub-hide{
+background-color: white;
+border-color: white;
+shadow: none;
+color: black;
+}
 /* =======  MODAL STUFF BELOW  ======================================================== */
 
 /* dim background when modal exists */
@@ -396,6 +449,7 @@ button:hover{
   z-index: 1010;
   overflow: scroll;
 }
+
 
 /* dialog box */
 .modal-dialog-inv {
@@ -464,6 +518,58 @@ button:hover{
   background-color: #eee;
 }
 
+/* =======  LASER MODAL  ======================================================== */
+/* Modal stuff for laser modal, a lot of code reused but for ID purposes must be restated for the laser modal*/
+#modal-backdrop-laser-attack {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+#modal-laser-attack {
+  position: fixed;
+  top: 100px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1012;
+  overflow: scroll;
+}
+
+.modal-close-button-laser-attack {
+  position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+    background: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 3px;
+    cursor: pointer;
+}
+
+/* okay button for laser modal*/
+.modal-footer-laser-attack button {
+   font-size: 20px;
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 7px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* hovering over okay button for laser modal*/
+.modal-footer-laser-attack .modal-okay-button-laser-attack:hover {
+  background-color: #eee;
+}
 /* =======  SONAR MODAL  ======================================================== */
 
 /* main box positioned relative to the viewport */

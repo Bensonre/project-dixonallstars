@@ -272,7 +272,7 @@ public class Board {
 			 	for (int k = 0; k < shipLength; k++) { // k represents the squares that the newly placed ships will take
 			 		if (x + k == currentShip.getOccupiedSquares().get(j).getRow()) { // tests to see if the ship being placed is in the same row as the current ship
 			 			if (y == currentShip.getOccupiedSquares().get(j).getColumn()) { // tests to see if the ship being [laced is in the same col as the current ship
-			 				if (!ship.isSubmerged()) {
+			 				if (!(ship.isSubmerged() || currentShip.isSubmerged())) {
 								return false; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
 							}
 			 			}
@@ -308,7 +308,7 @@ public class Board {
 				for (int k = 0; k < shipLength; k++) {// k represents the squares that the newly placed ships will take
 					if (y + k == currentShip.getOccupiedSquares().get(j).getColumn()) {// tests to see if the ship being placed is in the same row as the current ship
 						if (x == currentShip.getOccupiedSquares().get(j).getRow()) {// tests to see if the ship being placed is in the same col as the current ship
-							if (!ship.isSubmerged()) {
+							if (!(ship.isSubmerged() || currentShip.isSubmerged())) {
 								return false; // if both the above cases are true the ship is in the same square as the current ship and can't be placed.
 							}
 						}
@@ -376,6 +376,22 @@ public class Board {
 		}
 		return null;
 	}
+
+	public boolean checkSunkShip(){
+			int sunkShips = 0;
+			for (int j = 0; j < ships.size(); j++) {
+				for (int i = 0; i < ships.get(j).getHitSquares().size(); i++) { //for all results
+					if (ships.get(j).getHitSquares().get(i).getResult() == AttackStatus.SUNK) { //if a result is sunk, add to sunkShips
+						sunkShips++;
+					}
+				}
+			}
+			if (sunkShips >= 1){
+				return true;
+			}
+			return false;
+	}
+
 
 	// Controls the logic if a ship is attacked.
 	// Returns the result of the attack and alters the attack array appropriately.
@@ -545,7 +561,10 @@ public class Board {
 	 */
 	public Result attack(int x, char y, boolean Sonar) {
 
-		if (attacks.isEmpty()) {
+		if (checkSunkShip()) {
+			enemyHasLazer = true;
+		}
+		else{
 			enemyHasLazer = false;
 		}
 
@@ -793,6 +812,9 @@ public class Board {
 		return null;
 	}
 
+
+
+
 	public int getNum(AttackStatus result) {
 		if (result.equals(AttackStatus.HIT)){
 			return 1;
@@ -810,5 +832,7 @@ public class Board {
 			return 2;
 		}
 	}
+
+
 
 }

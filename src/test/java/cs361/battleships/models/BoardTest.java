@@ -165,9 +165,13 @@ public class BoardTest {
         // attack ships
         board.attack(5, 'D', false);
 
+        assertEquals(5, sub.getOccupiedSquares().get(0).getRow());
+        assertEquals(7, sub.getOccupiedSquares().get(4).getRow());
+
         board.moveFleet('u');
-        assertTrue(ship.getOccupiedSquares().get(0).getRow()== 4);
-        assertTrue(sub.getOccupiedSquares().get(0).getRow()== 4);
+        assertEquals(4, ship.getOccupiedSquares().get(0).getRow());
+        assertEquals(6, sub.getOccupiedSquares().get(4).getRow());
+        assertEquals(4, sub.getOccupiedSquares().get(0).getRow());
 
         // check if hitSquares moved properly
         assertTrue(ship.getHitSquares().get(0).getLocation().getRow() == 4);

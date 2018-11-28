@@ -112,7 +112,7 @@ public class Board {
 		}
 
 		// if function has progressed to this point, move was valid, move all positions
-		for (int i=0; i < ship.length; i++) {
+		for (int i=0; i < ship.getOccupiedSquares().size(); i++) {
             ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow() - 1, testSquares.get(i).getColumn()));
         }
         for (int i=0; i < hits.size(); i++) {
@@ -141,7 +141,7 @@ public class Board {
 		}
 
         // if function has progressed to this point, move was valid, move all positions
-        for (int i=0; i < ship.length; i++) {
+        for (int i=0; i < ship.getOccupiedSquares().size(); i++) {
             ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow() + 1, testSquares.get(i).getColumn()));
         }
         for (int i=0; i < hits.size(); i++) {
@@ -170,7 +170,7 @@ public class Board {
 		}
 
 		// if function has progressed to this point, move was valid, move all positions
-		for (int i=0; i< ship.length; i++) {
+		for (int i=0; i< ship.getOccupiedSquares().size(); i++) {
             ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow(), (char) (testSquares.get(i).getColumn() - 1)));
         }
         for (int i=0; i < hits.size(); i++) {
@@ -199,7 +199,7 @@ public class Board {
 		}
 
 		// if function has progressed to this point, hypothetical move was valid, move all positions
-		for (int i=0; i< ship.length; i++) {
+		for (int i=0; i< ship.getOccupiedSquares().size(); i++) {
             ship.occupiedSquares.set(i, new Square(testSquares.get(i).getRow(), (char) (testSquares.get(i).getColumn() + 1)));
         }
         for (int i=0; i < hits.size(); i++) {

@@ -1045,5 +1045,17 @@ public class BoardTest {
         assertSame(AttackStatus.HIT, shipS.getHitSquares().get(0).getResult());
     }
 
+    @Test
+    public void testDoublePlace() {
+        Board board = new Board();
+        Ship shipS = new Submarine(true); // Put ship on board
+        Ship shipM = new Minesweeper();
+        Ship shipD = new Destroyer();
+
+        board.placeShip(shipM, 1, 'A', false);
+        assertTrue(board.placeShip(shipS, 5, 'D', false));
+        assertTrue(board.placeShip(shipD, 5, 'C', false));
+    }
+
 }
 

@@ -55,7 +55,16 @@ public class Game {
                 new_ship = new Minesweeper();
             } else if (rkind.equals("DESTROYER")) {
                 new_ship = new Destroyer();
-            } else {
+            } else if(rkind.equals("SUBMARINE")) {
+
+                boolean submerge;
+                int rand = r.nextInt(2);
+
+                if ( rand == 1){ submerge = true;}
+                else { submerge = false; }
+                new_ship = new Submarine(submerge);
+            }
+            else {
                 new_ship = new Battleship();
             }
 
@@ -128,13 +137,17 @@ public class Game {
     public String randKind() {
         // generate int between 2 and 4 inclusive
         // nextInt() is exclusive of the upper bound
-        int rand = (Math.abs(r.nextInt()) % 3) + 2;
+        //int rand = (Math.abs(r.nextInt()) % 4) + 2;
+        int rand = r.nextInt(5);
 
         if (rand == 2) {
             return "MINESWEEPER";
         }
         else if (rand == 3) {
             return "DESTROYER";
+        }
+        else if (rand == 4){
+            return "SUBMARINE";
         }
         else {
             return "BATTLESHIP";
@@ -171,4 +184,14 @@ public class Game {
         }
     }
 
+    // function takes in u, d, l, or r from the front end user input
+    public void moveFleet(char direction){
+        getPlayersBoard().moveFleet(direction);
+
+        Result opponentAttackResult;
+        do {
+            opponentAttackResult = playersBoard.attack(randRow(), randCol(), false);
+        } while (opponentAttackResult.getResult() == AttackStatus.INVALID);
+
+    }
 }

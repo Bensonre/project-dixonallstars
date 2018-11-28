@@ -3,6 +3,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical = 0;
+var submerged = false;
 var verticalButton = document;
 var gg = false;  // indicates end of game
 
@@ -47,11 +48,8 @@ function markHits(board, elementId, surrenderText) {
             if(elementId == "opponent" && attack == board.attacks[board.attacks.length-1]){
 
                 shipsSunkPlayer++;
-                console.log("shipsSunkPlayer:");
-                console.log(shipsSunkPlayer);
-
                 if(shipsSunkPlayer === 1){
-                    openSonar();
+                    openLaserAttacks();
                 }
                 if(shipsSunkPlayer === 2){
                     openFleet();
@@ -90,10 +88,33 @@ function redrawGrid() {
         return;
     }
 
-    game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+    game.playersBoard.ships.forEach((ship) =>
+    {
+     if(ship.kind != "SUBMARINE"){
+    ship.occupiedSquares.forEach((square) => {
+        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("occupied-submerged");
+        document.getElementById("player_copy").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.remove("occupied-submerged");
+
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
         document.getElementById("player_copy").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-    }));
+    })}});
+
+    //classes added to submarine must check to see if the sub is submerged or not.
+    game.playersBoard.ships.forEach(function(ship){
+        if ( ship.kind === "SUBMARINE" && submerged == true){
+            ship.occupiedSquares.forEach(function(square){
+             document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied-submerged");
+             document.getElementById("player_copy").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied-submerged");
+
+            });
+        }
+        else if (ship.kind === "SUBMARINE") {
+            ship.occupiedSquares.forEach(function(square){
+            document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+            document.getElementById("player_copy").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+            });
+        }
+    });
 
     /* text displayed for user in error modal upon winning/losing */
     markHits(game.opponentsBoard, "opponent", "Congratulations! You Won!");
@@ -118,13 +139,16 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
+    if (shipType == "SUBMARINE") {
+       // document.getElementsByClassName("submerge-button")[0].classList.add("inactive");}
+       }
     if (isSetup) {
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, submerged: submerged}, function(data) {
             game = data;
 
             redrawGrid();
             placedShips++;
-            if (placedShips == 3) {
+            if (placedShips == 4){
                 isSetup = false;
                 registerCellListener((e) => {});
                 document.getElementById("placement_mode").classList.add("inactive");
@@ -134,6 +158,7 @@ function cellClick() {
 
     }
     else {
+        //alert("this is enemy has lazer or not: " + game.board); //+ board.enemyHasLazer);
         sendXhr("POST", "/attack", {game: game, x: row, y: col, Sonar: isSonarAttackPlayer}, function(data) {
             if(isSonarAttackPlayer == true){
                 sonarsFiredPlayer++;
@@ -225,6 +250,7 @@ function initGame() {
        registerCellListener(place(2));
        document.getElementsByClassName("btnactive")[0].classList.remove("btnactive");
        this.classList.add("btnactive");
+       document.getElementsByClassName("submerge-button")[0].classList.add("inactive");
     });
 
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
@@ -232,6 +258,7 @@ function initGame() {
        registerCellListener(place(3));
        document.getElementsByClassName("btnactive")[0].classList.remove("btnactive");
        this.classList.add("btnactive");
+       document.getElementsByClassName("submerge-button")[0].classList.add("inactive");
     });
 
     document.getElementById("place_battleship").addEventListener("click", function(e) {
@@ -239,6 +266,24 @@ function initGame() {
        registerCellListener(place(4));
        document.getElementsByClassName("btnactive")[0].classList.remove("btnactive");
        this.classList.add("btnactive");
+       document.getElementsByClassName("submerge-button")[0].classList.add("inactive");
+    });
+
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+       shipType = "SUBMARINE";
+       registerCellListener(place(5)); //was 4
+       document.getElementsByClassName("btnactive")[0].classList.remove("btnactive");
+       this.classList.add("btnactive");
+        document.getElementsByClassName("submerge-button")[0].classList.remove("inactive");
+       document.getElementsByClassName("submerge-button")[0].addEventListener("click", function(){
+        if( document.getElementsByClassName("submerge-button")[0].classList.contains("btnactive-sub") ){
+            document.getElementsByClassName("submerge-button")[0].classList.remove("btnactive-sub");
+        }
+        else{
+            document.getElementsByClassName("submerge-button")[0].classList.add("btnactive-sub");
+        }
+        });
+
     });
 
     sendXhr("GET", "/game", {}, function(data) {
@@ -257,6 +302,24 @@ function closeInv(){
 	document.getElementById("modal-backdrop-inv").classList.add("inactive");
 	document.getElementById("modal-inv").classList.add("inactive");
 }
+
+//open laser attack modal
+function openLaserAttacks(){
+	document.getElementById("modal-backdrop-laser-attack").classList.remove("inactive");
+	document.getElementById("modal-laser-attack").classList.remove("inactive");
+}
+
+// closes laser attack modal
+function closeLaserAttack(){
+	document.getElementById("modal-backdrop-laser-attack").classList.add("inactive");
+	document.getElementById("modal-laser-attack").classList.add("inactive");
+	openSonar();
+}
+
+//close laser attack modal when buttons clicked
+document.getElementsByClassName("modal-close-button-laser-attack")[0].addEventListener("click", closeLaserAttack);
+document.getElementsByClassName("modal-okay-button-laser-attack")[0].addEventListener("click", closeLaserAttack);
+
 
 // close invalid move modal when one of the buttons is clicked
 document.getElementsByClassName("modal-close-button-inv")[0].addEventListener("click", closeInv);
@@ -370,7 +433,15 @@ function checkBox(){
     });
   // verticalButton.addEventListener('39',checkBox);
 
-
+/* =============== Submarine Submerge Stuff ============================*/
+var submergeButton = document.getElementsByClassName("submerge-button")[0];
+submergeButton.addEventListener('click', function(e) {
+    if (submerged == false){
+        submerged = true;
+    } else {
+        submerged = false;
+    }
+});
 /* ===============    GAME OVER MODAL    ====================================================== */
 /* currently commented out since we want the game over modal to terminate the game.
    leaving code in for potential future use */
